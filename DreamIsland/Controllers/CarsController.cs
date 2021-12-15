@@ -1,12 +1,11 @@
 ﻿namespace DreamIsland.Controllers
 {
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
+
     using DreamIsland.Models.Cars;
     using DreamIsland.Services.Car;
-    using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class CarsController : Controller
     {
@@ -15,6 +14,13 @@
         public CarsController(ICarService carService)
         {
             this.carService = carService;
+        }
+
+        public IActionResult All()
+        {
+            var cars = this.carService.All();
+
+            return this.View(cars);
         }
         public IActionResult Add()
         {
@@ -32,7 +38,7 @@
             await this.carService.AddAsync(car.Brand, car.Model, car.Description, car.ImageUrl, car.Year, 
                 car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
     }
 }

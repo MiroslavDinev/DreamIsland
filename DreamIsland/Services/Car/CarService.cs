@@ -1,9 +1,12 @@
 ﻿namespace DreamIsland.Services.Car
 {
+    using System.Linq;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using DreamIsland.Data;
     using Data.Models.Vehicles;
+    using DreamIsland.Models.Cars;
 
     public class CarService : ICarService
     {
@@ -31,6 +34,23 @@
             await this.data.SaveChangesAsync();
 
             return car.Id;
+        }
+
+        public IEnumerable<CarListingViewModel> All()
+        {
+            var cars = this.data.Cars
+                .OrderByDescending(c=> c.Id)
+                .Select(x => new CarListingViewModel
+                {
+                    Id = x.Id,
+                    Brand = x.Brand,
+                    Model = x.Model,
+                    ImageUrl = x.ImageUrl,
+                    Year = x.Year
+                })
+                .ToList();
+
+            return cars;
         }
     }
 }
