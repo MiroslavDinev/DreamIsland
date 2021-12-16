@@ -11,6 +11,7 @@ namespace DreamIsland
     using DreamIsland.Data;
     using DreamIsland.Infrastructure;
     using DreamIsland.Services.Car;
+    using DreamIsland.Services.Partner;
 
     public class Startup
     {
@@ -42,6 +43,7 @@ namespace DreamIsland
             services.AddControllersWithViews();
 
             services.AddTransient<ICarService, CarService>();
+            services.AddTransient<IPartnerService, PartnerService>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
