@@ -1,10 +1,12 @@
 ﻿namespace DreamIsland.Data
 {
+    using System.Reflection;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-    using DreamIsland.Data.Models.Vehicles;
     using DreamIsland.Data.Models;
+    using DreamIsland.Data.Models.Vehicles;
 
     public class DreamIslandDbContext : IdentityDbContext
     {
@@ -15,14 +17,13 @@
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Island> Islands { get; set; }
+        public DbSet<Celebrity> Celebrities { get; set; }
+        public DbSet<Collectible> Collectibles { get; set; }
+        public DbSet<Partner> Partners { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Car>()
-                .HasOne(c => c.Island)
-                .WithMany(i => i.Cars)
-                .HasForeignKey(c => c.IslandId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(builder);
         }

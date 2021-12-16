@@ -6,16 +6,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Become Partner
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" asp-area="" asp-controller="Partner" asp-action="CarPartner">Car Partner</a>
-                    <a class="dropdown-item" asp-area="" asp-controller="Partner" asp-action="CelebrityPartner">Celebrity Partner</a>
-                    <a class="dropdown-item" asp-area="" asp-controller="Partner" asp-action="CollectiblesPartner">Collectibles Partner</a>
-                </div>
-            </div>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Partners" asp-action="Become">Become a partner</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">My Account</a>

@@ -28,6 +28,10 @@
         [Required]
         public string ImageUrl { get; set; }
 
+        public int PartnerId { get; set; }
+
+        public Partner Partner { get; set; }
+
         public IEnumerable<Car> Cars { get; set; }
     }
 }

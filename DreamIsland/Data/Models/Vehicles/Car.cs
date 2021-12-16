@@ -8,6 +8,10 @@
 
         public bool HasSeatMassager { get; set; }
 
+        public int PartnerId { get; set; }
+
+        public Partner Partner { get; set; }
+
         public int? IslandId { get; set; }
 
         public Island Island { get; set; }
