@@ -1,13 +1,37 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using DreamIsland.Services.Partner
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IPartnerService Partners
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Partners" asp-action="Become">Become a partner</a>
-        </li>
+
+        var userId = this.User.GetUserId();
+        var userIsPartner = Partners.isPartner(userId);
+
+        if (!userIsPartner)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Partners" asp-action="Become">Become a partner</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        My Offers
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" asp-area="" asp-controller="Cars" asp-action="My">My Cars</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Celebrities" asp-action="My">My Celebrities</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Collectibles" asp-action="My">My Collectibles</a>
+                    </div>
+                </div>
+            </li>
+        }
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">My Account</a>
         </li>

@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Microsoft.AspNetCore.Identity;
-
     using DreamIsland.Data.Models.Vehicles;
     using static DataConstants.Partner;
 

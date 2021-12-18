@@ -12,6 +12,8 @@ namespace DreamIsland
     using DreamIsland.Infrastructure;
     using DreamIsland.Services.Car;
     using DreamIsland.Services.Partner;
+    using Microsoft.AspNetCore.Mvc;
+    using DreamIsland.Data.Models;
 
     public class Startup
     {
@@ -30,7 +32,7 @@ namespace DreamIsland
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => 
+            services.AddDefaultIdentity<User>(options => 
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -38,9 +40,13 @@ namespace DreamIsland
                 options.Password.RequireUppercase = false;
 
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DreamIslandDbContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options=> 
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
 
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IPartnerService, PartnerService>();

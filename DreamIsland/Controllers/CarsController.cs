@@ -46,7 +46,9 @@
         [Authorize]
         public async Task<IActionResult> Add(AddCarFormModel car)
         {
-            if (this.GetPartnerId() == 0)
+            var partnerId = this.GetPartnerId();
+
+            if (partnerId == 0)
             {
                 // visualize message to be partner before adding
 
@@ -60,7 +62,7 @@
 
             await this.carService
                 .AddAsync(car.Brand, car.Model, car.Description, car.ImageUrl, car.Year, 
-                car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager);
+                car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager, partnerId);
 
             return RedirectToAction(nameof(All));
         }

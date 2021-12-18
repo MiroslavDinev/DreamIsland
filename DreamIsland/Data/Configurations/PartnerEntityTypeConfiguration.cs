@@ -1,6 +1,5 @@
 ﻿namespace DreamIsland.Data.Configurations
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,7 +10,7 @@
         public void Configure(EntityTypeBuilder<Partner> builder)
         {
             builder
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Partner>(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

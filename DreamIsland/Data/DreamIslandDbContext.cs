@@ -8,7 +8,7 @@
     using DreamIsland.Data.Models;
     using DreamIsland.Data.Models.Vehicles;
 
-    public class DreamIslandDbContext : IdentityDbContext
+    public class DreamIslandDbContext : IdentityDbContext<User>
     {
         public DreamIslandDbContext(DbContextOptions<DreamIslandDbContext> options)
             : base(options)

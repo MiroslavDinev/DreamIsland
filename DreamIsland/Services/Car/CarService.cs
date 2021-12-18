@@ -16,7 +16,7 @@
         {
             this.data = data;
         }
-        public async Task<int> AddAsync(string brand, string model, string description, string imageUrl, int year, bool hasRemoteStart, bool hasRemoteControlParking, bool hasSeatMassager)
+        public async Task<int> AddAsync(string brand, string model, string description, string imageUrl, int year, bool hasRemoteStart, bool hasRemoteControlParking, bool hasSeatMassager, int partnerId)
         {
             var car = new Car
             {
@@ -27,7 +27,8 @@
                 Year = year,
                 HasRemoteStart = hasRemoteStart,
                 HasRemoteControlParking = hasRemoteControlParking,
-                HasSeatMassager = hasSeatMassager
+                HasSeatMassager = hasSeatMassager,
+                PartnerId = partnerId
             };
 
             await this.data.Cars.AddAsync(car);

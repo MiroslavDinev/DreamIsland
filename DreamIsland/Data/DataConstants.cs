@@ -2,6 +2,15 @@
 {
     public static class DataConstants
     {
+        public static class User
+        {
+            public const int OccupationMaxLength = 30;
+            public const int OccupationMinLength = 3;
+            public const int NicknameMaxLength = 30;
+            public const int NicknameMinLength = 1;
+            public const int PasswordMaxLength = 100;
+            public const int PasswordMinLength = 6;
+        }
         public static class Vehicle
         {
             public const int BrandMaxLength = 30;
