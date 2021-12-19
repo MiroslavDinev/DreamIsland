@@ -10,14 +10,15 @@
 
         var userId = this.User.GetUserId();
         var userIsPartner = Partners.isPartner(userId);
+        var userIsAdmin = this.User.IsInRole(WebConstants.AdministratorRoleName);
 
-        if (!userIsPartner)
+        if (!userIsPartner && !userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Partners" asp-action="Become">Become a partner</a>
             </li>
         }
-        else
+        else if(userIsPartner && !userIsAdmin)
         {
             <li class="nav-item">
                 <div class="dropdown">
