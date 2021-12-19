@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using DreamIsland.Data.Models.Vehicles;
+    using DreamIsland.Data.Models.Islands;
     using static DataConstants.Partner;
 
     public class Partner

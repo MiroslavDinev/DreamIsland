@@ -1,5 +1,6 @@
 ﻿namespace DreamIsland.Data.Models.Vehicles
 {
+    using DreamIsland.Data.Models.Islands;
     public class Car : Vehicle
     {
         public bool HasRemoteStart { get; set; }

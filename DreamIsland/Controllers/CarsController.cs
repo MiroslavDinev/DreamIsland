@@ -31,8 +31,10 @@
 
         [Authorize]
         public IActionResult Add()
-        {            
-            if (this.GetPartnerId() == 0)
+        {
+            var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
+
+            if (partnerId == 0)
             {
                 // visualize message to be partner before adding
 
@@ -46,7 +48,7 @@
         [Authorize]
         public async Task<IActionResult> Add(AddCarFormModel car)
         {
-            var partnerId = this.GetPartnerId();
+            var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
             if (partnerId == 0)
             {
@@ -65,15 +67,6 @@
                 car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager, partnerId);
 
             return RedirectToAction(nameof(All));
-        }
-
-        private int GetPartnerId()
-        {
-            var userId = this.User.GetUserId();
-
-            var partnerId = this.partnerService.PartnerId(userId);
-
-            return partnerId;
         }
     }
 }

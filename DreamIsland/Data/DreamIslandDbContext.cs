@@ -7,6 +7,7 @@
 
     using DreamIsland.Data.Models;
     using DreamIsland.Data.Models.Vehicles;
+    using DreamIsland.Data.Models.Islands;
 
     public class DreamIslandDbContext : IdentityDbContext<User>
     {
@@ -20,6 +21,8 @@
         public DbSet<Celebrity> Celebrities { get; set; }
         public DbSet<Collectible> Collectibles { get; set; }
         public DbSet<Partner> Partners { get; set; }
+        public DbSet<PopulationSize> PopulationSizes { get; set; }
+        public DbSet<IslandRegion> IslandRegions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

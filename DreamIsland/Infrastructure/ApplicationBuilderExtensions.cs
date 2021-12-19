@@ -9,9 +9,11 @@
     using Microsoft.Extensions.DependencyInjection;
 
     using DreamIsland.Data;
-    using DreamIsland.Data.Models;
+    using DreamIsland.Data.Models.Islands;
 
     using static WebConstants;
+    using System.Linq;
+    using DreamIsland.Data.Models;
 
     public static class ApplicationBuilderExtensions
     {
@@ -24,9 +26,56 @@
 
             data.Database.Migrate();
 
+            SeedPopulationSize(data);
+            SeedRegions(data);
             SeedAdministrator(serviceProvider);
 
             return app;
+        }
+
+        private static void SeedRegions(DreamIslandDbContext data)
+        {
+            if (data.IslandRegions.Any())
+            {
+                return;
+            }
+
+            data.IslandRegions.AddRange(new[]
+            {
+                new IslandRegion {Name = "Africa"},
+                new IslandRegion {Name = "Asia"},
+                new IslandRegion {Name = "Canada"},
+                new IslandRegion {Name = "Carribean"},
+                new IslandRegion {Name = "Central America"},
+                new IslandRegion {Name = "Europe"},
+                new IslandRegion {Name = "South America"},
+                new IslandRegion {Name = "South Pacific"},
+                new IslandRegion {Name = "United States"}
+            });
+
+            data.SaveChanges();
+        }
+
+        private static void SeedPopulationSize(DreamIslandDbContext data)
+        {
+            if (data.PopulationSizes.Any())
+            {
+                return;
+            }
+
+            data.PopulationSizes.AddRange( new []
+            {
+                new PopulationSize {Name = "Uninhabited"},
+                new PopulationSize {Name = "Up to 10 persons"},
+                new PopulationSize {Name = "Between 10 persons and 100 persons"},
+                new PopulationSize {Name = "Between 100 persons and 1000 persons"},
+                new PopulationSize {Name = "Between 1000 persons and 10000 persons"},
+                new PopulationSize {Name = "Between 10000 persons and 100000 persons"},
+                new PopulationSize {Name = "Between 100000 persons and 1000000 persons"},
+                new PopulationSize {Name = "Over 1000000"}
+            });
+
+            data.SaveChanges();
         }
 
         private static void SeedAdministrator(IServiceProvider services)

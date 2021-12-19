@@ -1,0 +1,64 @@
+﻿@model AddFormIslandModel
+
+@{
+    ViewBag.Title = "Dream Island - Add Island";
+}
+
+<div class="row">
+    <div class=" offset-lg-2 col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
+        <h2 class="text-center">Add Island</h2>
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter island name...">
+                <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location"></label>
+                <input asp-for="Location" class="form-control" placeholder="Enter island location..." />
+                <span asp-validation-for="Location" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SizeInSquareKm"></label>
+                <input asp-for="SizeInSquareKm" class="form-control" placeholder="Enter island location..." />
+                <span asp-validation-for="SizeInSquareKm" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Enter island location..." />
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" placeholder="Enter island price in USD..." />
+                <span asp-validation-for="Price" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IslandRegionId"></label>
+                <select asp-for="IslandRegionId" class="form-control">
+                    @foreach (var region in Model.IslandRegions)
+                    {
+                        <option value="@region.Id">@region.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PopulationSizeId"></label>
+                <select asp-for="PopulationSizeId" class="form-control">
+                    @foreach (var size in Model.PopulationSizes)
+                    {
+                        <option value="@size.Id">@size.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="row justify-content-center">
+                <input class="btn btn-primary mt-4" type="submit" value="Add Island" />
+            </div>
+        </form>
+    </div>
+</div>
