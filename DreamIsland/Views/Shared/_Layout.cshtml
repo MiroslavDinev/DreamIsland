@@ -22,19 +22,16 @@
                         </li>
                         <li class="nav-item">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Add
+                                <button class="btn btn-secondary dropdown-toggle text-capitalize" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Our offers
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Islands" asp-action="Add">Add Island</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Cars" asp-action="Add">Add Car</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Celebrities" asp-action="Add">Add Celebrity</a>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Collectibles" asp-action="Add">Add Collectible</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Islands" asp-action="All">Islands</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Cars" asp-action="All">Cars</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Celebrities" asp-action="All">Celebrities</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Collectibles" asp-action="All">Collectibles</a>
                                 </div>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="All">All Cars</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

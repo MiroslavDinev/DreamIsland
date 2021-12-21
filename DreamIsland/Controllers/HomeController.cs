@@ -5,17 +5,23 @@
     using Microsoft.AspNetCore.Mvc;
 
     using DreamIsland.Models;
+    using DreamIsland.Services.Island;
+    using System.Linq;
 
     public class HomeController : Controller
     {
+        private readonly IIslandService islandService;
 
-        public HomeController()
+        public HomeController(IIslandService islandService)
         {
+            this.islandService = islandService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var firstThreeIslands = this.islandService.All();
+
+            return View(firstThreeIslands);
         }
 
         public IActionResult Privacy()
