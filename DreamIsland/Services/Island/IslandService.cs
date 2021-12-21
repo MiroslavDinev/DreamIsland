@@ -5,9 +5,9 @@
     using System.Collections.Generic;
 
     using DreamIsland.Data;
+    using DreamIsland.Models.Islands;
     using DreamIsland.Data.Models.Islands;
     using DreamIsland.Services.Island.Models;
-    using DreamIsland.Models.Islands;
 
     public class IslandService : IIslandService
     {

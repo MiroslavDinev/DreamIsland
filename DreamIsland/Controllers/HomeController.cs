@@ -1,12 +1,12 @@
 ﻿namespace DreamIsland.Controllers
 {
+    using System.Linq;
     using System.Diagnostics;
 
     using Microsoft.AspNetCore.Mvc;
 
     using DreamIsland.Models;
     using DreamIsland.Services.Island;
-    using System.Linq;
 
     public class HomeController : Controller
     {
@@ -19,7 +19,7 @@
 
         public IActionResult Index()
         {
-            var firstThreeIslands = this.islandService.All();
+            var firstThreeIslands = this.islandService.All().Take(3);
 
             return View(firstThreeIslands);
         }
