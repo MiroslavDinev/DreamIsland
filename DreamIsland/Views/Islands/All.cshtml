@@ -1,0 +1,27 @@
+﻿@model IEnumerable<IslandListingViewModel>
+
+<div class="row">
+    @foreach (var island in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src=@island.ImageUrl alt=@island.Name>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@island.Name</h5>
+                    <p>
+                        @(island.Location + " " + island.SizeInSquareKm + " km")<sup>2</sup>
+                    </p>
+                    @if (island.Price.HasValue)
+                    {
+                        <p>@(island.Price + " USD")</p>
+                    }
+                    else
+                    {
+                        <p>Price upon request</p>
+                    }
+                    <a asp-controller="Islands" asp-action="Details" asp-route-id="@island.Id" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

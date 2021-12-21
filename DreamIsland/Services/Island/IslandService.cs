@@ -7,6 +7,7 @@
     using DreamIsland.Data;
     using DreamIsland.Data.Models.Islands;
     using DreamIsland.Services.Island.Models;
+    using DreamIsland.Models.Islands;
 
     public class IslandService : IIslandService
     {
@@ -37,6 +38,25 @@
             await this.data.SaveChangesAsync();
 
             return island.Id;
+        }
+
+        public IEnumerable<IslandListingViewModel> All()
+        {
+            var islands = this.data
+                .Islands
+                .OrderByDescending(x=> x.Id)
+                .Select(x => new IslandListingViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Location = x.Location,
+                    ImageUrl = x.ImageUrl,
+                    Price = x.Price,
+                    SizeInSquareKm = x.SizeInSquareKm
+                })
+                .ToList();
+
+            return islands;
         }
 
         public IEnumerable<IslandPopulationSizeServiceModel> GetPopulationSizes()

@@ -20,6 +20,14 @@
             this.islandService = islandService;
             this.partnerService = partnerService;
         }
+
+        public IActionResult All()
+        {
+            var islands = this.islandService.All();
+
+            return this.View(islands);
+        }
+
         [Authorize]
         public IActionResult Add()
         {
