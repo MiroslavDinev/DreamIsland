@@ -1,0 +1,18 @@
+﻿@model IEnumerable<CelebrityListingViewModel>
+
+<div class="row">
+    @foreach (var celebrity in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src=@celebrity.ImageUrl alt=@celebrity.Name>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@celebrity.Name</h5>
+                    <p>@celebrity.Occupation</p>
+                    <a asp-controller="Celebrities" asp-action="Details" asp-route-id="@celebrity.Id" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

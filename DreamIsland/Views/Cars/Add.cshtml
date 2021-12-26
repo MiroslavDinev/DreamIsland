@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Year"></label>
-                <input asp-for="Year" class="form-control" min="1900" max="2030" placeholder="@DateTime.UtcNow.Year">
+                <input asp-for="Year" type="number" class="form-control" min="1900" max="2030" placeholder="@DateTime.UtcNow.Year">
                 <span asp-validation-for="Year" class="small text-danger"></span>
             </div>
             <div class="form-check form-check-inline">

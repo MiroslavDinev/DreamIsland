@@ -31,6 +31,15 @@
         [Authorize]
         public IActionResult Add()
         {
+            var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
+
+            if (partnerId == 0)
+            {
+                // visualize message to be partner before adding
+
+                return RedirectToAction(nameof(PartnersController.Become), "Partners");
+            }
+
             return this.View(new AddFormIslandModel
             {
                 IslandRegions = this.islandService.GetRegions(),

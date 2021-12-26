@@ -44,7 +44,9 @@
         public static class Celebrity
         {
             public const int NameMaxLength = 30;
+            public const int NameMinLength = 2;
             public const int OccupationMaxLength = 30;
+            public const int OccupationMinLength = 3;
             public const int DescriptionMaxLength = 1000;
             public const int DescriptionMinLength = 10;
             public const int MinAge = 14;
