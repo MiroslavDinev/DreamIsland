@@ -29,7 +29,7 @@
 
 else
 {
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide mb-5" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -102,3 +102,35 @@ else
     </div>
 }
 
+<div class="row">
+    <div class="col-12 text-center">
+        <button class="btn btn-primary" id="statistics-button">Our Stats</button>
+    </div>
+</div>
+
+<div class="jumbotron jumbotron-fluid d-none" id="statistics">
+    <div class="container">
+        <div class="row">
+            <h2 class="col-md-3 text-center" id="total-islands"></h2>
+            <h2 class="col-md-3 text-center" id="total-cars"></h2>
+            <h2 class="col-md-3 text-center" id="total-celebrities"></h2>
+            <h2 class="col-md-3 text-center" id="total-collectibles"></h2>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $('#statistics-button').on('click', ev => {
+            $.get('/api/statistics', (data) => {
+                $('#total-islands').text(data.totalIslands + " Islands");
+                $('#total-cars').text(data.totalCars + " Cars");
+                $('#total-celebrities').text(data.totalCelebrities + " Celebrities");
+                $('#total-collectibles').text(data.totalCollectibles + " Collectibles");
+
+                $('#statistics').removeClass('d-none');
+                $('#statistics-button').hide();
+            });
+        });
+    </script>
+}
