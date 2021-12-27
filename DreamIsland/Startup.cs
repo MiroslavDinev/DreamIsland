@@ -17,6 +17,7 @@ namespace DreamIsland
     using DreamIsland.Services.Island;
     using DreamIsland.Services.Statistic;
     using DreamIsland.Services.Celebrity;
+    using DreamIsland.Services.Collectible;
 
     public class Startup
     {
@@ -56,6 +57,7 @@ namespace DreamIsland
             services.AddTransient<IIslandService, IslandService>();
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ICelebrityService, CelebrityService>();
+            services.AddTransient<ICollectibleService, CollectibleService>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

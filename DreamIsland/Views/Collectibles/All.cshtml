@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CollectibleListingViewModel>
+
+<div class="row">
+    @foreach (var collectible in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src=@collectible.ImageUrl alt=@collectible.Name>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@collectible.Name</h5>
+                    <p>@collectible.RarityLevel</p>
+                    <a asp-controller="Collectibles" asp-action="Details" asp-route-id="@collectible.Id" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

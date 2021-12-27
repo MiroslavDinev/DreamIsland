@@ -7,7 +7,7 @@
 
     public interface ICelebrityService
     {
-        Task<int> Add(string name, string occupation, string description, string imageUrl, int age, int partnerId);
+        Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId);
 
         IEnumerable<CelebrityListingViewModel> All();
     }

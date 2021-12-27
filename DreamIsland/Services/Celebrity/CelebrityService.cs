@@ -16,7 +16,7 @@
         {
             this.data = data;
         }
-        public async Task<int> Add(string name, string occupation, string description, string imageUrl, int age, int partnerId)
+        public async Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId)
         {
             var celebrity = new Celebrity
             {

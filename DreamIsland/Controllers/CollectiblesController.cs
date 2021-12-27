@@ -6,26 +6,26 @@
     using Microsoft.AspNetCore.Authorization;
 
     using DreamIsland.Infrastructure;
-    using DreamIsland.Models.Celebrities;
-    using DreamIsland.Services.Celebrity;
+    using DreamIsland.Models.Collectibles;
+    using DreamIsland.Services.Collectible;
     using DreamIsland.Services.Partner;
 
-    public class CelebritiesController : Controller
+    public class CollectiblesController : Controller
     {
         private readonly IPartnerService partnerService;
-        private readonly ICelebrityService celebrityService;
+        private readonly ICollectibleService collectibleService;
 
-        public CelebritiesController(IPartnerService partnerService, ICelebrityService celebrityService)
+        public CollectiblesController(IPartnerService partnerService, ICollectibleService collectibleService)
         {
             this.partnerService = partnerService;
-            this.celebrityService = celebrityService;
+            this.collectibleService = collectibleService;
         }
 
         public IActionResult All()
         {
-            var celebrities = this.celebrityService.All();
+            var collectibles = this.collectibleService.All();
 
-            return this.View(celebrities);
+            return this.View(collectibles);
         }
 
         [Authorize]
@@ -45,7 +45,7 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add(AddCelebrityFormModel celebrity)
+        public async Task<IActionResult> Add(AddCollectibleFormModel collectible)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
@@ -58,10 +58,10 @@
 
             if (!ModelState.IsValid)
             {
-                return this.View(celebrity);
+                return this.View(collectible);
             }
 
-            await this .celebrityService.AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, celebrity.ImageUrl, celebrity.Age, partnerId);
+            await this.collectibleService.AddAsync(collectible.Name, collectible.Description, collectible.ImageUrl, collectible.RarityLevel, partnerId);
 
             return RedirectToAction(nameof(All));
         }
