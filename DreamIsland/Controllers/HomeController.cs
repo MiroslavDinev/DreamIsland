@@ -19,7 +19,7 @@
 
         public IActionResult Index()
         {
-            var firstThreeIslands = this.islandService.All().Take(3).ToList();
+            var firstThreeIslands = this.islandService.All().Islands.Take(3).ToList();
 
             return View(firstThreeIslands);
         }

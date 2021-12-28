@@ -1,7 +1,34 @@
-﻿@model IEnumerable<IslandListingViewModel>
+﻿@model AllIslandsQueryModel
+
+@{
+    ViewBag.Title = "Dream Island - All Islands";
+}
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <div class="form-group">
+                <label asp-for="Region"></label>
+                <select asp-for="Region" id="regions" class="form-control">
+                    <option value="">All</option>
+
+                    @foreach (var region in Model.Regions)
+                    {
+                        <option value="@region">@region</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Please enter island name or location">
+        </div>
+    </div>
+</form>
 
 <div class="row">
-    @foreach (var island in Model)
+    @foreach (var island in Model.Islands)
     {
         <div class="col-md-4">
             <div class="card">
@@ -25,3 +52,13 @@
         </div>
     }
 </div>
+
+@section Scripts{ 
+<script>
+    $(function () {
+        $('#regions').change(function () {
+            this.form.submit();
+        });
+    });
+</script>
+}

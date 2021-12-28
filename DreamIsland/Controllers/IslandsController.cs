@@ -21,9 +21,9 @@
             this.partnerService = partnerService;
         }
 
-        public IActionResult All()
+        public IActionResult All(string region, string searchTerm)
         {
-            var islands = this.islandService.All();
+            var islands = this.islandService.All(region, searchTerm);
 
             return this.View(islands);
         }

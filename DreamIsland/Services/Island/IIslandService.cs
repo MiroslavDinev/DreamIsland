@@ -11,7 +11,7 @@
         IEnumerable<IslandPopulationSizeServiceModel> GetPopulationSizes();
         IEnumerable<IslandRegionServiceModel> GetRegions();
 
-        IEnumerable<IslandListingViewModel> All();
+        AllIslandsQueryModel All(string region = null, string searchTerm = null);
 
         Task<int> AddAsync(string name, string location, string description, double sizeInSquareKm, 
             decimal? price, string imageUrl, int populationSizeId, int islandRegionId, int partnerId);

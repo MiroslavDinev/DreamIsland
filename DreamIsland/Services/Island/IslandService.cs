@@ -40,10 +40,26 @@
             return island.Id;
         }
 
-        public IEnumerable<IslandListingViewModel> All()
+        public AllIslandsQueryModel All(string region = null, string searchTerm = null)
         {
-            var islands = this.data
+            var islandsQuery = this.data
                 .Islands
+                .AsQueryable();
+
+            if(!string.IsNullOrEmpty(region))
+            {
+                islandsQuery = islandsQuery
+                    .Where(x => x.IslandRegion.Name == region);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                islandsQuery = islandsQuery
+                    .Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                    x.Location.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            var islands = islandsQuery
                 .OrderByDescending(x=> x.Id)
                 .Select(x => new IslandListingViewModel
                 {
@@ -56,7 +72,20 @@
                 })
                 .ToList();
 
-            return islands;
+            var regions = this.data
+                .IslandRegions
+                .Select(x => x.Name)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
+
+            var island = new AllIslandsQueryModel
+            {
+                Islands = islands,
+                Regions = regions
+            };
+
+            return island;
         }
 
         public IEnumerable<IslandPopulationSizeServiceModel> GetPopulationSizes()
