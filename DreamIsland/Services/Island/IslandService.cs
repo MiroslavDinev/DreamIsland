@@ -4,18 +4,24 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+
     using DreamIsland.Data;
     using DreamIsland.Models.Islands;
     using DreamIsland.Data.Models.Islands;
     using DreamIsland.Services.Island.Models;
+    using DreamIsland.Models.Islands.Enums;
 
     public class IslandService : IIslandService
     {
         private readonly DreamIslandDbContext data;
+        private readonly IMapper mapper;
 
-        public IslandService(DreamIslandDbContext data)
+        public IslandService(DreamIslandDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
 
         public async Task<int> AddAsync(string name, string location, string description, double sizeInSquareKm, 
@@ -40,7 +46,7 @@
             return island.Id;
         }
 
-        public AllIslandsQueryModel All(string region = null, string searchTerm = null)
+        public AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded)
         {
             var islandsQuery = this.data
                 .Islands
@@ -59,17 +65,17 @@
                     x.Location.ToLower().Contains(searchTerm.ToLower()));
             }
 
+            islandsQuery = islandSorting switch
+            {
+                IslandSorting.PriceAscending => islandsQuery.OrderBy(x=> x.Price),
+                IslandSorting.PriceDescending => islandsQuery.OrderByDescending(x=> x.Price),
+                IslandSorting.AreaAscending => islandsQuery.OrderBy(x=> x.SizeInSquareKm),
+                IslandSorting.AreaDescending => islandsQuery.OrderByDescending(x=> x.SizeInSquareKm),
+                IslandSorting.DateAdded or _ => islandsQuery.OrderByDescending(x=> x.Id)
+            };
+
             var islands = islandsQuery
-                .OrderByDescending(x=> x.Id)
-                .Select(x => new IslandListingViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Location = x.Location,
-                    ImageUrl = x.ImageUrl,
-                    Price = x.Price,
-                    SizeInSquareKm = x.SizeInSquareKm
-                })
+                .ProjectTo<IslandListingViewModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
             var regions = this.data
@@ -92,11 +98,7 @@
         {
             var populationSizes = this.data
                 .PopulationSizes
-                .Select(x => new IslandPopulationSizeServiceModel
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                })
+                .ProjectTo<IslandPopulationSizeServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
             return populationSizes;
@@ -106,11 +108,7 @@
         {
             var islandRegions = this.data
                 .IslandRegions
-                .Select(x => new IslandRegionServiceModel
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                })
+                .ProjectTo<IslandRegionServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
             return islandRegions;

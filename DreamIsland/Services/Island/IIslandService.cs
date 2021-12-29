@@ -5,13 +5,14 @@
 
     using DreamIsland.Models.Islands;
     using DreamIsland.Services.Island.Models;
+    using DreamIsland.Models.Islands.Enums;
 
     public interface IIslandService
     {
         IEnumerable<IslandPopulationSizeServiceModel> GetPopulationSizes();
         IEnumerable<IslandRegionServiceModel> GetRegions();
 
-        AllIslandsQueryModel All(string region = null, string searchTerm = null);
+        AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded);
 
         Task<int> AddAsync(string name, string location, string description, double sizeInSquareKm, 
             decimal? price, string imageUrl, int populationSizeId, int islandRegionId, int partnerId);

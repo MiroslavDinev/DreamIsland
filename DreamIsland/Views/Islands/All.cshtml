@@ -6,7 +6,7 @@
 
 <form method="get">
     <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <div class="form-group">
                 <label asp-for="Region"></label>
                 <select asp-for="Region" id="regions" class="form-control">
@@ -20,9 +20,21 @@
             </div>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label asp-for="SearchTerm"></label>
             <input asp-for="SearchTerm" class="form-control" placeholder="Please enter island name or location">
+        </div>
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="IslandSorting"></label>
+                <select asp-for="IslandSorting" class="form-control" id="island-sorting">
+                    <option value="0" selected>Date Added</option>
+                    <option value="1">Price High to Low</option>
+                    <option value="2">Price Low to High</option>
+                    <option value="3">Area High to Low</option>
+                    <option value="4">Area Low to High</option>
+                </select>
+            </div>
         </div>
     </div>
 </form>
@@ -56,7 +68,7 @@
 @section Scripts{ 
 <script>
     $(function () {
-        $('#regions').change(function () {
+        $('#regions, #island-sorting').change(function () {
             this.form.submit();
         });
     });

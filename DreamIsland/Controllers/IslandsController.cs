@@ -9,6 +9,7 @@
     using DreamIsland.Models.Islands;
     using DreamIsland.Services.Island;
     using DreamIsland.Services.Partner;
+    using DreamIsland.Models.Islands.Enums;
 
     public class IslandsController : Controller
     {
@@ -21,9 +22,9 @@
             this.partnerService = partnerService;
         }
 
-        public IActionResult All(string region, string searchTerm)
+        public IActionResult All(string region, string searchTerm, IslandSorting islandSorting)
         {
-            var islands = this.islandService.All(region, searchTerm);
+            var islands = this.islandService.All(region, searchTerm, islandSorting);
 
             return this.View(islands);
         }

@@ -4,17 +4,23 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+
     using Data.Models;
     using DreamIsland.Data;
     using DreamIsland.Models.Celebrities;
+    
 
     public class CelebrityService : ICelebrityService
     {
         private readonly DreamIslandDbContext data;
+        private readonly IMapper mapper;
 
-        public CelebrityService(DreamIslandDbContext data)
+        public CelebrityService(DreamIslandDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
         public async Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId)
         {
@@ -39,13 +45,7 @@
             var celebrities = this.data
                 .Celebrities
                 .OrderByDescending(x=> x.Id)
-                .Select(x => new CelebrityListingViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Occupation = x.Occupation,
-                    ImageUrl = x.ImageUrl
-                })
+                .ProjectTo<CelebrityListingViewModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
             return celebrities;

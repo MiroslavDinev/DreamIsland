@@ -47,6 +47,8 @@ namespace DreamIsland
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DreamIslandDbContext>();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews(options=> 
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
