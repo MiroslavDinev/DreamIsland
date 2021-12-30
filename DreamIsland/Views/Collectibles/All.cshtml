@@ -1,7 +1,32 @@
-﻿@model IEnumerable<CollectibleListingViewModel>
+﻿@model AllCollectiblesQueryModel
+
+@{
+    ViewBag.Title = "Dream Island - All Collectibles";
+}
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <div class="form-group">
+                <label asp-for="RarityLevel"></label>
+                <select asp-for="RarityLevel" id="rarity-levels" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var rarityLevel in Model.RarityLevels)
+                    {
+                        <option value="@rarityLevel">@rarityLevel</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Please enter collectible name"/>
+        </div>
+    </div>
+</form>
 
 <div class="row">
-    @foreach (var collectible in Model)
+    @foreach (var collectible in Model.Collectibles)
     {
         <div class="col-md-4">
             <div class="card">
@@ -15,3 +40,13 @@
         </div>
     }
 </div>
+
+@section Scripts{ 
+<script>
+    $(function () {
+        $('#rarity-levels').change(function () {
+            this.form.submit();
+        });
+    });
+</script>
+}

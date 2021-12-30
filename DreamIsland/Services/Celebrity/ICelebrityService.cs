@@ -1,6 +1,5 @@
 ﻿namespace DreamIsland.Services.Celebrity
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using DreamIsland.Models.Celebrities;
@@ -9,6 +8,6 @@
     {
         Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId);
 
-        IEnumerable<CelebrityListingViewModel> All();
+        AllCelebritiesQueryModel All(string occupation = null, string searchTerm = null);
     }
 }

@@ -1,7 +1,30 @@
-﻿@model IEnumerable<CelebrityListingViewModel>
+﻿@model AllCelebritiesQueryModel
+
+@{ 
+    ViewBag.Title = "Dream Island - All Celebrities";
+}
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label asp-for="Occupation"></label>
+            <select asp-for="Occupation" id="occupations" class="form-control">
+                <option value="">All</option>
+                @foreach (var occupation in Model.Occupations)
+                {
+                    <option value="@occupation">@occupation</option>
+                }
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Please enter celebrity name" />
+        </div>
+    </div>
+</form>
 
 <div class="row">
-    @foreach (var celebrity in Model)
+    @foreach (var celebrity in Model.Celebrities)
     {
         <div class="col-md-4">
             <div class="card">
@@ -15,4 +38,14 @@
         </div>
     }
 </div>
+
+@section Scripts{ 
+<script>
+    $(function () {
+        $('#occupations').change(function () {
+            this.form.submit();
+        });
+    });
+</script>
+}
 

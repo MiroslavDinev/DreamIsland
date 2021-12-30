@@ -1,14 +1,15 @@
 ﻿namespace DreamIsland.Services.Collectible
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
 
     using Data.Models;
     using DreamIsland.Data;
     using DreamIsland.Data.Enums;
     using DreamIsland.Models.Collectibles;
     using DreamIsland.Infrastructure;
+
 
     public class CollectibleService : ICollectibleService
     {
@@ -35,10 +36,29 @@
             return collectible.Id;
         }
 
-        public IEnumerable<CollectibleListingViewModel> All()
+        public AllCollectiblesQueryModel All(string rarityLevel = null, string searchTerm = null)
         {
-            var collectibles = this.data
+            var collectiblesQuery = this.data
                 .Collectibles
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(rarityLevel))
+            {
+                rarityLevel = rarityLevel.Replace(" ", "");
+
+                Enum.TryParse(rarityLevel, out RarityLevel rarityEnumLevel);
+
+                collectiblesQuery = collectiblesQuery
+                    .Where(x => x.RarityLevel == rarityEnumLevel);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                collectiblesQuery = collectiblesQuery
+                    .Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            var collectibles = collectiblesQuery
                 .OrderByDescending(x => x.Id)
                 .Select(x => new CollectibleListingViewModel
                 {
@@ -49,7 +69,18 @@
                 })
                 .ToList();
 
-            return collectibles;
+            var rarityLevels = this.data
+                .Collectibles
+                .Select(x => EnumValuesExtension.GetDescriptionFromEnum(x.RarityLevel))
+                .ToList();
+
+            var collectible = new AllCollectiblesQueryModel
+            {
+                Collectibles = collectibles,
+                RarityLevels = rarityLevels
+            };
+
+            return collectible;
         }
     }
 }

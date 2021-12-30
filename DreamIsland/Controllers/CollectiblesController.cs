@@ -21,9 +21,9 @@
             this.collectibleService = collectibleService;
         }
 
-        public IActionResult All()
+        public IActionResult All(string rarityLevel, string searchTerm)
         {
-            var collectibles = this.collectibleService.All();
+            var collectibles = this.collectibleService.All(rarityLevel, searchTerm);
 
             return this.View(collectibles);
         }

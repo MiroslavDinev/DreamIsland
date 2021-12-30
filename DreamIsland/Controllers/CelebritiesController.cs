@@ -21,9 +21,9 @@
             this.celebrityService = celebrityService;
         }
 
-        public IActionResult All()
+        public IActionResult All(string occupation, string searchTerm)
         {
-            var celebrities = this.celebrityService.All();
+            var celebrities = this.celebrityService.All(occupation, searchTerm);
 
             return this.View(celebrities);
         }

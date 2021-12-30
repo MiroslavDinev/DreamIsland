@@ -40,15 +40,43 @@
             return celebrity.Id;
         }
 
-        public IEnumerable<CelebrityListingViewModel> All()
+        public AllCelebritiesQueryModel All(string occupation = null, string searchTerm = null)
         {
-            var celebrities = this.data
+            var celebritiesQuery = this.data
                 .Celebrities
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(occupation))
+            {
+                celebritiesQuery = celebritiesQuery
+                    .Where(x => x.Occupation == occupation);
+            }
+
+            if(!string.IsNullOrEmpty(searchTerm))
+            {
+                celebritiesQuery = celebritiesQuery
+                    .Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            var celebrities = celebritiesQuery
                 .OrderByDescending(x=> x.Id)
                 .ProjectTo<CelebrityListingViewModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
-            return celebrities;
+            var occupations = this.data
+                .Celebrities
+                .Select(x => x.Occupation)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
+
+            var celebrity = new AllCelebritiesQueryModel
+            {
+                Celebrities = celebrities,
+                Occupations = occupations
+            };
+
+            return celebrity;
         }
     }
 }
