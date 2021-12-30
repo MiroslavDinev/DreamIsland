@@ -1,7 +1,42 @@
-﻿@model IEnumerable<CarListingViewModel>
+﻿@model AllCarsQueryModel
+
+@{
+    ViewBag.Title = "Dream Island - All Cars";
+}
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="Brand"></label>
+                <select asp-for="Brand" id="brands" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var brand in Model.Brands)
+                    {
+                        <option value="@brand">@brand</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Please enter car model" />
+        </div>
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="CarsSorting"></label>
+                <select asp-for="CarsSorting" class="form-control" id="car-sorting">
+                    <option value="0" selected>Date Added</option>
+                    <option value="1">Year Manufactured Low to High</option>
+                    <option value="2">Year Manufactured High to Low</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
 
 <div class="row">
-    @foreach (var car in Model)
+    @foreach (var car in Model.Cars)
     {
         <div class="col-md-4">
             <div class="card">
@@ -12,9 +47,18 @@
                     <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-primary">Details</a>
                 </div>
             </div>
-        </div>        
+        </div>
     }
 </div>
 
+@section Scripts{
+    <script>
+        $(function () {
+            $('#brands, #car-sorting').change(function () {
+                this.form.submit();
+            });
+        });
+    </script>
+}
 
 
