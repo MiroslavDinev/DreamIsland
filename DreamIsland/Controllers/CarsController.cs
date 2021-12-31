@@ -9,7 +9,6 @@
     using DreamIsland.Services.Car;
     using DreamIsland.Services.Partner;
     using DreamIsland.Infrastructure;
-    using DreamIsland.Models.Cars.Enums;
 
     public class CarsController : Controller
     {
@@ -22,10 +21,10 @@
             this.partnerService = partnerService;
         }
 
-        public IActionResult All(string brand, string searchTerm, CarsSorting carsSorting)
+        public IActionResult All([FromQuery] AllCarsQueryModel query)
         {
             var cars = this.carService
-                .All(brand, searchTerm, carsSorting);
+                .All(query.Brand, query.SearchTerm, query.CarsSorting);
 
             return this.View(cars);
         }

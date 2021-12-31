@@ -5,7 +5,7 @@
 
     using DreamIsland.Models.Islands.Enums;
 
-    public class AllIslandsQueryModel
+    public class AllIslandsQueryModel : BaseQueryModel
     {
         [Display(Name = "Search by text")]
         public string SearchTerm { get; init; }

@@ -12,7 +12,7 @@
         IEnumerable<IslandPopulationSizeServiceModel> GetPopulationSizes();
         IEnumerable<IslandRegionServiceModel> GetRegions();
 
-        AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded);
+        AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded, int currentPage = 1);
 
         Task<int> AddAsync(string name, string location, string description, double sizeInSquareKm, 
             decimal? price, string imageUrl, int populationSizeId, int islandRegionId, int partnerId);

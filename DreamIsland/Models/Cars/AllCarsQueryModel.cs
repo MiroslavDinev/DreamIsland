@@ -5,7 +5,7 @@
 
     using DreamIsland.Models.Cars.Enums;
 
-    public class AllCarsQueryModel
+    public class AllCarsQueryModel : BaseQueryModel
     {
         [Display(Name = "Search by text")]
         public string SearchTerm { get; set; }

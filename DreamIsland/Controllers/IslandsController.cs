@@ -22,9 +22,9 @@
             this.partnerService = partnerService;
         }
 
-        public IActionResult All(string region, string searchTerm, IslandSorting islandSorting)
+        public IActionResult All([FromQuery] AllIslandsQueryModel query)
         {
-            var islands = this.islandService.All(region, searchTerm, islandSorting);
+            var islands = this.islandService.All(query.Region, query.SearchTerm, query.IslandSorting, query.CurrentPage);
 
             return this.View(islands);
         }

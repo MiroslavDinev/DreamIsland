@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class AllCelebritiesQueryModel
+    public class AllCelebritiesQueryModel : BaseQueryModel
     {
         [Display(Name = "Search by name")]
         public string SearchTerm { get; set; }

@@ -46,7 +46,7 @@
             return island.Id;
         }
 
-        public AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded)
+        public AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded, int currentPage = 1)
         {
             var islandsQuery = this.data
                 .Islands
@@ -74,7 +74,11 @@
                 IslandSorting.DateAdded or _ => islandsQuery.OrderByDescending(x=> x.Id)
             };
 
+            var totalIslands = islandsQuery.Count();
+
             var islands = islandsQuery
+                .Skip((currentPage - 1) * AllIslandsQueryModel.ItemsPerPage)
+                .Take(AllIslandsQueryModel.ItemsPerPage)
                 .ProjectTo<IslandListingViewModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
@@ -88,7 +92,12 @@
             var island = new AllIslandsQueryModel
             {
                 Islands = islands,
-                Regions = regions
+                Regions = regions,
+                TotalItems = totalIslands,
+                CurrentPage = currentPage,
+                IslandSorting = islandSorting,
+                SearchTerm = searchTerm,
+                Region = region
             };
 
             return island;
