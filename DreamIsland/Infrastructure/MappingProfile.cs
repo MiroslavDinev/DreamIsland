@@ -2,13 +2,14 @@
 {
     using AutoMapper;
 
-    using DreamIsland.Models.Islands;
+    using DreamIsland.Data.Models;
     using DreamIsland.Data.Models.Islands;
-    using DreamIsland.Services.Island.Models;
     using DreamIsland.Data.Models.Vehicles;
     using DreamIsland.Models.Cars;
+    using DreamIsland.Models.Islands;
     using DreamIsland.Models.Celebrities;
-    using DreamIsland.Data.Models;
+    using DreamIsland.Services.Island.Models;
+
 
     public class MappingProfile : Profile
     {
@@ -22,3 +23,4 @@
         }
     }
 }
+

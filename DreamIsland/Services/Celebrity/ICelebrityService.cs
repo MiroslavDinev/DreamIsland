@@ -8,6 +8,6 @@
     {
         Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId);
 
-        AllCelebritiesQueryModel All(string occupation = null, string searchTerm = null);
+        AllCelebritiesQueryModel All(string occupation = null, string searchTerm = null, int currentPage = 1);
     }
 }

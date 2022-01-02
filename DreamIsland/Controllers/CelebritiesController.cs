@@ -23,7 +23,7 @@
 
         public IActionResult All([FromQuery] AllCelebritiesQueryModel query)
         {
-            var celebrities = this.celebrityService.All(query.Occupation, query.SearchTerm);
+            var celebrities = this.celebrityService.All(query.Occupation, query.SearchTerm, query.CurrentPage);
 
             return this.View(celebrities);
         }

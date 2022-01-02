@@ -36,7 +36,7 @@
             return collectible.Id;
         }
 
-        public AllCollectiblesQueryModel All(string rarityLevel = null, string searchTerm = null)
+        public AllCollectiblesQueryModel All(string rarityLevel = null, string searchTerm = null, int currentPage = 1)
         {
             var collectiblesQuery = this.data
                 .Collectibles
@@ -58,8 +58,12 @@
                     .Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
+            var totalCollectibles = collectiblesQuery.Count();
+
             var collectibles = collectiblesQuery
                 .OrderByDescending(x => x.Id)
+                .Skip((currentPage - 1) * AllCollectiblesQueryModel.ItemsPerPage)
+                .Take(AllCollectiblesQueryModel.ItemsPerPage)
                 .Select(x => new CollectibleListingViewModel
                 {
                     Id = x.Id,
@@ -77,7 +81,11 @@
             var collectible = new AllCollectiblesQueryModel
             {
                 Collectibles = collectibles,
-                RarityLevels = rarityLevels
+                RarityLevels = rarityLevels,
+                TotalItems = totalCollectibles,
+                CurrentPage = currentPage,
+                SearchTerm = searchTerm,
+                RarityLevel = rarityLevel
             };
 
             return collectible;

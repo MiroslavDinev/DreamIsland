@@ -14,7 +14,6 @@
                 .SingleOrDefault() as DescriptionAttribute;
 
             return attribute == null ? value.ToString() : attribute.Description;
-
         }
     }
 }

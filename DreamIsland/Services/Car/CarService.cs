@@ -43,7 +43,7 @@
             return car.Id;
         }
 
-        public AllCarsQueryModel All(string brand = null, string searchTerm = null, CarsSorting carSorting = CarsSorting.DateAdded)
+        public AllCarsQueryModel All(string brand = null, string searchTerm = null, CarsSorting carSorting = CarsSorting.DateAdded, int currentPage = 1)
         {
             var carsQuery = this.data
                 .Cars
@@ -68,7 +68,11 @@
                 CarsSorting.DateAdded or _ => carsQuery.OrderByDescending(x=> x.Id)
             };
 
+            var totalCars = carsQuery.Count();
+
             var cars = carsQuery
+                .Skip((currentPage-1) * AllCarsQueryModel.ItemsPerPage)
+                .Take(AllCarsQueryModel.ItemsPerPage)
                 .ProjectTo<CarListingViewModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
@@ -81,7 +85,12 @@
             var car = new AllCarsQueryModel
             {
                 Cars = cars,
-                Brands = brands
+                Brands = brands,
+                CurrentPage = currentPage,
+                TotalItems = totalCars,
+                Brand = brand,
+                CarsSorting = carSorting,
+                SearchTerm = searchTerm
             };
 
             return car;

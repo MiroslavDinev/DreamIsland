@@ -23,7 +23,7 @@
 
         public IActionResult All([FromQuery] AllCollectiblesQueryModel query)
         {
-            var collectibles = this.collectibleService.All(query.RarityLevel, query.SearchTerm);
+            var collectibles = this.collectibleService.All(query.RarityLevel, query.SearchTerm, query.CurrentPage);
 
             return this.View(collectibles);
         }

@@ -24,7 +24,7 @@
         public IActionResult All([FromQuery] AllCarsQueryModel query)
         {
             var cars = this.carService
-                .All(query.Brand, query.SearchTerm, query.CarsSorting);
+                .All(query.Brand, query.SearchTerm, query.CarsSorting, query.CurrentPage);
 
             return this.View(cars);
         }

@@ -9,6 +9,6 @@
     {
         Task<int> AddAsync(string name, string description, string imageUrl, RarityLevel rarityLevel, int partnerId);
 
-        AllCollectiblesQueryModel All(string rarityLevel = null, string searchTerm = null);
+        AllCollectiblesQueryModel All(string rarityLevel = null, string searchTerm = null, int currentPage = 1);
     }
 }

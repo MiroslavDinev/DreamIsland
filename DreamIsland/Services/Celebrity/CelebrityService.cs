@@ -40,7 +40,7 @@
             return celebrity.Id;
         }
 
-        public AllCelebritiesQueryModel All(string occupation = null, string searchTerm = null)
+        public AllCelebritiesQueryModel All(string occupation = null, string searchTerm = null, int currentPage = 1)
         {
             var celebritiesQuery = this.data
                 .Celebrities
@@ -58,8 +58,12 @@
                     .Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
+            var totalCelebrities = celebritiesQuery.Count();
+
             var celebrities = celebritiesQuery
                 .OrderByDescending(x=> x.Id)
+                .Skip((currentPage - 1) * AllCelebritiesQueryModel.ItemsPerPage)
+                .Take(AllCelebritiesQueryModel.ItemsPerPage)
                 .ProjectTo<CelebrityListingViewModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
@@ -73,7 +77,11 @@
             var celebrity = new AllCelebritiesQueryModel
             {
                 Celebrities = celebrities,
-                Occupations = occupations
+                Occupations = occupations,
+                TotalItems = totalCelebrities,
+                CurrentPage = currentPage,
+                Occupation = occupation,
+                SearchTerm = searchTerm
             };
 
             return celebrity;

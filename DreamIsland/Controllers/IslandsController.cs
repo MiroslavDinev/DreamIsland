@@ -9,7 +9,6 @@
     using DreamIsland.Models.Islands;
     using DreamIsland.Services.Island;
     using DreamIsland.Services.Partner;
-    using DreamIsland.Models.Islands.Enums;
 
     public class IslandsController : Controller
     {
