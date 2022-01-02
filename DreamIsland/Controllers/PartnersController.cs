@@ -1,14 +1,13 @@
 ﻿namespace DreamIsland.Controllers
 {
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
+
     using DreamIsland.Infrastructure;
     using DreamIsland.Models.Partners;
     using DreamIsland.Services.Partner;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class PartnersController : Controller
     {
