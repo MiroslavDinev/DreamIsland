@@ -12,6 +12,7 @@
     using DreamIsland.Data.Models.Islands;
     using DreamIsland.Services.Island.Models;
     using DreamIsland.Models.Islands.Enums;
+    using DreamIsland.Models.Cars;
 
     public class IslandService : IIslandService
     {
@@ -97,6 +98,16 @@
                 SearchTerm = searchTerm,
                 Region = region
             };
+
+            return island;
+        }
+
+        public IslandDetailsServiceModel Details(int islandId)
+        {
+            var island = this.data.Islands
+                .Where(x => x.Id == islandId)
+                .ProjectTo<IslandDetailsServiceModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
 
             return island;
         }

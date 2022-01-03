@@ -19,7 +19,8 @@
 
         bool PopulationSizeExists(int populationSizeId);
         bool RegionExists(int islandRegionId);
-
         IEnumerable<IslandListingViewModel> GetIslandsByPartner(string userId);
+
+        IslandDetailsServiceModel Details(int islandId);
     }
 }

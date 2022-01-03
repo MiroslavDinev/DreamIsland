@@ -50,7 +50,7 @@
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
 
-            return this.View(new AddFormIslandModel
+            return this.View(new FormIslandModel
             {
                 IslandRegions = this.islandService.GetRegions(),
                 PopulationSizes = this.islandService.GetPopulationSizes()
@@ -59,7 +59,7 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add(AddFormIslandModel island)
+        public async Task<IActionResult> Add(FormIslandModel island)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 

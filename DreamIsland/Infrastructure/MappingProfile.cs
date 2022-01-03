@@ -16,6 +16,8 @@
         public MappingProfile()
         {
             this.CreateMap<Island, IslandListingViewModel>();
+            this.CreateMap<Island, IslandDetailsServiceModel>()
+                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
             this.CreateMap<IslandRegion, IslandRegionServiceModel>();
             this.CreateMap<PopulationSize, IslandPopulationSizeServiceModel>();
             this.CreateMap<Car, CarListingViewModel>();
