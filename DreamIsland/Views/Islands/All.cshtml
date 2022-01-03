@@ -39,31 +39,7 @@
     </div>
 </form>
 
-<div class="row">
-    @foreach (var island in Model.Islands)
-    {
-        <div class="col-md-4">
-            <div class="card">
-                <img class="card-img-top" src=@island.ImageUrl alt=@island.Name>
-                <div class="card-body text-center">
-                    <h5 class="card-title text-center">@island.Name</h5>
-                    <p>
-                        @(island.Location + " " + island.SizeInSquareKm + " km")<sup>2</sup>
-                    </p>
-                    @if (island.Price.HasValue)
-                    {
-                        <p>@(island.Price + " USD")</p>
-                    }
-                    else
-                    {
-                        <p>Price upon request</p>
-                    }
-                    <a asp-controller="Islands" asp-action="Details" asp-route-id="@island.Id" class="btn btn-primary">Details</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+<partial name="_IslandsPartial" model="@Model.Islands" />
 
 @{
     int previousPage = Model.CurrentPage - 1;
@@ -96,16 +72,15 @@
     </ul>
 </nav>
 
+
 @if (!Model.Islands.Any())
 {
-    @if (!Model.Islands.Any())
-    {
-        <h1 class="text-center">No islands found by the given criteria!</h1>
-        <div class="text-center">
-            <img src="https://static3.depositphotos.com/1002881/151/i/600/depositphotos_1519030-stock-photo-error-404.jpg" class="rounded" alt="missing-island">
-        </div>
-    }
+    <h1 class="text-center">No islands found by the given criteria!</h1>
+    <div class="text-center">
+        <img src="https://static3.depositphotos.com/1002881/151/i/600/depositphotos_1519030-stock-photo-error-404.jpg" class="rounded" alt="missing-island">
+    </div>
 }
+
 
 @section Scripts{
     <script>

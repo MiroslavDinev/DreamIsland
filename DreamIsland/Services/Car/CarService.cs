@@ -70,11 +70,10 @@
 
             var totalCars = carsQuery.Count();
 
-            var cars = carsQuery
-                .Skip((currentPage-1) * AllCarsQueryModel.ItemsPerPage)
-                .Take(AllCarsQueryModel.ItemsPerPage)
-                .ProjectTo<CarListingViewModel>(this.mapper.ConfigurationProvider)
-                .ToList();
+            var cars = this.GetCars(carsQuery
+                .Skip((currentPage - 1) * AllCarsQueryModel.ItemsPerPage)
+                .Take(AllCarsQueryModel.ItemsPerPage));
+                
 
             var brands = this.data.Cars
                 .Select(x => x.Brand)
@@ -94,6 +93,24 @@
             };
 
             return car;
+        }
+
+        public IEnumerable<CarListingViewModel> GetCarsByPartner(string userId)
+        {
+            var cars = this.GetCars(this.data
+                .Cars
+                .Where(x => x.Partner.UserId == userId)
+                .OrderByDescending(x => x.Id));
+
+            return cars;
+        }
+        private IEnumerable<CarListingViewModel> GetCars(IQueryable carsQuery)
+        {
+            var cars = carsQuery
+                .ProjectTo<CarListingViewModel>(this.mapper.ConfigurationProvider)
+                .ToList();
+
+            return cars;
         }
     }
 }

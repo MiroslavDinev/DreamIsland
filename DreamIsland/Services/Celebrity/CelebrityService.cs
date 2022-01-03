@@ -60,12 +60,10 @@
 
             var totalCelebrities = celebritiesQuery.Count();
 
-            var celebrities = celebritiesQuery
-                .OrderByDescending(x=> x.Id)
+            var celebrities = this.GetCelebrities(celebritiesQuery
+                .OrderByDescending(x => x.Id)
                 .Skip((currentPage - 1) * AllCelebritiesQueryModel.ItemsPerPage)
-                .Take(AllCelebritiesQueryModel.ItemsPerPage)
-                .ProjectTo<CelebrityListingViewModel>(this.mapper.ConfigurationProvider)
-                .ToList();
+                .Take(AllCelebritiesQueryModel.ItemsPerPage));
 
             var occupations = this.data
                 .Celebrities
@@ -85,6 +83,25 @@
             };
 
             return celebrity;
+        }
+
+        public IEnumerable<CelebrityListingViewModel> GetCelebritiesByPartner(string userId)
+        {
+            var celebrities = this.GetCelebrities(this.data
+                .Celebrities
+                .Where(x => x.Partner.UserId == userId)
+                .OrderByDescending(x=> x.Id));
+
+            return celebrities;
+        }
+
+        private IEnumerable<CelebrityListingViewModel> GetCelebrities(IQueryable celebritiesQuery)
+        {
+            var celebrities = celebritiesQuery
+                .ProjectTo<CelebrityListingViewModel>(this.mapper.ConfigurationProvider)
+                .ToList();
+
+            return celebrities;
         }
     }
 }

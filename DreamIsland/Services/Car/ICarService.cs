@@ -1,6 +1,7 @@
 ﻿namespace DreamIsland.Services.Car
 {
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     using DreamIsland.Models.Cars;
     using DreamIsland.Models.Cars.Enums;
@@ -11,5 +12,7 @@
             bool hasRemoteStart, bool hasRemoteControlParking, bool hasSeatMassager, int partnerId);
 
         AllCarsQueryModel All(string brand = null, string searchTerm = null, CarsSorting carSorting = CarsSorting.DateAdded, int currentPage = 1);
+
+        IEnumerable<CarListingViewModel> GetCarsByPartner(string userId);
     }
 }

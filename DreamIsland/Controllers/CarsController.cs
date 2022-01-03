@@ -30,6 +30,16 @@
         }
 
         [Authorize]
+        public IActionResult My()
+        {
+            var userId = this.User.GetUserId();
+
+            var myCars = this.carService.GetCarsByPartner(userId);
+
+            return this.View(myCars);
+        }
+
+        [Authorize]
         public IActionResult Add()
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());

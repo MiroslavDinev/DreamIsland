@@ -1,0 +1,16 @@
+﻿@model IEnumerable<CollectibleListingViewModel>
+
+@{
+    ViewBag.Title = "Dream Island - My Collectibles";
+    ViewBag.AllowMoreFunctionality = true;
+}
+
+@if (!Model.Any())
+{
+    <h1 class="text-center">No collectibles found by the given criteria!</h1>
+    <div class="text-center">
+        <img src="https://i.pinimg.com/originals/00/58/7c/00587cd1a2abb66a7e883f9dbfc097f8.jpg" class="rounded" alt="missing-collectible">
+    </div>
+}
+
+<partial name="_CollectiblesPartial" model="@Model" />

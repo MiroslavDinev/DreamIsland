@@ -1,5 +1,6 @@
 ﻿namespace DreamIsland.Services.Collectible
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using DreamIsland.Data.Enums;
@@ -10,5 +11,7 @@
         Task<int> AddAsync(string name, string description, string imageUrl, RarityLevel rarityLevel, int partnerId);
 
         AllCollectiblesQueryModel All(string rarityLevel = null, string searchTerm = null, int currentPage = 1);
+
+        IEnumerable<CollectibleListingViewModel> GetCollectiblesByPartner(string userId);
     }
 }

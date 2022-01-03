@@ -9,7 +9,7 @@
     using DreamIsland.Data.Enums;
     using DreamIsland.Models.Collectibles;
     using DreamIsland.Infrastructure;
-
+    using System.Collections.Generic;
 
     public class CollectibleService : ICollectibleService
     {
@@ -60,22 +60,16 @@
 
             var totalCollectibles = collectiblesQuery.Count();
 
-            var collectibles = collectiblesQuery
+            var collectibles = this.GetCollectibles(collectiblesQuery
                 .OrderByDescending(x => x.Id)
                 .Skip((currentPage - 1) * AllCollectiblesQueryModel.ItemsPerPage)
-                .Take(AllCollectiblesQueryModel.ItemsPerPage)
-                .Select(x => new CollectibleListingViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ImageUrl = x.ImageUrl,
-                    RarityLevel = EnumValuesExtension.GetDescriptionFromEnum(x.RarityLevel)
-                })
-                .ToList();
+                .Take(AllCollectiblesQueryModel.ItemsPerPage));
+                
 
             var rarityLevels = this.data
                 .Collectibles
                 .Select(x => EnumValuesExtension.GetDescriptionFromEnum(x.RarityLevel))
+                .Distinct()
                 .ToList();
 
             var collectible = new AllCollectiblesQueryModel
@@ -89,6 +83,32 @@
             };
 
             return collectible;
+        }
+
+        public IEnumerable<CollectibleListingViewModel> GetCollectiblesByPartner(string userId)
+        {
+            var collectibles = this.GetCollectibles(this.data
+                .Collectibles
+                .Where(x => x.Partner.UserId == userId)
+                .OrderByDescending(x => x.Id));
+
+            return collectibles;
+        }
+
+        private IEnumerable<CollectibleListingViewModel> GetCollectibles(IQueryable<Collectible> collectiblesQuery)
+        {
+            var collectibles = collectiblesQuery
+                .Select(x => new CollectibleListingViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ImageUrl = x.ImageUrl,
+                    RarityLevel = EnumValuesExtension.GetDescriptionFromEnum(x.RarityLevel)
+                })
+                .ToList();
+
+            return collectibles;
+
         }
     }
 }

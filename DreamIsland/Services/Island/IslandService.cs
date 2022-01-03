@@ -76,11 +76,9 @@
 
             var totalIslands = islandsQuery.Count();
 
-            var islands = islandsQuery
+            var islands = this.GetIslands(islandsQuery
                 .Skip((currentPage - 1) * AllIslandsQueryModel.ItemsPerPage)
-                .Take(AllIslandsQueryModel.ItemsPerPage)
-                .ProjectTo<IslandListingViewModel>(this.mapper.ConfigurationProvider)
-                .ToList();
+                .Take(AllIslandsQueryModel.ItemsPerPage));
 
             var regions = this.data
                 .IslandRegions
@@ -101,6 +99,16 @@
             };
 
             return island;
+        }
+
+        public IEnumerable<IslandListingViewModel> GetIslandsByPartner(string userId)
+        {
+            var islands = this.GetIslands(this.data
+                .Islands
+                .Where(x => x.Partner.UserId == userId)
+                .OrderByDescending(x => x.Id));
+
+            return islands;
         }
 
         public IEnumerable<IslandPopulationSizeServiceModel> GetPopulationSizes()
@@ -139,6 +147,15 @@
                 .Any(x => x.Id == islandRegionId);
 
             return regionExists;
+        }
+
+        private IEnumerable<IslandListingViewModel> GetIslands (IQueryable islandsQuery)
+        {
+            var islands = islandsQuery
+                .ProjectTo<IslandListingViewModel>(this.mapper.ConfigurationProvider)
+                .ToList();
+
+            return islands;
         }
     }
 }

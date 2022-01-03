@@ -1,0 +1,22 @@
+﻿@model IEnumerable<CarListingViewModel>
+
+<div class="row">
+    @foreach (var car in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src=@car.ImageUrl alt=@(car.Brand + " " + car.Model)>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@(car.Brand + " " + car.Model)</h5>
+                    <p>@car.Year</p>
+                    <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-primary">Details</a>
+                    @if (ViewBag.AllowMoreFunctionality == true)
+                    {
+                        <a asp-controller="Cars" asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning">Edit</a>
+                        <a asp-controller="Cars" asp-action="Delete" asp-route-id="@car.Id" class="btn btn-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,16 @@
+﻿@model IEnumerable<IslandListingViewModel>
+
+@{
+    ViewBag.Title = "Dream Island - My Islands";
+    ViewBag.AllowMoreFunctionality = true;
+}
+
+@if (!Model.Any())
+{
+    <h1 class="text-center">No islands found by the given criteria!</h1>
+    <div class="text-center">
+        <img src="https://static3.depositphotos.com/1002881/151/i/600/depositphotos_1519030-stock-photo-error-404.jpg" class="rounded" alt="missing-island">
+    </div>
+}
+
+<partial name="_IslandsPartial" model="@Model" />

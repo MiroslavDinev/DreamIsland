@@ -29,6 +29,16 @@
         }
 
         [Authorize]
+        public IActionResult My()
+        {
+            var userId = this.User.GetUserId();
+
+            var myIslands = this.islandService.GetIslandsByPartner(userId);
+
+            return this.View(myIslands);
+        }
+
+        [Authorize]
         public IActionResult Add()
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());

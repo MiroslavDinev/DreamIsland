@@ -1,0 +1,16 @@
+﻿@model IEnumerable<CelebrityListingViewModel>
+
+@{
+    ViewBag.Title = "Dream Island - My Celebrities";
+    ViewBag.AllowMoreFunctionality = true;
+}
+
+@if (!Model.Any())
+{
+    <h1 class="text-center">No celebrities found by the given criteria!</h1>
+    <div class="text-center">
+        <img src="https://assets.ltkcontent.com/images/14530/18195.48674976_doyle_21771dceb0.jpg" class="rounded" alt="missing-celebrity">
+    </div>
+}
+
+<partial name="_CelebritiesPartial" model="@Model" />

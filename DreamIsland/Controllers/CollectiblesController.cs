@@ -29,6 +29,16 @@
         }
 
         [Authorize]
+        public IActionResult My()
+        {
+            var userId = this.User.GetUserId();
+
+            var myCollectibles = this.collectibleService.GetCollectiblesByPartner(userId);
+
+            return this.View(myCollectibles);
+        }
+
+        [Authorize]
         public IActionResult Add()
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());

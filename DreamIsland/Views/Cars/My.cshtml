@@ -1,0 +1,16 @@
+﻿@model IEnumerable<CarListingViewModel>
+
+@{
+    ViewBag.Title = "Dream Island - My Cars";
+    ViewBag.AllowMoreFunctionality = true;
+}
+
+@if (!Model.Any())
+{
+    <h1 class="text-center">No cars found by the given criteria!</h1>
+    <div class="text-center">
+        <img src="http://a.espncdn.com/photo/2015/1217/basil_800x450.png" class="rounded" alt="missing-car">
+    </div>
+}
+
+<partial name="_CarsPartial" model="@Model" />

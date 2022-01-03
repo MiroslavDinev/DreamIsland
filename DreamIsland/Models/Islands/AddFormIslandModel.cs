@@ -22,6 +22,7 @@
         public string Description { get; set; }
 
         [Display(Name = "Size in square km")]
+        [Range(double.Epsilon, double.MaxValue, ErrorMessage = "The area should be bigger than 0 km")]
         public double SizeInSquareKm { get; set; }
 
         [Display(Name = "Price in USD")]

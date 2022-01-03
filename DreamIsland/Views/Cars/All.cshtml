@@ -35,21 +35,7 @@
     </div>
 </form>
 
-<div class="row">
-    @foreach (var car in Model.Cars)
-    {
-        <div class="col-md-4">
-            <div class="card">
-                <img class="card-img-top" src=@car.ImageUrl alt=@(car.Brand + " " + car.Model)>
-                <div class="card-body text-center">
-                    <h5 class="card-title text-center">@(car.Brand + " " + car.Model)</h5>
-                    <p>@car.Year</p>
-                    <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-primary">Details</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+<partial name="_CarsPartial" model="@Model.Cars" />
 
 @{
     var previousPage = Model.CurrentPage - 1;
