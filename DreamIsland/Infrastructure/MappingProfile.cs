@@ -10,6 +10,9 @@
     using DreamIsland.Models.Celebrities;
     using DreamIsland.Services.Island.Models;
     using DreamIsland.Services.Car.Models;
+    using DreamIsland.Services.Celebrity.Models;
+    using DreamIsland.Services.Collectible.Models;
+    using DreamIsland.Models.Collectibles;
 
     public class MappingProfile : Profile
     {
@@ -28,6 +31,13 @@
             this.CreateMap<CarDetailsServiceModel, CarFormModel>();
 
             this.CreateMap<Celebrity, CelebrityListingViewModel>();
+            this.CreateMap<Celebrity, CelebrityDetailsServiceModel>()
+                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
+            this.CreateMap<CelebrityDetailsServiceModel, CelebrityFormModel>();
+
+            this.CreateMap<Collectible, CollectibleDetailsServiceModel>()
+                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
+            this.CreateMap<CollectibleDetailsServiceModel, CollectibleFormModel>();
         }
     }
 }

@@ -10,7 +10,7 @@
     using Data.Models;
     using DreamIsland.Data;
     using DreamIsland.Models.Celebrities;
-    
+    using DreamIsland.Services.Celebrity.Models;
 
     public class CelebrityService : ICelebrityService
     {
@@ -85,6 +85,36 @@
             return celebrity;
         }
 
+        public CelebrityDetailsServiceModel Details(int celebrityId)
+        {
+            var celebrity = this.data.Celebrities
+                .Where(x => x.Id == celebrityId)
+                .ProjectTo<CelebrityDetailsServiceModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
+
+            return celebrity;
+        }
+
+        public async Task<bool> EditAsync(int celebrityId, string name, string occupation, string description, string imageUrl, int? age)
+        {
+            var celebrity = this.data.Celebrities.Find(celebrityId);
+
+            if(celebrity == null)
+            {
+                return false;
+            }
+
+            celebrity.Name = name;
+            celebrity.Occupation = occupation;
+            celebrity.Description = description;
+            celebrity.ImageUrl = imageUrl;
+            celebrity.Age = age;
+
+            await this.data.SaveChangesAsync();
+
+            return true;
+        }
+
         public IEnumerable<CelebrityListingViewModel> GetCelebritiesByPartner(string userId)
         {
             var celebrities = this.GetCelebrities(this.data
@@ -93,6 +123,15 @@
                 .OrderByDescending(x=> x.Id));
 
             return celebrities;
+        }
+
+        public bool IsByPartner(int celebrityId, int partnerId)
+        {
+            var isByPartner = this.data
+                .Celebrities
+                .Any(x => x.Id == celebrityId && x.PartnerId == partnerId);
+
+            return isByPartner;
         }
 
         private IEnumerable<CelebrityListingViewModel> GetCelebrities(IQueryable celebritiesQuery)

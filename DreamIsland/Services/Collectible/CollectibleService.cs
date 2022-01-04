@@ -3,21 +3,27 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
+
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     using Data.Models;
     using DreamIsland.Data;
     using DreamIsland.Data.Enums;
     using DreamIsland.Models.Collectibles;
     using DreamIsland.Infrastructure;
-    using System.Collections.Generic;
+    using DreamIsland.Services.Collectible.Models;
 
     public class CollectibleService : ICollectibleService
     {
         private readonly DreamIslandDbContext data;
+        private readonly IMapper mapper;
 
-        public CollectibleService(DreamIslandDbContext data)
+        public CollectibleService(DreamIslandDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
         public async Task<int> AddAsync(string name, string description, string imageUrl, RarityLevel rarityLevel, int partnerId)
         {
@@ -85,6 +91,36 @@
             return collectible;
         }
 
+        public CollectibleDetailsServiceModel Details(int collectibleId)
+        {
+            var collectible = this.data
+                .Collectibles
+                .Where(x => x.Id == collectibleId)
+                .ProjectTo<CollectibleDetailsServiceModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
+
+            return collectible;
+        }
+
+        public async Task<bool> EditAsync(int collectibleId, string name, string description, string imageUrl, RarityLevel rarityLevel)
+        {
+            var collectible = this.data.Collectibles.Find(collectibleId);
+
+            if(collectible == null)
+            {
+                return false;
+            }
+
+            collectible.Name = name;
+            collectible.Description = description;
+            collectible.ImageUrl = imageUrl;
+            collectible.RarityLevel = rarityLevel;
+
+            await this.data.SaveChangesAsync();
+
+            return true;
+        }
+
         public IEnumerable<CollectibleListingViewModel> GetCollectiblesByPartner(string userId)
         {
             var collectibles = this.GetCollectibles(this.data
@@ -93,6 +129,15 @@
                 .OrderByDescending(x => x.Id));
 
             return collectibles;
+        }
+
+        public bool IsByPartner(int collectibleId, int partnerId)
+        {
+            var isByPartner = this.data
+                .Collectibles
+                .Any(x => x.Id == collectibleId && x.PartnerId == partnerId);
+
+            return isByPartner;
         }
 
         private IEnumerable<CollectibleListingViewModel> GetCollectibles(IQueryable<Collectible> collectiblesQuery)

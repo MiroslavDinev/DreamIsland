@@ -9,16 +9,19 @@
     using DreamIsland.Models.Celebrities;
     using DreamIsland.Services.Celebrity;
     using DreamIsland.Services.Partner;
+    using AutoMapper;
 
     public class CelebritiesController : Controller
     {
         private readonly IPartnerService partnerService;
         private readonly ICelebrityService celebrityService;
+        private readonly IMapper mapper;
 
-        public CelebritiesController(IPartnerService partnerService, ICelebrityService celebrityService)
+        public CelebritiesController(IPartnerService partnerService, ICelebrityService celebrityService, IMapper mapper)
         {
             this.partnerService = partnerService;
             this.celebrityService = celebrityService;
+            this.mapper = mapper;
         }
 
         public IActionResult All([FromQuery] AllCelebritiesQueryModel query)
@@ -55,7 +58,7 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add(AddCelebrityFormModel celebrity)
+        public async Task<IActionResult> Add(CelebrityFormModel celebrity)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
@@ -72,6 +75,67 @@
             }
 
             await this .celebrityService.AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, celebrity.ImageUrl, celebrity.Age, partnerId);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.GetUserId();
+
+            var partnerId = this.partnerService.PartnerId(userId);
+
+            if (partnerId == 0)
+            {
+                // visualize message to be partner before editing
+
+                return RedirectToAction(nameof(PartnersController.Become), "Partners");
+            }
+
+            var celebrity = this.celebrityService.Details(id);
+
+            if(celebrity.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            var celebrityForm = this.mapper.Map<CelebrityFormModel>(celebrity);
+
+            return this.View(celebrityForm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, CelebrityFormModel celebrity)
+        {
+            var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
+
+            if (partnerId == 0)
+            {
+                // visualize message to be partner before editing
+
+                return RedirectToAction(nameof(PartnersController.Become), "Partners");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return this.View(celebrity);
+            }
+
+            if(!this.celebrityService.IsByPartner(id, partnerId))
+            {
+                return Unauthorized();
+            }
+
+            var edited = await this.celebrityService
+                .EditAsync(id, celebrity.Name, celebrity.Occupation, celebrity.Description, 
+                celebrity.ImageUrl, celebrity.Age);
+
+            if (!edited)
+            {
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(All));
         }

@@ -1,21 +1,18 @@
-﻿namespace DreamIsland.Models.Celebrities
+﻿namespace DreamIsland.Models.Collectibles
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants.Celebrity;
+    using DreamIsland.Data.Enums;
 
-    public class AddCelebrityFormModel
+    using static Data.DataConstants.Collectible;
+
+    public class CollectibleFormModel
     {
         public int Id { get; set; }
 
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "The name should be between {2} and {1} symbols")]
         public string Name { get; set; }
-
-        [Required]
-        [StringLength(OccupationMaxLength, MinimumLength = OccupationMinLength, ErrorMessage = "The occupation should be between {2} and {1} symbols")]
-        public string Occupation { get; set; }
 
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = "The description should be between {2} and {1} symbols")]
@@ -26,7 +23,9 @@
         [Display(Name = "Image URL")]
         public string ImageUrl { get; set; }
 
-        [Range(MinAge, MaxAge)]
-        public int? Age { get; set; }
+        [Display(Name = "Rarity Level")]
+        public RarityLevel RarityLevel { get; set; }
+
+        public int PartnerId { get; set; }
     }
 }
