@@ -7,7 +7,7 @@
 
     using static Data.DataConstants.Island;
 
-    public class FormIslandModel
+    public class IslandFormModel
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "The island name should be between {2} and {1} characters")]

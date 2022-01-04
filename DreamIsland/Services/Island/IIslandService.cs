@@ -17,10 +17,15 @@
         Task<int> AddAsync(string name, string location, string description, double sizeInSquareKm, 
             decimal? price, string imageUrl, int populationSizeId, int islandRegionId, int partnerId);
 
+        Task<bool> EditAsync(int islandId, string name, string location, string description, double sizeInSquareKm,
+            decimal? price, string imageUrl, int populationSizeId, int islandRegionId);
+
         bool PopulationSizeExists(int populationSizeId);
         bool RegionExists(int islandRegionId);
         IEnumerable<IslandListingViewModel> GetIslandsByPartner(string userId);
 
         IslandDetailsServiceModel Details(int islandId);
+
+        bool IsByPartner(int islandId, int partnerId);
     }
 }

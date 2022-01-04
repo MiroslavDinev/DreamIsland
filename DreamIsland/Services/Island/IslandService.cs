@@ -12,7 +12,6 @@
     using DreamIsland.Data.Models.Islands;
     using DreamIsland.Services.Island.Models;
     using DreamIsland.Models.Islands.Enums;
-    using DreamIsland.Models.Cars;
 
     public class IslandService : IIslandService
     {
@@ -160,6 +159,15 @@
             return regionExists;
         }
 
+        public bool IsByPartner(int islandId, int partnerId)
+        {
+            var isByPartner = this.data
+                .Islands
+                .Any(x => x.Id == islandId && x.PartnerId == partnerId);
+
+            return isByPartner;
+        }
+
         private IEnumerable<IslandListingViewModel> GetIslands (IQueryable islandsQuery)
         {
             var islands = islandsQuery
@@ -167,6 +175,29 @@
                 .ToList();
 
             return islands;
+        }
+
+        public async Task<bool> EditAsync(int islandId, string name, string location, string description, double sizeInSquareKm, decimal? price, string imageUrl, int populationSizeId, int islandRegionId)
+        {
+            var island = this.data.Islands.Find(islandId);
+
+            if(island == null)
+            {
+                return false;
+            }
+
+            island.Name = name;
+            island.Location = location;
+            island.Description = description;
+            island.SizeInSquareKm = sizeInSquareKm;
+            island.Price = price;
+            island.ImageUrl = imageUrl;
+            island.PopulationSizeId = populationSizeId;
+            island.IslandRegionId = islandRegionId;
+
+            await this.data.SaveChangesAsync();
+
+            return true;
         }
     }
 }

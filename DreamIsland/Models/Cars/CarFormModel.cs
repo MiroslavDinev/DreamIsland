@@ -4,7 +4,7 @@
 
     using static Data.DataConstants.Vehicle;
 
-    public class AddCarFormModel
+    public class CarFormModel
     {
         [Required]
         [StringLength(BrandMaxLength, MinimumLength = BrandMinLength, ErrorMessage = "The car brand should be between {2} and {1} symbols")]

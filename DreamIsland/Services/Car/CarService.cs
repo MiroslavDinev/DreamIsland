@@ -11,6 +11,7 @@
     using Data.Models.Vehicles;
     using DreamIsland.Models.Cars;
     using DreamIsland.Models.Cars.Enums;
+    using DreamIsland.Services.Car.Models;
 
     public class CarService : ICarService
     {
@@ -95,6 +96,40 @@
             return car;
         }
 
+        public CarDetailsServiceModel Details(int carId)
+        {
+            var car = this.data
+                .Cars
+                .Where(x => x.Id == carId)
+                .ProjectTo<CarDetailsServiceModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
+
+            return car;
+        }
+
+        public async Task<bool> EditAsync(int carId, string brand, string model, string description, string imageUrl, int year, bool hasRemoteStart, bool hasRemoteControlParking, bool hasSeatMassager)
+        {
+            var car = this.data.Cars.Find(carId);
+
+            if(car == null)
+            {
+                return false;
+            }
+
+            car.Brand = brand;
+            car.Model = model;
+            car.Description = description;
+            car.ImageUrl = imageUrl;
+            car.Year = year;
+            car.HasRemoteStart = hasRemoteStart;
+            car.HasRemoteControlParking = hasRemoteControlParking;
+            car.HasSeatMassager = hasSeatMassager;
+
+            await this.data.SaveChangesAsync();
+
+            return true;
+        }
+
         public IEnumerable<CarListingViewModel> GetCarsByPartner(string userId)
         {
             var cars = this.GetCars(this.data
@@ -104,6 +139,16 @@
 
             return cars;
         }
+
+        public bool IsByPartner(int carId, int partnerId)
+        {
+            var isByPartner = this.data
+                .Cars
+                .Any(x => x.Id == carId && x.PartnerId == partnerId);
+
+            return isByPartner;
+        }
+
         private IEnumerable<CarListingViewModel> GetCars(IQueryable carsQuery)
         {
             var cars = carsQuery

@@ -1,55 +1,10 @@
-﻿@model AddCarFormModel
+﻿@model CarFormModel
 
 @{
     ViewBag.Title = "Dream Island - Add Car";
+    ViewBag.FormTitle = "Add Car";
 }
 
-<div class="row">
-    <div class=" offset-lg-2 col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
-        <h2 class="text-center">Add Car</h2>
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Brand"></label>
-                <input asp-for="Brand" class="form-control" placeholder="Enter car brand...">
-                <span asp-validation-for="Brand" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model"></label>
-                <input asp-for="Model" class="form-control" placeholder="Enter car model...">
-                <span asp-validation-for="Model" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="Description" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" class="form-control" placeholder="Enter car image url...">
-                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Year"></label>
-                <input asp-for="Year" type="number" class="form-control" min="1900" max="2030" placeholder="@DateTime.UtcNow.Year">
-                <span asp-validation-for="Year" class="small text-danger"></span>
-            </div>
-            <div class="form-check form-check-inline">
-                <input asp-for="HasRemoteControlParking" class="form-check-input" type="checkbox">
-                <label class="form-check-label" asp-for="HasRemoteControlParking">Remote Control Parking</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input asp-for="HasRemoteStart" class="form-check-input" type="checkbox">
-                <label class="form-check-label" asp-for="HasRemoteStart">Remote Start</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input asp-for="HasSeatMassager" class="form-check-input" type="checkbox">
-                <label class="form-check-label" asp-for="HasSeatMassager">Seat Massager</label>
-            </div>
-            <div class="row justify-content-center">
-                <input class="btn btn-primary mt-4" type="submit" value="Add Car" />
-            </div>
-        </form>
-    </div>
-</div>
+<partial name="_CarFormPartial" model="@Model" />
 
 

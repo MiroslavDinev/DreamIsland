@@ -9,7 +9,7 @@
     using DreamIsland.Models.Islands;
     using DreamIsland.Models.Celebrities;
     using DreamIsland.Services.Island.Models;
-
+    using DreamIsland.Services.Car.Models;
 
     public class MappingProfile : Profile
     {
@@ -18,9 +18,15 @@
             this.CreateMap<Island, IslandListingViewModel>();
             this.CreateMap<Island, IslandDetailsServiceModel>()
                 .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
+            this.CreateMap<IslandDetailsServiceModel, IslandFormModel>();
             this.CreateMap<IslandRegion, IslandRegionServiceModel>();
             this.CreateMap<PopulationSize, IslandPopulationSizeServiceModel>();
+
             this.CreateMap<Car, CarListingViewModel>();
+            this.CreateMap<Car, CarDetailsServiceModel>()
+                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
+            this.CreateMap<CarDetailsServiceModel, CarFormModel>();
+
             this.CreateMap<Celebrity, CelebrityListingViewModel>();
         }
     }

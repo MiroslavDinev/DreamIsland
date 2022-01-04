@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
 
+    using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
 
@@ -14,11 +15,13 @@
     {
         private readonly IIslandService islandService;
         private readonly IPartnerService partnerService;
+        private readonly IMapper mapper;
 
-        public IslandsController(IIslandService islandService, IPartnerService partnerService)
+        public IslandsController(IIslandService islandService, IPartnerService partnerService, IMapper mapper)
         {
             this.islandService = islandService;
             this.partnerService = partnerService;
+            this.mapper = mapper;
         }
 
         public IActionResult All([FromQuery] AllIslandsQueryModel query)
@@ -50,7 +53,7 @@
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
 
-            return this.View(new FormIslandModel
+            return this.View(new IslandFormModel
             {
                 IslandRegions = this.islandService.GetRegions(),
                 PopulationSizes = this.islandService.GetPopulationSizes()
@@ -59,12 +62,14 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add(FormIslandModel island)
+        public async Task<IActionResult> Add(IslandFormModel island)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
             if(partnerId == 0)
             {
+                // visualize message to be partner before adding
+
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
 
@@ -90,6 +95,81 @@
                 island.PopulationSizeId, island.IslandRegionId, partnerId);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.GetUserId();
+            var partnerId = this.partnerService.PartnerId(userId);
+
+            if (partnerId == 0)
+            {
+                // visualize message to be partner before editing
+
+                return RedirectToAction(nameof(PartnersController.Become), "Partners");
+            }
+
+            var island = this.islandService.Details(id);
+
+            if (island.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            var islandForm = this.mapper.Map<IslandFormModel>(island);
+
+            islandForm.IslandRegions = this.islandService.GetRegions();
+            islandForm.PopulationSizes = this.islandService.GetPopulationSizes();
+
+            return this.View(islandForm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, IslandFormModel island)
+        {
+            var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
+
+            if (partnerId == 0)
+            {
+                // visualize message to be partner before editing
+
+                return RedirectToAction(nameof(PartnersController.Become), "Partners");
+            }
+
+            if (!this.islandService.PopulationSizeExists(island.PopulationSizeId))
+            {
+                this.ModelState.AddModelError(nameof(island.PopulationSizeId), "Population size does not exist!");
+            }
+
+            if (!this.islandService.RegionExists(island.IslandRegionId))
+            {
+                this.ModelState.AddModelError(nameof(island.IslandRegionId), "Region size does not exist!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                island.PopulationSizes = this.islandService.GetPopulationSizes();
+                island.IslandRegions = this.islandService.GetRegions();
+                return this.View(island);
+            }
+
+            if(!this.islandService.IsByPartner(id, partnerId))
+            {
+                return Unauthorized();
+            }
+
+            var edited = await this.islandService
+                .EditAsync(id, island.Name, island.Location, island.Description, island.SizeInSquareKm, 
+                island.Price, island.ImageUrl, island.PopulationSizeId, island.IslandRegionId);
+
+            if (!edited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
         }
     }
 }
