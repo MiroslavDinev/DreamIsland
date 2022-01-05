@@ -86,7 +86,7 @@
 
             var partnerId = this.partnerService.PartnerId(userId);
 
-            if (partnerId == 0)
+            if (partnerId == 0 && !this.User.IsAdmin())
             {
                 // visualize message to be partner before adding
 
@@ -95,7 +95,7 @@
 
             var collectible = this.collectibleService.Details(id);
 
-            if(collectible.UserId != userId)
+            if(collectible.UserId != userId && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -111,7 +111,7 @@
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
-            if (partnerId == 0)
+            if (partnerId == 0 && !this.User.IsAdmin())
             {
                 // visualize message to be partner before adding
 
@@ -123,7 +123,7 @@
                 return this.View(collectible);
             }
 
-            if(!this.collectibleService.IsByPartner(id, partnerId))
+            if(!this.collectibleService.IsByPartner(id, partnerId) && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }

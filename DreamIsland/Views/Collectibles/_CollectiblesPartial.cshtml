@@ -10,7 +10,7 @@
                     <h5 class="card-title text-center">@collectible.Name</h5>
                     <p>@collectible.RarityLevel</p>
                     <a asp-controller="Collectibles" asp-action="Details" asp-route-id="@collectible.Id" class="btn btn-primary">Details</a>
-                    @if (ViewBag.AllowMoreFunctionality == true)
+                    @if (ViewBag.AllowMoreFunctionality == true || this.User.IsAdmin())
                     {
                         <a asp-controller="Collectibles" asp-action="Edit" asp-route-id="@collectible.Id" class="btn btn-warning">Edit</a>
                         <a asp-controller="Collectibles" asp-action="Delete" asp-route-id="@collectible.Id" class="btn btn-danger">Delete</a>

@@ -20,7 +20,7 @@
                         <p>Price upon request</p>
                     }
                     <a asp-controller="Islands" asp-action="Details" asp-route-id="@island.Id" class="btn btn-primary">Details</a>
-                    @if (ViewBag.AllowMoreFunctionality == true)
+                    @if (ViewBag.AllowMoreFunctionality == true || this.User.IsAdmin())
                     {
                         <a asp-controller="Islands" asp-action="Edit" asp-route-id="@island.Id" class="btn btn-warning">Edit</a>
                         <a asp-controller="Islands" asp-action="Delete" asp-route-id="@island.Id" class="btn btn-danger">Delete</a>

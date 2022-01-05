@@ -86,7 +86,7 @@
 
             var partnerId = this.partnerService.PartnerId(userId);
 
-            if (partnerId == 0)
+            if (partnerId == 0 && !this.User.IsAdmin())
             {
                 // visualize message to be partner before editing
 
@@ -95,7 +95,7 @@
 
             var celebrity = this.celebrityService.Details(id);
 
-            if(celebrity.UserId != userId)
+            if(celebrity.UserId != userId && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -111,7 +111,7 @@
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
-            if (partnerId == 0)
+            if (partnerId == 0 && !this.User.IsAdmin())
             {
                 // visualize message to be partner before editing
 
@@ -123,7 +123,7 @@
                 return this.View(celebrity);
             }
 
-            if(!this.celebrityService.IsByPartner(id, partnerId))
+            if(!this.celebrityService.IsByPartner(id, partnerId) && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }

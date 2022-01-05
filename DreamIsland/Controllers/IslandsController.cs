@@ -103,7 +103,7 @@
             var userId = this.User.GetUserId();
             var partnerId = this.partnerService.PartnerId(userId);
 
-            if (partnerId == 0)
+            if (partnerId == 0 && !this.User.IsAdmin())
             {
                 // visualize message to be partner before editing
 
@@ -112,7 +112,7 @@
 
             var island = this.islandService.Details(id);
 
-            if (island.UserId != userId)
+            if (island.UserId != userId && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -131,7 +131,7 @@
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
-            if (partnerId == 0)
+            if (partnerId == 0 && !this.User.IsAdmin())
             {
                 // visualize message to be partner before editing
 
@@ -155,7 +155,7 @@
                 return this.View(island);
             }
 
-            if(!this.islandService.IsByPartner(id, partnerId))
+            if(!this.islandService.IsByPartner(id, partnerId) && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }

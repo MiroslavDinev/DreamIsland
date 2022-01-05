@@ -89,7 +89,7 @@
 
             var partnerId = this.partnerService.PartnerId(userId);
 
-            if (partnerId == 0)
+            if (partnerId == 0 && !this.User.IsAdmin())
             {
                 // visualize message to be partner before editing
 
@@ -98,7 +98,7 @@
 
             var car = this.carService.Details(id);
 
-            if(car.UserId != userId)
+            if(car.UserId != userId && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -114,7 +114,7 @@
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
-            if (partnerId == 0)
+            if (partnerId == 0 && !this.User.IsAdmin())
             {
                 // visualize message to be partner before editing
 
@@ -126,7 +126,7 @@
                 return this.View(car);
             }
 
-            if (!this.carService.IsByPartner(id, partnerId))
+            if (!this.carService.IsByPartner(id, partnerId)  && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }

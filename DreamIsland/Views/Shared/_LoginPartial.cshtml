@@ -10,7 +10,7 @@
 
         var userId = this.User.GetUserId();
         var userIsPartner = Partners.isPartner(userId);
-        var userIsAdmin = this.User.IsInRole(WebConstants.AdministratorRoleName);
+        var userIsAdmin = this.User.IsAdmin();
 
         if (!userIsPartner && !userIsAdmin)
         {
