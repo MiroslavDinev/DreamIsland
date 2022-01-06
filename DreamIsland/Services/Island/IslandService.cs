@@ -199,5 +199,16 @@
 
             return true;
         }
+
+        public IEnumerable<LatestIslandsServiceModel> LatestIslands()
+        {
+            var latestIslands = this.data.Islands
+                .OrderByDescending(x=> x.Id)
+                .ProjectTo<LatestIslandsServiceModel>(this.mapper.ConfigurationProvider)
+                .Take(3)
+                .ToList();
+
+            return latestIslands;
+        }
     }
 }

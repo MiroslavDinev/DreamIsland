@@ -1,27 +1,44 @@
 ﻿namespace DreamIsland.Controllers
 {
-    using System.Linq;
+    using System;
     using System.Diagnostics;
+    using System.Collections.Generic;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
 
     using DreamIsland.Models;
     using DreamIsland.Services.Island;
+    using DreamIsland.Services.Island.Models;
+
+    using static WebConstants;
 
     public class HomeController : Controller
     {
         private readonly IIslandService islandService;
+        private readonly IMemoryCache cache;
 
-        public HomeController(IIslandService islandService)
+        public HomeController(IIslandService islandService, IMemoryCache cache)
         {
             this.islandService = islandService;
+            this.cache = cache;
         }
 
         public IActionResult Index()
         {
-            var firstThreeIslands = this.islandService.All().Islands.Take(3).ToList();
+            var latestThreeIslands = this.cache.Get<IEnumerable<LatestIslandsServiceModel>>(LatestIslandsCacheKey);
 
-            return View(firstThreeIslands);
+            if(latestThreeIslands == null)
+            {
+                latestThreeIslands = this.islandService.LatestIslands();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+
+                this.cache.Set(LatestIslandsCacheKey, latestThreeIslands, cacheOptions);
+            }          
+
+            return View(latestThreeIslands);
         }
 
         public IActionResult Privacy()
