@@ -9,6 +9,8 @@
     using DreamIsland.Models.Partners;
     using DreamIsland.Services.Partner;
 
+    using static WebConstants.GlobalMessages;
+
     public class PartnersController : Controller
     {
         private readonly IPartnerService partnerService;
@@ -44,6 +46,8 @@
             }
 
             await this.partnerService.BecomePartner(partner.Name, partner.PhoneNumber, userId);
+
+            this.TempData[SuccessMessageKey] = SuccessMessagePartner;
 
             return RedirectToAction("Index", "Home");
         }

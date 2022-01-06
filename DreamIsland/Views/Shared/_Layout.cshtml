@@ -40,6 +40,24 @@
         </nav>
     </header>
     <div class="container">
+        @if (this.TempData.ContainsKey(WebConstants.GlobalMessages.WarningMessageKey))
+        {
+            <div class="alert alert-danger text-center" role="alert">
+                @this.TempData[WebConstants.GlobalMessages.WarningMessageKey]
+            </div>
+        }
+        else if (this.TempData.ContainsKey(WebConstants.GlobalMessages.InfoMessageKey))
+        {
+            <div class="alert alert-primary text-center" role="alert">
+                @this.TempData[WebConstants.GlobalMessages.InfoMessageKey]
+            </div>
+        }
+        else if (this.TempData.ContainsKey(WebConstants.GlobalMessages.SuccessMessageKey))
+        {
+            <div class="alert alert-success text-center" role="alert">
+                @this.TempData[WebConstants.GlobalMessages.SuccessMessageKey]
+            </div>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -53,6 +71,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        setTimeout(function () {
+            $('.alert').alert('close');
+        }, 3000);
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

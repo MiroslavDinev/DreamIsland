@@ -1,15 +1,18 @@
 ﻿namespace DreamIsland.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
+    using AutoMapper;
 
     using DreamIsland.Models.Cars;
     using DreamIsland.Services.Car;
     using DreamIsland.Services.Partner;
     using DreamIsland.Infrastructure;
-    using AutoMapper;
+
+    using static WebConstants.GlobalMessages;
 
     public class CarsController : Controller
     {
@@ -49,7 +52,8 @@
 
             if (partnerId == 0)
             {
-                // visualize message to be partner before adding
+                this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
+                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
@@ -65,7 +69,8 @@
 
             if (partnerId == 0)
             {
-                // visualize message to be partner before adding
+                this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
+                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
@@ -79,6 +84,8 @@
                 .AddAsync(car.Brand, car.Model, car.Description, car.ImageUrl, car.Year, 
                 car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager, partnerId);
 
+            this.TempData[InfoMessageKey] = InfoMessage;
+
             return RedirectToAction(nameof(All));
         }
 
@@ -91,7 +98,8 @@
 
             if (partnerId == 0 && !this.User.IsAdmin())
             {
-                // visualize message to be partner before editing
+                this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
+                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
@@ -116,7 +124,8 @@
 
             if (partnerId == 0 && !this.User.IsAdmin())
             {
-                // visualize message to be partner before editing
+                this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
+                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
@@ -139,6 +148,8 @@
             {
                 return BadRequest();
             }
+
+            this.TempData[InfoMessageKey] = InfoMessage;
 
             return RedirectToAction(nameof(All));
         }
