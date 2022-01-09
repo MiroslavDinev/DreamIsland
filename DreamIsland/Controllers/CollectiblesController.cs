@@ -149,5 +149,17 @@
 
             return RedirectToAction(nameof(All));
         }
+
+        public IActionResult Details(int id, string information)
+        {
+            var collectible = this.collectibleService.Details(id);
+
+            if (!information.Contains(collectible.Name))
+            {
+                return BadRequest();
+            }
+
+            return this.View(collectible);
+        }
     }
 }

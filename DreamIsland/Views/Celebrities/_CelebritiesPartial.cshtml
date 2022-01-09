@@ -9,7 +9,7 @@
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@celebrity.Name</h5>
                     <p>@celebrity.Occupation</p>
-                    <a asp-controller="Celebrities" asp-action="Details" asp-route-id="@celebrity.Id" class="btn btn-primary">Details</a>
+                    <a asp-controller="Celebrities" asp-action="Details" asp-route-id="@celebrity.Id" asp-route-information="@(celebrity.Name + "-" + celebrity.Occupation)" class="btn btn-primary">Details</a>
                     @if (ViewBag.AllowMoreFunctionality == true || this.User.IsAdmin())
                     {
                         <a asp-controller="Celebrities" asp-action="Edit" asp-route-id="@celebrity.Id" class="btn btn-warning">Edit</a>

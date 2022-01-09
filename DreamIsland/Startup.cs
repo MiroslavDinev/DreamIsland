@@ -88,6 +88,30 @@ namespace DreamIsland
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultAreaRoute();
+
+                endpoints.MapControllerRoute(
+                    name: "Island Details",
+                    pattern: "/Islands/Details/{id}/{information}",
+                    defaults: new { controller = "Islands", action = "Details" });
+
+                endpoints.MapControllerRoute(
+                    name: "Car Details",
+                    pattern: "/Cars/Details/{id}/{information}",
+                    defaults: new { controller = "Cars", action = "Details" }
+                    );
+
+                endpoints.MapControllerRoute(
+                    name: "Celebrity Details",
+                    pattern: "/Celebrities/Details/{id}/{information}",
+                    defaults: new { controller = "Celebrities", action = "Details" }
+                    );
+
+                endpoints.MapControllerRoute(
+                    name: "Collectible Details",
+                    pattern: "/Collectibles/Details/{id}/{information}",
+                    defaults: new {controller= "Collectibles", action= "Details" }
+                    );
+
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });

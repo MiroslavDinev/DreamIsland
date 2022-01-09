@@ -1,0 +1,42 @@
+﻿@model CelebrityDetailsServiceModel
+
+@{
+    ViewBag.Title = "Dream Island - Details";
+}
+
+<div class="h-100 row align-items-center">
+    <div class="col-md-8 offset-2">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Name">
+        <div class="card-body text-center">
+            <h5 class="card-title text-center">Name: @Model.Name</h5>
+            <p class="card-text">Occupation: @Model.Occupation</p>
+            <p class="card-text">Age: @(Model.Age.HasValue ? Model.Age : "Unknown")</p>
+            <button class="btn btn-primary" id="description" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                More Info
+            </button>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    @Model.Description
+                </div>
+            </div>
+            @if (User.IsAdmin())
+            {
+                <a asp-controller="Celebrities" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <a asp-controller="Celebrities" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+    $(function () {
+        $("#description").click(function () {
+            $(this).text(function (i, text) {
+                return text === "Less Info" ? "More Info" : "Less Info";
+            })
+        });
+    })
+    </script>
+}

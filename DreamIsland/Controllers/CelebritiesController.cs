@@ -150,5 +150,17 @@
 
             return RedirectToAction(nameof(All));
         }
+
+        public IActionResult Details(int id, string information)
+        {
+            var celebrity = this.celebrityService.Details(id);
+
+            if(!information.Contains(celebrity.Name) && !information.Contains(celebrity.Occupation))
+            {
+                return BadRequest();
+            }
+
+            return this.View(celebrity);
+        }
     }
 }

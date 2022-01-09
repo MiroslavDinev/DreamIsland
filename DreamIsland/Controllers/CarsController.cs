@@ -153,5 +153,17 @@
 
             return RedirectToAction(nameof(All));
         }
+
+        public IActionResult Details(int id, string information)
+        {
+            var car = this.carService.Details(id);
+
+            if(!information.Contains(car.Model) && !information.Contains(car.Brand))
+            {
+                return BadRequest();
+            }
+
+            return this.View(car);
+        }
     }
 }

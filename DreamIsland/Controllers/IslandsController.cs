@@ -182,5 +182,17 @@
 
             return RedirectToAction(nameof(All));
         }
+
+        public IActionResult Details(int id, string information)
+        {
+            var island = this.islandService.Details(id);
+
+            if(information != island.Name)
+            {
+                return BadRequest();
+            }
+
+            return this.View(island);
+        }
     }
 }
