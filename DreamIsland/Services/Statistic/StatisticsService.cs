@@ -17,10 +17,10 @@
         {
             var statistics = new StatisticsResponseModel
             {
-                TotalIslands = this.data.Islands.Count(),
-                TotalCars = this.data.Cars.Count(),
-                TotalCelebrities = this.data.Celebrities.Count(),
-                TotalCollectibles = this.data.Collectibles.Count()
+                TotalIslands = this.data.Islands.Count(i=> i.IsPublic),
+                TotalCars = this.data.Cars.Count(c=> c.IsPublic),
+                TotalCelebrities = this.data.Celebrities.Count(c=> c.IsPublic),
+                TotalCollectibles = this.data.Collectibles.Count(c=> c.IsPublic)
             };
 
             return statistics;

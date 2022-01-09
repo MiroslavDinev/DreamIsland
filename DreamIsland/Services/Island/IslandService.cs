@@ -12,6 +12,7 @@
     using DreamIsland.Data.Models.Islands;
     using DreamIsland.Services.Island.Models;
     using DreamIsland.Models.Islands.Enums;
+    using DreamIsland.Areas.Admin.Models.Island;
 
     public class IslandService : IIslandService
     {
@@ -37,7 +38,8 @@
                 ImageUrl = imageUrl,
                 PopulationSizeId = populationSizeId,
                 IslandRegionId = islandRegionId,
-                PartnerId = partnerId
+                PartnerId = partnerId,
+                IsPublic = false
             };
 
             await this.data.AddAsync(island);
@@ -46,11 +48,35 @@
             return island.Id;
         }
 
-        public AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded, int currentPage = 1)
+        public AllAdminIslandQueryModel AllAdmin(int currentPage = 1)
         {
             var islandsQuery = this.data
                 .Islands
                 .AsQueryable();
+
+            var totalIslands = islandsQuery.Count();
+
+            var islands = this.GetIslands(islandsQuery
+                .OrderBy(x=> x.Id)
+                .Skip((currentPage - 1) * AllAdminIslandQueryModel.ItemsPerPage)
+                .Take(AllAdminIslandQueryModel.ItemsPerPage));
+
+            var island = new AllAdminIslandQueryModel
+            {
+                CurrentPage = currentPage,
+                Islands = islands,
+                TotalItems = totalIslands
+            };
+
+            return island;
+
+        }
+
+        public AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded, int currentPage = 1)
+        {
+            var islandsQuery = this.data
+                .Islands
+                .Where(i=> i.IsPublic);
 
             if(!string.IsNullOrEmpty(region))
             {
@@ -177,7 +203,8 @@
             return islands;
         }
 
-        public async Task<bool> EditAsync(int islandId, string name, string location, string description, double sizeInSquareKm, decimal? price, string imageUrl, int populationSizeId, int islandRegionId)
+        public async Task<bool> EditAsync(int islandId, string name, string location, string description, 
+            double sizeInSquareKm, decimal? price, string imageUrl, int populationSizeId, int islandRegionId, bool isPublic)
         {
             var island = this.data.Islands.Find(islandId);
 
@@ -194,6 +221,7 @@
             island.ImageUrl = imageUrl;
             island.PopulationSizeId = populationSizeId;
             island.IslandRegionId = islandRegionId;
+            island.IsPublic = isPublic;
 
             await this.data.SaveChangesAsync();
 
@@ -203,12 +231,22 @@
         public IEnumerable<LatestIslandsServiceModel> LatestIslands()
         {
             var latestIslands = this.data.Islands
+                .Where(x=> x.IsPublic)
                 .OrderByDescending(x=> x.Id)
                 .ProjectTo<LatestIslandsServiceModel>(this.mapper.ConfigurationProvider)
                 .Take(3)
                 .ToList();
 
             return latestIslands;
+        }
+
+        public void ChangeStatus(int islandId)
+        {
+            var island = this.data.Islands.Find(islandId);
+
+            island.IsPublic = !island.IsPublic;
+
+            this.data.SaveChanges();
         }
     }
 }

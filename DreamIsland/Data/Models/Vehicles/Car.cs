@@ -9,6 +9,8 @@
 
         public bool HasSeatMassager { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public int PartnerId { get; set; }
 
         public Partner Partner { get; set; }

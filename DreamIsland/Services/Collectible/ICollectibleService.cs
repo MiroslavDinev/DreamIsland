@@ -11,7 +11,7 @@
     {
         Task<int> AddAsync(string name, string description, string imageUrl, RarityLevel rarityLevel, int partnerId);
 
-        Task<bool> EditAsync(int collectibleId, string name, string description, string imageUrl, RarityLevel rarityLevel);
+        Task<bool> EditAsync(int collectibleId, string name, string description, string imageUrl, RarityLevel rarityLevel, bool isPublic);
 
         AllCollectiblesQueryModel All(string rarityLevel = null, string searchTerm = null, int currentPage = 1);
 

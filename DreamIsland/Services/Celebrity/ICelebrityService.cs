@@ -10,7 +10,7 @@
     {
         Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId);
 
-        Task<bool> EditAsync(int celebrityId, string name, string occupation, string description, string imageUrl, int? age);
+        Task<bool> EditAsync(int celebrityId, string name, string occupation, string description, string imageUrl, int? age, bool isPublic);
 
         AllCelebritiesQueryModel All(string occupation = null, string searchTerm = null, int currentPage = 1);
 

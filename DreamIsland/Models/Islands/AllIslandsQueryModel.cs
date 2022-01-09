@@ -8,7 +8,7 @@
     public class AllIslandsQueryModel : BaseQueryModel
     {
         [Display(Name = "Search by text")]
-        public string SearchTerm { get; init; }
+        public string SearchTerm { get; set; }
         public string Region { get; set; }
 
         [Display(Name = "Sort by")]

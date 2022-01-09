@@ -21,6 +21,8 @@
         [Required]
         public string ImageUrl { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public RarityLevel RarityLevel { get; set; }
 
         public int PartnerId { get; set; }

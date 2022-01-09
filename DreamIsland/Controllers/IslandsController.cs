@@ -95,13 +95,13 @@
                 return this.View(island);
             }
 
-            await this.islandService
+            var islandId = await this.islandService
                 .AddAsync(island.Name, island.Location, island.Description, island.SizeInSquareKm, island.Price, island.ImageUrl, 
                 island.PopulationSizeId, island.IslandRegionId, partnerId);
 
             this.TempData[InfoMessageKey] = InfoMessage;
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Details), new { id = islandId, information = island.Name });
         }
 
         [Authorize]
@@ -171,16 +171,19 @@
 
             var edited = await this.islandService
                 .EditAsync(id, island.Name, island.Location, island.Description, island.SizeInSquareKm, 
-                island.Price, island.ImageUrl, island.PopulationSizeId, island.IslandRegionId);
+                island.Price, island.ImageUrl, island.PopulationSizeId, island.IslandRegionId, this.User.IsAdmin());
 
             if (!edited)
             {
                 return BadRequest();
             }
 
-            this.TempData[InfoMessageKey] = InfoMessage;
+            if (!this.User.IsAdmin())
+            {
+                this.TempData[InfoMessageKey] = InfoMessage;
+            }
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = id, information = island.Name });
         }
 
         public IActionResult Details(int id, string information)

@@ -31,7 +31,8 @@
                 Description = description,
                 ImageUrl = imageUrl,
                 Age = age,
-                PartnerId = partnerId
+                PartnerId = partnerId,
+                IsPublic = false
             };
 
             await this.data.Celebrities.AddAsync(celebrity);
@@ -44,7 +45,7 @@
         {
             var celebritiesQuery = this.data
                 .Celebrities
-                .AsQueryable();
+                .Where(c=> c.IsPublic);
 
             if (!string.IsNullOrEmpty(occupation))
             {
@@ -95,7 +96,8 @@
             return celebrity;
         }
 
-        public async Task<bool> EditAsync(int celebrityId, string name, string occupation, string description, string imageUrl, int? age)
+        public async Task<bool> EditAsync(int celebrityId, string name, string occupation, string description,
+            string imageUrl, int? age, bool isPublic)
         {
             var celebrity = this.data.Celebrities.Find(celebrityId);
 
@@ -109,6 +111,7 @@
             celebrity.Description = description;
             celebrity.ImageUrl = imageUrl;
             celebrity.Age = age;
+            celebrity.IsPublic = isPublic;
 
             await this.data.SaveChangesAsync();
 

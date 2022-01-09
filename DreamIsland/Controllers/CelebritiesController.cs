@@ -79,11 +79,12 @@
                 return this.View(celebrity);
             }
 
-            await this .celebrityService.AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, celebrity.ImageUrl, celebrity.Age, partnerId);
+            var celebrityId = await this .celebrityService
+                .AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, celebrity.ImageUrl, celebrity.Age, partnerId);
 
             this.TempData[InfoMessageKey] = InfoMessage;
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = celebrityId, information= celebrity.Name + "-" + celebrity.Occupation });
         }
 
         [Authorize]
@@ -139,16 +140,19 @@
 
             var edited = await this.celebrityService
                 .EditAsync(id, celebrity.Name, celebrity.Occupation, celebrity.Description, 
-                celebrity.ImageUrl, celebrity.Age);
+                celebrity.ImageUrl, celebrity.Age, this.User.IsAdmin());
 
             if (!edited)
             {
                 return BadRequest();
             }
 
-            this.TempData[InfoMessageKey] = InfoMessage;
+            if (!this.User.IsAdmin())
+            {
+                this.TempData[InfoMessageKey] = InfoMessage;
+            }
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = id, information = celebrity.Name + "-" + celebrity.Occupation });
         }
 
         public IActionResult Details(int id, string information)

@@ -33,7 +33,8 @@
                 Description = description,
                 ImageUrl = imageUrl,
                 RarityLevel = rarityLevel,
-                PartnerId = partnerId
+                PartnerId = partnerId,
+                IsPublic = false
             };
 
             await this.data.Collectibles.AddAsync(collectible);
@@ -46,7 +47,7 @@
         {
             var collectiblesQuery = this.data
                 .Collectibles
-                .AsQueryable();
+                .Where(c=> c.IsPublic);
 
             if (!string.IsNullOrEmpty(rarityLevel))
             {
@@ -102,7 +103,7 @@
             return collectible;
         }
 
-        public async Task<bool> EditAsync(int collectibleId, string name, string description, string imageUrl, RarityLevel rarityLevel)
+        public async Task<bool> EditAsync(int collectibleId, string name, string description, string imageUrl, RarityLevel rarityLevel, bool isPublic)
         {
             var collectible = this.data.Collectibles.Find(collectibleId);
 
@@ -115,6 +116,7 @@
             collectible.Description = description;
             collectible.ImageUrl = imageUrl;
             collectible.RarityLevel = rarityLevel;
+            collectible.IsPublic = isPublic;
 
             await this.data.SaveChangesAsync();
 

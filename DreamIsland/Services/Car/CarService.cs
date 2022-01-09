@@ -35,7 +35,8 @@
                 HasRemoteStart = hasRemoteStart,
                 HasRemoteControlParking = hasRemoteControlParking,
                 HasSeatMassager = hasSeatMassager,
-                PartnerId = partnerId
+                PartnerId = partnerId,
+                IsPublic = false
             };
 
             await this.data.Cars.AddAsync(car);
@@ -48,7 +49,7 @@
         {
             var carsQuery = this.data
                 .Cars
-                .AsQueryable();
+                .Where(c=> c.IsPublic);
 
             if (!string.IsNullOrEmpty(brand))
             {
@@ -107,7 +108,9 @@
             return car;
         }
 
-        public async Task<bool> EditAsync(int carId, string brand, string model, string description, string imageUrl, int year, bool hasRemoteStart, bool hasRemoteControlParking, bool hasSeatMassager)
+        public async Task<bool> EditAsync(int carId, string brand, string model, string description,
+            string imageUrl, int year, bool hasRemoteStart, bool hasRemoteControlParking,
+            bool hasSeatMassager, bool isPublic)
         {
             var car = this.data.Cars.Find(carId);
 
@@ -124,6 +127,7 @@
             car.HasRemoteStart = hasRemoteStart;
             car.HasRemoteControlParking = hasRemoteControlParking;
             car.HasSeatMassager = hasSeatMassager;
+            car.IsPublic = isPublic;
 
             await this.data.SaveChangesAsync();
 

@@ -79,11 +79,11 @@
                 return this.View(collectible);
             }
 
-            await this.collectibleService.AddAsync(collectible.Name, collectible.Description, collectible.ImageUrl, collectible.RarityLevel, partnerId);
+            var collectibleId = await this.collectibleService.AddAsync(collectible.Name, collectible.Description, collectible.ImageUrl, collectible.RarityLevel, partnerId);
 
             this.TempData[InfoMessageKey] = InfoMessage;
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = collectibleId, information = collectible.Name });
         }
 
         [Authorize]
@@ -138,16 +138,20 @@
             }
 
             var edited = await this.collectibleService
-                .EditAsync(id, collectible.Name, collectible.Description, collectible.ImageUrl, collectible.RarityLevel);
+                .EditAsync(id, collectible.Name, collectible.Description, collectible.ImageUrl, 
+                collectible.RarityLevel, this.User.IsAdmin());
 
             if (!edited)
             {
                 return BadRequest();
             }
 
-            this.TempData[InfoMessageKey] = InfoMessage;
+            if (!this.User.IsAdmin())
+            {
+                this.TempData[InfoMessageKey] = InfoMessage;
+            }           
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = id, information = collectible.Name });
         }
 
         public IActionResult Details(int id, string information)

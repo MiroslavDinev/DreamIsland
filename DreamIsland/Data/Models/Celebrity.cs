@@ -23,6 +23,8 @@
         [Required]
         public string ImageUrl { get; set; }
 
+        public bool IsPublic { get; set; }
+
         public int? Age { get; set; }
 
         public int PartnerId { get; set; }

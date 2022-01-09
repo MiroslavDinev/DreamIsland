@@ -80,13 +80,13 @@
                 return this.View(car);
             }
 
-            await this.carService
+            var carId = await this.carService
                 .AddAsync(car.Brand, car.Model, car.Description, car.ImageUrl, car.Year, 
                 car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager, partnerId);
 
             this.TempData[InfoMessageKey] = InfoMessage;
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id=carId, information= car.Brand + "-" + car.Model });
         }
 
         [Authorize]
@@ -142,16 +142,19 @@
 
             var edited = await this.carService
                 .EditAsync(id, car.Brand, car.Model, car.Description, car.ImageUrl, 
-                car.Year, car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager);
+                car.Year, car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager, this.User.IsAdmin());
 
             if (!edited)
             {
                 return BadRequest();
             }
 
-            this.TempData[InfoMessageKey] = InfoMessage;
+            if (!this.User.IsAdmin())
+            {
+                this.TempData[InfoMessageKey] = InfoMessage;
+            }
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = id, information = car.Brand + "-" + car.Model });
         }
 
         public IActionResult Details(int id, string information)
