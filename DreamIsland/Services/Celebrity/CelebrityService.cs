@@ -11,6 +11,7 @@
     using DreamIsland.Data;
     using DreamIsland.Models.Celebrities;
     using DreamIsland.Services.Celebrity.Models;
+    using DreamIsland.Areas.Admin.Models.Celebrity;
 
     public class CelebrityService : ICelebrityService
     {
@@ -84,6 +85,38 @@
             };
 
             return celebrity;
+        }
+
+        public AllAdminCelebritiesQueryModel AllAdmin(int currentPage = 1)
+        {
+            var celebritiesQuery = this.data
+                .Celebrities
+                .AsQueryable();
+
+            var totalCelebrities = celebritiesQuery.Count();
+
+            var celebrities = this.GetCelebrities(celebritiesQuery
+                .OrderBy(x => x.Id)
+                .Skip((currentPage - 1) * AllAdminCelebritiesQueryModel.ItemsPerPage)
+                .Take(AllAdminCelebritiesQueryModel.ItemsPerPage));
+
+            var celebrity = new AllAdminCelebritiesQueryModel
+            {
+                CurrentPage = currentPage,
+                Celebrities = celebrities,
+                TotalItems = totalCelebrities
+            };
+
+            return celebrity;
+        }
+
+        public void ChangeStatus(int celebrityId)
+        {
+            var celebrity = this.data.Celebrities.Find(celebrityId);
+
+            celebrity.IsPublic = !celebrity.IsPublic;
+
+            this.data.SaveChanges();
         }
 
         public CelebrityDetailsServiceModel Details(int celebrityId)

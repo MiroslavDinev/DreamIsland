@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    using DreamIsland.Areas.Admin.Models.Celebrity;
     using DreamIsland.Models.Celebrities;
     using DreamIsland.Services.Celebrity.Models;
 
@@ -13,6 +13,10 @@
         Task<bool> EditAsync(int celebrityId, string name, string occupation, string description, string imageUrl, int? age, bool isPublic);
 
         AllCelebritiesQueryModel All(string occupation = null, string searchTerm = null, int currentPage = 1);
+
+        AllAdminCelebritiesQueryModel AllAdmin(int currentPage = 1);
+
+        void ChangeStatus(int celebrityId);
 
         IEnumerable<CelebrityListingViewModel> GetCelebritiesByPartner(string userId);
 
