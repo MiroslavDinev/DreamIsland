@@ -6,6 +6,7 @@
     using DreamIsland.Models.Cars;
     using DreamIsland.Models.Cars.Enums;
     using DreamIsland.Services.Car.Models;
+    using DreamIsland.Areas.Admin.Models.Car;
 
     public interface ICarService
     {
@@ -16,6 +17,10 @@
             bool hasRemoteStart, bool hasRemoteControlParking, bool hasSeatMassager, bool isPublic);
 
         AllCarsQueryModel All(string brand = null, string searchTerm = null, CarsSorting carSorting = CarsSorting.DateAdded, int currentPage = 1);
+
+        AllAdminCarsQueryModel AllAdmin(int currentPage = 1);
+
+        void ChangeStatus(int carId);
 
         IEnumerable<CarListingViewModel> GetCarsByPartner(string userId);
 

@@ -12,6 +12,7 @@
     using DreamIsland.Models.Cars;
     using DreamIsland.Models.Cars.Enums;
     using DreamIsland.Services.Car.Models;
+    using DreamIsland.Areas.Admin.Models.Car;
 
     public class CarService : ICarService
     {
@@ -95,6 +96,38 @@
             };
 
             return car;
+        }
+
+        public AllAdminCarsQueryModel AllAdmin(int currentPage = 1)
+        {
+            var carsQuery = this.data
+                .Cars
+                .AsQueryable();
+
+            var totalCars = carsQuery.Count();
+
+            var cars = this.GetCars(carsQuery
+                .OrderBy(x=> x.Id)
+                .Skip((currentPage - 1) * AllAdminCarsQueryModel.ItemsPerPage)
+                .Take(AllAdminCarsQueryModel.ItemsPerPage));
+
+            var car = new AllAdminCarsQueryModel
+            {
+                Cars = cars,
+                CurrentPage = currentPage,
+                TotalItems = totalCars
+            };
+
+            return car;
+        }
+
+        public void ChangeStatus(int carId)
+        {
+            var car = this.data.Cars.Find(carId);
+
+            car.IsPublic = !car.IsPublic;
+
+            this.data.SaveChanges();
         }
 
         public CarDetailsServiceModel Details(int carId)

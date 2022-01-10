@@ -14,7 +14,7 @@
         IEnumerable<IslandRegionServiceModel> GetRegions();
 
         AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded, int currentPage = 1);
-        AllAdminIslandQueryModel AllAdmin(int currentPage = 1);
+        AllAdminIslandsQueryModel AllAdmin(int currentPage = 1);
 
         void ChangeStatus(int islandId);
 

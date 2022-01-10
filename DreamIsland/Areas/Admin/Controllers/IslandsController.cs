@@ -13,7 +13,7 @@
         {
             this.islandService = islandService;
         }
-        public IActionResult All([FromQuery] AllAdminIslandQueryModel query)
+        public IActionResult All([FromQuery] AllAdminIslandsQueryModel query)
         {
             var island = this.islandService.AllAdmin(query.CurrentPage);
 

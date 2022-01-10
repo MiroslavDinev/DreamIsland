@@ -1,10 +1,10 @@
-﻿@model AllAdminIslandQueryModel
+﻿@model AllAdminIslandsQueryModel
 
 @{
     ViewBag.Title = "Dream Island - Administration";
 }
 
-<table id="example" class="table table-hover">
+<table id="table" class="table table-hover">
     <thead>
         <tr>
             <th scope="col">Id</th>
@@ -46,7 +46,7 @@
         previousPage = 1;
     }
 
-    var maxPage = Math.Ceiling((double)Model.TotalItems / AllAdminIslandQueryModel.ItemsPerPage);
+    var maxPage = Math.Ceiling((double)Model.TotalItems / AllAdminIslandsQueryModel.ItemsPerPage);
 
     var shouldButtonBeDisabled = Model.CurrentPage == maxPage || !Model.Islands.Any();
 }
@@ -55,12 +55,14 @@
     <ul class="pagination justify-content-center">
         <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
             <a class="page-link"
+               asp-area="Admin"
                asp-controller="Islands" asp-action="All"
                asp-route-currentPage="@previousPage">Previous</a>
         </li>
         <li class="page-item active"><a class="page-link" href="#">@Model.CurrentPage</a></li>
         <li class="page-item  @(shouldButtonBeDisabled ? "disabled" : string.Empty)">
             <a class="page-link"
+               asp-area="Admin"
                asp-controller="Islands" asp-action="All"
                asp-route-currentPage="@(Model.CurrentPage + 1)">Next</a>
         </li>
@@ -76,7 +78,7 @@
 @section Scripts{ 
 <script>
     $(document).ready(function () {
-        $('#example').DataTable({
+        $('#table').DataTable({
             "paging": false,
             "info": false
         });

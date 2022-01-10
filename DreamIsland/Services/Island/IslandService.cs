@@ -48,7 +48,7 @@
             return island.Id;
         }
 
-        public AllAdminIslandQueryModel AllAdmin(int currentPage = 1)
+        public AllAdminIslandsQueryModel AllAdmin(int currentPage = 1)
         {
             var islandsQuery = this.data
                 .Islands
@@ -58,10 +58,10 @@
 
             var islands = this.GetIslands(islandsQuery
                 .OrderBy(x=> x.Id)
-                .Skip((currentPage - 1) * AllAdminIslandQueryModel.ItemsPerPage)
-                .Take(AllAdminIslandQueryModel.ItemsPerPage));
+                .Skip((currentPage - 1) * AllAdminIslandsQueryModel.ItemsPerPage)
+                .Take(AllAdminIslandsQueryModel.ItemsPerPage));
 
-            var island = new AllAdminIslandQueryModel
+            var island = new AllAdminIslandsQueryModel
             {
                 CurrentPage = currentPage,
                 Islands = islands,
