@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    using DreamIsland.Areas.Admin.Models.Collectible;
     using DreamIsland.Data.Enums;
     using DreamIsland.Models.Collectibles;
     using DreamIsland.Services.Collectible.Models;
@@ -14,6 +14,10 @@
         Task<bool> EditAsync(int collectibleId, string name, string description, string imageUrl, RarityLevel rarityLevel, bool isPublic);
 
         AllCollectiblesQueryModel All(string rarityLevel = null, string searchTerm = null, int currentPage = 1);
+
+        AllAdminCollectiblesQueryModel AllAdmin(int currentPage = 1);
+
+        void ChangeStatus(int collectibleId);
 
         IEnumerable<CollectibleListingViewModel> GetCollectiblesByPartner(string userId);
 

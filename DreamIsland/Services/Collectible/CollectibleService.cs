@@ -14,6 +14,7 @@
     using DreamIsland.Models.Collectibles;
     using DreamIsland.Infrastructure;
     using DreamIsland.Services.Collectible.Models;
+    using DreamIsland.Areas.Admin.Models.Collectible;
 
     public class CollectibleService : ICollectibleService
     {
@@ -92,6 +93,38 @@
             return collectible;
         }
 
+        public AllAdminCollectiblesQueryModel AllAdmin(int currentPage = 1)
+        {
+            var collectiblesQuery = this.data
+                .Collectibles
+                .AsQueryable();
+
+            var totalCollectibles = collectiblesQuery.Count();
+
+            var collectibles = this.GetCollectibles(collectiblesQuery
+                .OrderBy(x => x.Id)
+                .Skip((currentPage - 1) * AllAdminCollectiblesQueryModel.ItemsPerPage)
+                .Take(AllAdminCollectiblesQueryModel.ItemsPerPage));
+
+            var collectible = new AllAdminCollectiblesQueryModel
+            {
+                Collectibles = collectibles,
+                CurrentPage = currentPage,
+                TotalItems = totalCollectibles
+            };
+
+            return collectible;
+        }
+
+        public void ChangeStatus(int collectibleId)
+        {
+            var collectible = this.data.Collectibles.Find(collectibleId);
+
+            collectible.IsPublic = !collectible.IsPublic;
+
+            this.data.SaveChanges();
+        }
+
         public CollectibleDetailsServiceModel Details(int collectibleId)
         {
             var collectible = this.data
@@ -150,7 +183,8 @@
                     Id = x.Id,
                     Name = x.Name,
                     ImageUrl = x.ImageUrl,
-                    RarityLevel = EnumValuesExtension.GetDescriptionFromEnum(x.RarityLevel)
+                    RarityLevel = EnumValuesExtension.GetDescriptionFromEnum(x.RarityLevel),
+                    IsPublic = x.IsPublic
                 })
                 .ToList();
 
