@@ -1,10 +1,11 @@
 ﻿namespace DreamIsland.Services.Collectible
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using DreamIsland.Areas.Admin.Models.Collectible;
+    using System.Collections.Generic;
+
     using DreamIsland.Data.Enums;
     using DreamIsland.Models.Collectibles;
+    using DreamIsland.Areas.Admin.Models.Collectible;
     using DreamIsland.Services.Collectible.Models;
 
     public interface ICollectibleService

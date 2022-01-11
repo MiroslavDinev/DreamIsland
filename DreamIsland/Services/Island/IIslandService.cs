@@ -24,6 +24,8 @@
         Task<bool> EditAsync(int islandId, string name, string location, string description, double sizeInSquareKm,
             decimal? price, string imageUrl, int populationSizeId, int islandRegionId, bool isPublic);
 
+        bool Delete(int islandId);
+
         bool PopulationSizeExists(int populationSizeId);
         bool RegionExists(int islandRegionId);
         IEnumerable<IslandListingViewModel> GetIslandsByPartner(string userId);

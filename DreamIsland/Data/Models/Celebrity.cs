@@ -4,10 +4,8 @@
 
     using static DataConstants.Celebrity;
 
-    public class Celebrity
+    public class Celebrity : BaseDataModel
     {
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
@@ -23,12 +21,9 @@
         [Required]
         public string ImageUrl { get; set; }
 
-        public bool IsPublic { get; set; }
-
         public int? Age { get; set; }
 
         public int PartnerId { get; set; }
-
         public Partner Partner { get; set; }
     }
 }

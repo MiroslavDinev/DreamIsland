@@ -3,10 +3,8 @@
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.Vehicle;
-    public abstract class Vehicle
+    public abstract class Vehicle : BaseDataModel
     {
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(BrandMaxLength)]
         public string Brand { get; set; }

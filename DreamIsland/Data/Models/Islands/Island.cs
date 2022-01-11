@@ -8,13 +8,12 @@
 
     using static DataConstants.Island;
 
-    public class Island
+    public class Island : BaseDataModel
     {
         public Island()
         {
             this.Cars = new HashSet<Car>();
         }
-        public int Id { get; set; }
 
         [Required]
         [MaxLength(NameMaxLength)]
@@ -36,8 +35,6 @@
 
         [Required]
         public string ImageUrl { get; set; }
-
-        public bool IsPublic { get; set; }
 
         public int PartnerId { get; set; }
 

@@ -52,7 +52,7 @@
         {
             var islandsQuery = this.data
                 .Islands
-                .AsQueryable();
+                .Where(x => !x.IsDeleted);
 
             var totalIslands = islandsQuery.Count();
 
@@ -75,7 +75,7 @@
         {
             var islandsQuery = this.data
                 .Islands
-                .Where(i=> i.IsPublic);
+                .Where(i => i.IsPublic && !i.IsDeleted);
 
             if(!string.IsNullOrEmpty(region))
             {
@@ -140,7 +140,7 @@
         {
             var islands = this.GetIslands(this.data
                 .Islands
-                .Where(x => x.Partner.UserId == userId)
+                .Where(x => x.Partner.UserId == userId &&!x.IsDeleted)
                 .OrderByDescending(x => x.Id));
 
             return islands;
@@ -227,10 +227,26 @@
             return true;
         }
 
+        public bool Delete(int islandId)
+        {
+            var island = this.data.Islands.Find(islandId);
+
+            if(island == null)
+            {
+                return false;
+            }
+
+            island.IsDeleted = true;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         public IEnumerable<LatestIslandsServiceModel> LatestIslands()
         {
             var latestIslands = this.data.Islands
-                .Where(x=> x.IsPublic)
+                .Where(x=> x.IsPublic && !x.IsDeleted)
                 .OrderByDescending(x=> x.Id)
                 .ProjectTo<LatestIslandsServiceModel>(this.mapper.ConfigurationProvider)
                 .Take(3)

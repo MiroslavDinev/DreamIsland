@@ -23,7 +23,7 @@
                     @if (ViewBag.AllowMoreFunctionality == true || this.User.IsAdmin())
                     {
                         <a asp-controller="Islands" asp-action="Edit" asp-route-id="@island.Id" class="btn btn-warning">Edit</a>
-                        <a asp-controller="Islands" asp-action="Delete" asp-route-id="@island.Id" class="btn btn-danger">Delete</a>
+                        <a asp-controller="Islands" asp-action="Delete" asp-route-id="@island.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                     }
                 </div>
             </div>

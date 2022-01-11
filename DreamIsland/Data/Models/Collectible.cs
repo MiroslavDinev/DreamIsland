@@ -6,10 +6,8 @@
 
     using static DataConstants.Collectible;
 
-    public class Collectible
+    public class Collectible : BaseDataModel
     {
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
@@ -20,8 +18,6 @@
 
         [Required]
         public string ImageUrl { get; set; }
-
-        public bool IsPublic { get; set; }
 
         public RarityLevel RarityLevel { get; set; }
 
