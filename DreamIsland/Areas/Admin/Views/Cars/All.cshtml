@@ -31,10 +31,10 @@
                     <a asp-area="" asp-controller="Cars" asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning">Edit</a>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#tips-@car.Id">
                         Delete
                     </button>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="tips-@car.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">

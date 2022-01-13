@@ -23,7 +23,12 @@
 
         public IActionResult ChangeStatus(int id)
         {
-            this.celebrityService.ChangeStatus(id);
+            var changed = this.celebrityService.ChangeStatus(id);
+
+            if (!changed)
+            {
+                return NotFound();
+            }
 
             return RedirectToAction(nameof(All));
         }

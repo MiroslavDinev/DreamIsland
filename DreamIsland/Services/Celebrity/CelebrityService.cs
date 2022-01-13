@@ -46,7 +46,7 @@
         {
             var celebritiesQuery = this.data
                 .Celebrities
-                .Where(c=> c.IsPublic);
+                .Where(c=> c.IsPublic && !c.IsDeleted);
 
             if (!string.IsNullOrEmpty(occupation))
             {
@@ -91,7 +91,7 @@
         {
             var celebritiesQuery = this.data
                 .Celebrities
-                .AsQueryable();
+                .Where(x => !x.IsDeleted);
 
             var totalCelebrities = celebritiesQuery.Count();
 
@@ -110,19 +110,29 @@
             return celebrity;
         }
 
-        public void ChangeStatus(int celebrityId)
+        public bool ChangeStatus(int celebrityId)
         {
             var celebrity = this.data.Celebrities.Find(celebrityId);
+
+            if(celebrity == null)
+            {
+                return false;
+            }
+            if (celebrity.IsDeleted)
+            {
+                return false;
+            }
 
             celebrity.IsPublic = !celebrity.IsPublic;
 
             this.data.SaveChanges();
-        }
 
+            return true;
+        }
         public CelebrityDetailsServiceModel Details(int celebrityId)
         {
             var celebrity = this.data.Celebrities
-                .Where(x => x.Id == celebrityId)
+                .Where(x => x.Id == celebrityId && x.IsPublic && !x.IsDeleted)
                 .ProjectTo<CelebrityDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
@@ -135,6 +145,10 @@
             var celebrity = this.data.Celebrities.Find(celebrityId);
 
             if(celebrity == null)
+            {
+                return false;
+            }
+            else if (celebrity.IsDeleted)
             {
                 return false;
             }
@@ -151,11 +165,31 @@
             return true;
         }
 
+        public bool Delete(int celebrityId)
+        {
+            var celebrity = this.data.Celebrities.Find(celebrityId);
+
+            if(celebrity == null)
+            {
+                return false;
+            }
+            else if (celebrity.IsDeleted)
+            {
+                return false;
+            }
+
+            celebrity.IsDeleted = true;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         public IEnumerable<CelebrityListingViewModel> GetCelebritiesByPartner(string userId)
         {
             var celebrities = this.GetCelebrities(this.data
                 .Celebrities
-                .Where(x => x.Partner.UserId == userId)
+                .Where(x => x.Partner.UserId == userId && !x.IsDeleted)
                 .OrderByDescending(x=> x.Id));
 
             return celebrities;

@@ -155,6 +155,35 @@
             return RedirectToAction(nameof(Details), new { id = id, information = celebrity.Name + "-" + celebrity.Occupation });
         }
 
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var userId = this.User.GetUserId();
+            var partnerId = this.partnerService.PartnerId(userId);
+
+            if (partnerId == 0 && !this.User.IsAdmin())
+            {
+                this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
+                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
+
+                return RedirectToAction(nameof(PartnersController.Become), "Partners");
+            }
+
+            if (!this.celebrityService.IsByPartner(id, partnerId) && !this.User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
+            var deleted = this.celebrityService.Delete(id);
+
+            if (!deleted)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
         public IActionResult Details(int id, string information)
         {
             var celebrity = this.celebrityService.Details(id);
