@@ -22,7 +22,12 @@
 
         public IActionResult ChangeStatus(int id)
         {
-            this.islandService.ChangeStatus(id);
+            var changed = this.islandService.ChangeStatus(id);
+
+            if (!changed)
+            {
+                return NotFound();
+            }
 
             return RedirectToAction(nameof(All));
         }

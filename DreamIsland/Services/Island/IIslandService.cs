@@ -16,7 +16,7 @@
         AllIslandsQueryModel All(string region = null, string searchTerm = null, IslandSorting islandSorting = IslandSorting.DateAdded, int currentPage = 1);
         AllAdminIslandsQueryModel AllAdmin(int currentPage = 1);
 
-        void ChangeStatus(int islandId);
+        bool ChangeStatus(int islandId);
 
         Task<int> AddAsync(string name, string location, string description, double sizeInSquareKm, 
             decimal? price, string imageUrl, int populationSizeId, int islandRegionId, int partnerId);

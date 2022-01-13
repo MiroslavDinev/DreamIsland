@@ -23,7 +23,12 @@
 
         public IActionResult ChangeStatus(int id)
         {
-            this.carService.ChangeStatus(id);
+            var changed = this.carService.ChangeStatus(id);
+
+            if (!changed)
+            {
+                return NotFound();
+            }
 
             return RedirectToAction(nameof(All));
         }

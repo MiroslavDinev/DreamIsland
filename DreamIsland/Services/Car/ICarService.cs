@@ -20,7 +20,9 @@
 
         AllAdminCarsQueryModel AllAdmin(int currentPage = 1);
 
-        void ChangeStatus(int carId);
+        bool ChangeStatus(int carId);
+
+        bool Delete(int carId);
 
         IEnumerable<CarListingViewModel> GetCarsByPartner(string userId);
 

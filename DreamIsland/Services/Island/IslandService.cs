@@ -129,7 +129,7 @@
         public IslandDetailsServiceModel Details(int islandId)
         {
             var island = this.data.Islands
-                .Where(x => x.Id == islandId)
+                .Where(x => x.Id == islandId && x.IsPublic && !x.IsDeleted)
                 .ProjectTo<IslandDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
@@ -140,7 +140,7 @@
         {
             var islands = this.GetIslands(this.data
                 .Islands
-                .Where(x => x.Partner.UserId == userId &&!x.IsDeleted)
+                .Where(x => x.Partner.UserId == userId && !x.IsDeleted)
                 .OrderByDescending(x => x.Id));
 
             return islands;
@@ -211,6 +211,10 @@
             {
                 return false;
             }
+            else if (island.IsDeleted)
+            {
+                return false;
+            }
 
             island.Name = name;
             island.Location = location;
@@ -235,6 +239,10 @@
             {
                 return false;
             }
+            else if (island.IsDeleted)
+            {
+                return false;
+            }
 
             island.IsDeleted = true;
 
@@ -255,13 +263,24 @@
             return latestIslands;
         }
 
-        public void ChangeStatus(int islandId)
+        public bool ChangeStatus(int islandId)
         {
             var island = this.data.Islands.Find(islandId);
+
+            if (island==null)
+            {
+                return false;
+            }
+            else if (island.IsDeleted)
+            {
+                return false;
+            }
 
             island.IsPublic = !island.IsPublic;
 
             this.data.SaveChanges();
+
+            return true;
         }
     }
 }

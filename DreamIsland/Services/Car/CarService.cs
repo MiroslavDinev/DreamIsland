@@ -50,7 +50,7 @@
         {
             var carsQuery = this.data
                 .Cars
-                .Where(c=> c.IsPublic);
+                .Where(c=> c.IsPublic && !c.IsDeleted);
 
             if (!string.IsNullOrEmpty(brand))
             {
@@ -102,7 +102,7 @@
         {
             var carsQuery = this.data
                 .Cars
-                .AsQueryable();
+                .Where(x => !x.IsDeleted);
 
             var totalCars = carsQuery.Count();
 
@@ -121,20 +121,51 @@
             return car;
         }
 
-        public void ChangeStatus(int carId)
+        public bool ChangeStatus(int carId)
         {
             var car = this.data.Cars.Find(carId);
+
+            if(car == null)
+            {
+                return false;
+            }
+            else if (car.IsDeleted)
+            {
+                return false;
+            }
 
             car.IsPublic = !car.IsPublic;
 
             this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool Delete(int carId)
+        {
+            var car = this.data.Cars.Find(carId);
+
+            if(car == null)
+            {
+                return false;
+            }
+            else if (car.IsDeleted)
+            {
+                return false;
+            }
+
+            car.IsDeleted = true;
+
+            this.data.SaveChanges();
+
+            return true;
         }
 
         public CarDetailsServiceModel Details(int carId)
         {
             var car = this.data
                 .Cars
-                .Where(x => x.Id == carId)
+                .Where(x => x.Id == carId && x.IsPublic && !x.IsDeleted)
                 .ProjectTo<CarDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
@@ -148,6 +179,10 @@
             var car = this.data.Cars.Find(carId);
 
             if(car == null)
+            {
+                return false;
+            }
+            else if (car.IsDeleted)
             {
                 return false;
             }
@@ -171,7 +206,7 @@
         {
             var cars = this.GetCars(this.data
                 .Cars
-                .Where(x => x.Partner.UserId == userId)
+                .Where(x => x.Partner.UserId == userId && !x.IsDeleted)
                 .OrderByDescending(x => x.Id));
 
             return cars;
