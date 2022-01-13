@@ -48,7 +48,7 @@
         {
             var collectiblesQuery = this.data
                 .Collectibles
-                .Where(c=> c.IsPublic);
+                .Where(c=> c.IsPublic && !c.IsDeleted);
 
             if (!string.IsNullOrEmpty(rarityLevel))
             {
@@ -97,7 +97,7 @@
         {
             var collectiblesQuery = this.data
                 .Collectibles
-                .AsQueryable();
+                .Where(c => !c.IsDeleted);
 
             var totalCollectibles = collectiblesQuery.Count();
 
@@ -116,20 +116,51 @@
             return collectible;
         }
 
-        public void ChangeStatus(int collectibleId)
+        public bool ChangeStatus(int collectibleId)
         {
             var collectible = this.data.Collectibles.Find(collectibleId);
+
+            if(collectible == null)
+            {
+                return false;
+            }
+            else if (collectible.IsDeleted)
+            {
+                return false;
+            }
 
             collectible.IsPublic = !collectible.IsPublic;
 
             this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool Delete(int collectibleId)
+        {
+            var collectible = this.data.Collectibles.Find(collectibleId);
+
+            if(collectible == null)
+            {
+                return false;
+            }
+            else if (collectible.IsDeleted)
+            {
+                return false;
+            }
+
+            collectible.IsDeleted = true;
+
+            this.data.SaveChanges();
+
+            return true;
         }
 
         public CollectibleDetailsServiceModel Details(int collectibleId)
         {
             var collectible = this.data
                 .Collectibles
-                .Where(x => x.Id == collectibleId)
+                .Where(x => x.Id == collectibleId && x.IsPublic && !x.IsDeleted)
                 .ProjectTo<CollectibleDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
@@ -141,6 +172,10 @@
             var collectible = this.data.Collectibles.Find(collectibleId);
 
             if(collectible == null)
+            {
+                return false;
+            }
+            else if (collectible.IsDeleted)
             {
                 return false;
             }
@@ -160,7 +195,7 @@
         {
             var collectibles = this.GetCollectibles(this.data
                 .Collectibles
-                .Where(x => x.Partner.UserId == userId)
+                .Where(x => x.Partner.UserId == userId && !x.IsDeleted)
                 .OrderByDescending(x => x.Id));
 
             return collectibles;
