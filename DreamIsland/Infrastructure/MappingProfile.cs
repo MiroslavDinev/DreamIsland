@@ -5,6 +5,7 @@
     using DreamIsland.Data.Models;
     using DreamIsland.Data.Models.Islands;
     using DreamIsland.Data.Models.Vehicles;
+    using DreamIsland.Data.Models.Celebrities;
     using DreamIsland.Models.Cars;
     using DreamIsland.Models.Islands;
     using DreamIsland.Models.Celebrities;
@@ -13,6 +14,8 @@
     using DreamIsland.Services.Celebrity.Models;
     using DreamIsland.Services.Collectible.Models;
     using DreamIsland.Models.Collectibles;
+    using System.Linq;
+    using DreamIsland.Models;
 
     public class MappingProfile : Profile
     {
@@ -33,7 +36,15 @@
 
             this.CreateMap<Celebrity, CelebrityListingViewModel>();
             this.CreateMap<Celebrity, CelebrityDetailsServiceModel>()
-                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
+                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId))
+                .ForMember(x => x.Gallery, cfg => cfg.MapFrom(x => x.CelebritiesGallery.Select(x => new GalleryModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    URL = x.URL
+                }).ToList()
+                 ));
+
             this.CreateMap<CelebrityDetailsServiceModel, CelebrityFormModel>();
 
             this.CreateMap<Collectible, CollectibleDetailsServiceModel>()

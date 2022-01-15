@@ -1,7 +1,10 @@
 ﻿namespace DreamIsland.Models.Celebrities
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
+    using Microsoft.AspNetCore.Http;
 
     using static Data.DataConstants.Celebrity;
 
@@ -22,9 +25,14 @@
         public string Description { get; set; }
 
         [Required]
-        [Url]
-        [Display(Name = "Image URL")]
+        [Display(Name = "Choose a cover photo")]
+        public IFormFile CoverPhoto { get; set; }
         public string ImageUrl { get; set; }
+
+
+        [Display(Name = "Choose gallery images")]
+        public IFormFileCollection GalleryFiles { get; set; }
+        public List<GalleryModel> Gallery { get; set; }
 
         [Range(MinAge, MaxAge)]
         public int? Age { get; set; }

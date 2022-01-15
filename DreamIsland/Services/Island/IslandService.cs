@@ -129,7 +129,7 @@
         public IslandDetailsServiceModel Details(int islandId)
         {
             var island = this.data.Islands
-                .Where(x => x.Id == islandId && x.IsPublic && !x.IsDeleted)
+                .Where(x => x.Id == islandId && !x.IsDeleted)
                 .ProjectTo<IslandDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 

@@ -160,7 +160,7 @@
         {
             var collectible = this.data
                 .Collectibles
-                .Where(x => x.Id == collectibleId && x.IsPublic && !x.IsDeleted)
+                .Where(x => x.Id == collectibleId && !x.IsDeleted)
                 .ProjectTo<CollectibleDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 

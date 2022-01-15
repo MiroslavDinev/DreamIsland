@@ -5,6 +5,7 @@
 
     using DreamIsland.Data.Models.Vehicles;
     using DreamIsland.Data.Models.Islands;
+    using DreamIsland.Data.Models.Celebrities;
     using static DataConstants.Partner;
 
     public class Partner

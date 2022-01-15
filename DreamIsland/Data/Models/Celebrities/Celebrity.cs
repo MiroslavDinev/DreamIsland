@@ -1,11 +1,13 @@
-﻿namespace DreamIsland.Data.Models
+﻿namespace DreamIsland.Data.Models.Celebrities
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.Celebrity;
 
     public class Celebrity : BaseDataModel
     {
+
         [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
@@ -25,5 +27,7 @@
 
         public int PartnerId { get; set; }
         public Partner Partner { get; set; }
+
+        public ICollection<CelebrityGallery> CelebritiesGallery { get; set; }
     }
 }

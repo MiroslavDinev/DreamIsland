@@ -4,26 +4,30 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
+    using Microsoft.AspNetCore.Hosting;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
 
-    using Data.Models;
+    using Data.Models.Celebrities;
     using DreamIsland.Data;
     using DreamIsland.Models.Celebrities;
     using DreamIsland.Services.Celebrity.Models;
     using DreamIsland.Areas.Admin.Models.Celebrity;
+    using DreamIsland.Models;
 
     public class CelebrityService : ICelebrityService
     {
         private readonly DreamIslandDbContext data;
         private readonly IMapper mapper;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public CelebrityService(DreamIslandDbContext data, IMapper mapper)
+        public CelebrityService(DreamIslandDbContext data, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.data = data;
             this.mapper = mapper;
+            this.webHostEnvironment = webHostEnvironment;
         }
-        public async Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId)
+        public async Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId, List<GalleryModel> gallery)
         {
             var celebrity = new Celebrity
             {
@@ -35,6 +39,17 @@
                 PartnerId = partnerId,
                 IsPublic = false
             };
+
+            celebrity.CelebritiesGallery = new List<CelebrityGallery>();
+
+            foreach (var file in gallery)
+            {
+                celebrity.CelebritiesGallery.Add(new CelebrityGallery
+                {
+                    Name = file.Name,
+                    URL = file.URL
+                });
+            }
 
             await this.data.Celebrities.AddAsync(celebrity);
             await this.data.SaveChangesAsync();
@@ -132,7 +147,7 @@
         public CelebrityDetailsServiceModel Details(int celebrityId)
         {
             var celebrity = this.data.Celebrities
-                .Where(x => x.Id == celebrityId && x.IsPublic && !x.IsDeleted)
+                .Where(x => x.Id == celebrityId && !x.IsDeleted)
                 .ProjectTo<CelebrityDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 

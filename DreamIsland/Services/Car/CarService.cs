@@ -165,7 +165,7 @@
         {
             var car = this.data
                 .Cars
-                .Where(x => x.Id == carId && x.IsPublic && !x.IsDeleted)
+                .Where(x => x.Id == carId && !x.IsDeleted)
                 .ProjectTo<CarDetailsServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
