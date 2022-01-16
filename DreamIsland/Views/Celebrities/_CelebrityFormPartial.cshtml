@@ -20,11 +20,6 @@
                 <span asp-validation-for="Description" class="small text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" class="form-control" placeholder="Enter celebrity url...">
-                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Age"></label>
                 <input asp-for="Age" type="number" class="form-control" placeholder="Please fill celebrity age if known...">
                 <span asp-validation-for="Age" class="small text-danger"></span>
@@ -37,17 +32,20 @@
                 </div>
                 <span asp-validation-for="CoverPhoto" class="small text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="GalleryFiles" class="control-label"></label>
-                <div class="custom-file">
-                    <input asp-for="GalleryFiles" class="custom-file-input" id="customFile">
-                    <label class="custom-file-label" for="customFile">Choose Files</label>
-                </div>
-                <span asp-validation-for="GalleryFiles" class="small text-danger"></span>
-            </div>
             <div class="row justify-content-center">
                 <input class="btn btn-primary mt-4" type="submit" value="@ViewBag.FormTitle" />
             </div>
         </form>
     </div>
 </div>
+
+@Html.PartialSectionScripts(
+    @<script>
+    $('#customFile').on('change', function () {
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+</script>
+)

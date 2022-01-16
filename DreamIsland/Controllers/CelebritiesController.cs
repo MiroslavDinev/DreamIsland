@@ -1,11 +1,9 @@
 ﻿namespace DreamIsland.Controllers
 {
     using System;
-    using System.IO;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Authorization;
     using AutoMapper;
@@ -16,11 +14,9 @@
     using DreamIsland.Services.Partner;
 
     using static WebConstants.GlobalMessages;
-    using System.Linq;
-    using System.Collections.Generic;
-    using DreamIsland.Models;
 
-    public class CelebritiesController : Controller
+
+    public class CelebritiesController : ControllerBase
     {
         private readonly IPartnerService partnerService;
         private readonly ICelebrityService celebrityService;
@@ -82,36 +78,19 @@
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
 
+            if(celebrity.ImageUrl == null)
+            {
+                string folder = "celebrities/cover/";
+                celebrity.ImageUrl = await UploadImage(folder, celebrity.CoverPhoto, this.webHostEnvironment);
+            }
+
             if (!ModelState.IsValid)
             {
                 return this.View(celebrity);
             }
 
-            if(celebrity.ImageUrl != null)
-            {
-                string folder = "celebrities/cover/";
-                celebrity.ImageUrl = await UploadImage(folder, celebrity.CoverPhoto);
-            }
-
-            if (celebrity.GalleryFiles.Any())
-            {
-                string folder = "celebrities/gallery/";
-                celebrity.Gallery = new List<GalleryModel>();
-
-                foreach (var file in celebrity.GalleryFiles)
-                {
-                    var gallery = new GalleryModel
-                    {
-                        Name = file.FileName,
-                        URL = await UploadImage(folder, file)
-                    };
-
-                    celebrity.Gallery.Add(gallery);
-                }
-            }
-
             var celebrityId = await this .celebrityService
-                .AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, celebrity.ImageUrl, celebrity.Age, partnerId, celebrity.Gallery);
+                .AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, celebrity.ImageUrl, celebrity.Age, partnerId);
 
             this.TempData[InfoMessageKey] = InfoMessage;
 
@@ -225,17 +204,6 @@
             }
 
             return this.View(celebrity);
-        }
-
-        private async Task<string> UploadImage(string folderPath, IFormFile file)
-        {
-            folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
-
-            string serverFolder = Path.Combine(this.webHostEnvironment.WebRootPath, folderPath);
-
-            await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-
-            return "/" + folderPath;
         }
     }
 }

@@ -14,7 +14,7 @@
 
     using static WebConstants.GlobalMessages;
 
-    public class CollectiblesController : Controller
+    public class CollectiblesController : ControllerBase
     {
         private readonly IPartnerService partnerService;
         private readonly ICollectibleService collectibleService;

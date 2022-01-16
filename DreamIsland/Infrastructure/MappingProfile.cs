@@ -36,14 +36,7 @@
 
             this.CreateMap<Celebrity, CelebrityListingViewModel>();
             this.CreateMap<Celebrity, CelebrityDetailsServiceModel>()
-                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId))
-                .ForMember(x => x.Gallery, cfg => cfg.MapFrom(x => x.CelebritiesGallery.Select(x => new GalleryModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    URL = x.URL
-                }).ToList()
-                 ));
+                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
 
             this.CreateMap<CelebrityDetailsServiceModel, CelebrityFormModel>();
 

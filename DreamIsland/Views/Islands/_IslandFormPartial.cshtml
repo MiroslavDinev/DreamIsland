@@ -3,7 +3,7 @@
 <div class="row">
     <div class=" offset-lg-2 col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
         <h2 class="text-center">@ViewBag.FormTitle</h2>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Name"></label>
                 <input asp-for="Name" class="form-control" placeholder="Enter island name...">
@@ -25,9 +25,12 @@
                 <span asp-validation-for="SizeInSquareKm" class="small text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" class="form-control" placeholder="Enter island image URL..." />
-                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+                <label asp-for="CoverPhoto" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="CoverPhoto" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose File</label>
+                </div>
+                <span asp-validation-for="CoverPhoto" class="small text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price"></label>
@@ -58,3 +61,14 @@
         </form>
     </div>
 </div>
+
+@Html.PartialSectionScripts(
+    @<script>
+    $('#customFile').on('change', function () {
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+    </script>
+)

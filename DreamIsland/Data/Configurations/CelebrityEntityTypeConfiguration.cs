@@ -14,12 +14,6 @@
                 .WithMany(p => p.Celebrities)
                 .HasForeignKey(c => c.PartnerId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .HasMany(c => c.CelebritiesGallery)
-                .WithOne(g => g.Celebrity)
-                .HasForeignKey(g => g.CelebrityId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

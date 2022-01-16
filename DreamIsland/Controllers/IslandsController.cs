@@ -13,18 +13,21 @@
     using DreamIsland.Services.Partner;
 
     using static WebConstants.GlobalMessages;
+    using Microsoft.AspNetCore.Hosting;
 
-    public class IslandsController : Controller
+    public class IslandsController : ControllerBase
     {
         private readonly IIslandService islandService;
         private readonly IPartnerService partnerService;
         private readonly IMapper mapper;
+        private readonly IWebHostEnvironment hostEnvironment;
 
-        public IslandsController(IIslandService islandService, IPartnerService partnerService, IMapper mapper)
+        public IslandsController(IIslandService islandService, IPartnerService partnerService, IMapper mapper, IWebHostEnvironment hostEnvironment)
         {
             this.islandService = islandService;
             this.partnerService = partnerService;
             this.mapper = mapper;
+            this.hostEnvironment = hostEnvironment;
         }
 
         public IActionResult All([FromQuery] AllIslandsQueryModel query)
@@ -86,6 +89,12 @@
             if (!this.islandService.RegionExists(island.IslandRegionId))
             {
                 this.ModelState.AddModelError(nameof(island.IslandRegionId), "Region size does not exist!");
+            }
+
+            if (island.ImageUrl == null)
+            {
+                string folder = "islands/cover/";
+                island.ImageUrl = await UploadImage(folder, island.CoverPhoto, this.hostEnvironment);
             }
 
             if (!ModelState.IsValid)

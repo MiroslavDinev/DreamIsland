@@ -3,8 +3,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using DreamIsland.Services.Island.Models;
+    using Microsoft.AspNetCore.Http;
 
+    using DreamIsland.Services.Island.Models;
     using static Data.DataConstants.Island;
 
     public class IslandFormModel
@@ -29,8 +30,8 @@
         public decimal? Price { get; set; }
 
         [Required]
-        [Url]
-        [Display(Name = "Image URL")]
+        [Display(Name = "Upload photo")]
+        public IFormFile CoverPhoto { get; set; }
         public string ImageUrl { get; set; }
 
         [Display(Name = "Population")]

@@ -9,7 +9,7 @@
 
     public interface ICelebrityService
     {
-        Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId, List<GalleryModel> gallery);
+        Task<int> AddAsync(string name, string occupation, string description, string imageUrl, int? age, int partnerId);
 
         Task<bool> EditAsync(int celebrityId, string name, string occupation, string description, string imageUrl, int? age, bool isPublic);
 

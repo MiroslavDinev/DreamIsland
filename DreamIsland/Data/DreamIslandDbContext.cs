@@ -20,7 +20,6 @@
         public DbSet<Car> Cars { get; set; }
         public DbSet<Island> Islands { get; set; }
         public DbSet<Celebrity> Celebrities { get; set; }
-        public DbSet<CelebrityGallery> CelebritiesGalleries { get; set; }
         public DbSet<Collectible> Collectibles { get; set; }
         public DbSet<Partner> Partners { get; set; }
         public DbSet<PopulationSize> PopulationSizes { get; set; }

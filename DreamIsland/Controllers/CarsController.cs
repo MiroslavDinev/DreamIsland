@@ -5,6 +5,7 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
     using AutoMapper;
 
     using DreamIsland.Models.Cars;
@@ -14,17 +15,19 @@
 
     using static WebConstants.GlobalMessages;
 
-    public class CarsController : Controller
+    public class CarsController : ControllerBase
     {
         private readonly ICarService carService;
         private readonly IPartnerService partnerService;
         private readonly IMapper mapper;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public CarsController(ICarService carService, IPartnerService partnerService, IMapper mapper)
+        public CarsController(ICarService carService, IPartnerService partnerService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.carService = carService;
             this.partnerService = partnerService;
             this.mapper = mapper;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult All([FromQuery] AllCarsQueryModel query)
@@ -73,6 +76,12 @@
                     ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
+            }
+
+            if(car.ImageUrl == null)
+            {
+                string folder = "cars/cover/";
+                car.ImageUrl = await UploadImage(folder, car.CoverPhoto, this.webHostEnvironment);
             }
 
             if (!ModelState.IsValid)

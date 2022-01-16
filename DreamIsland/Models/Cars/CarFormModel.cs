@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
+
     using static Data.DataConstants.Vehicle;
 
     public class CarFormModel
@@ -20,8 +22,8 @@
         public string Description { get; set; }
 
         [Required]
-        [Url]
-        [Display(Name = "Image URL")]
+        [Display(Name = "Upload photo")]
+        public IFormFile CoverPhoto { get; set; }
         public string ImageUrl { get; set; }
         public int Year { get; set; }
 

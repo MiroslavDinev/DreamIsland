@@ -1,7 +1,6 @@
 ﻿namespace DreamIsland.Models.Celebrities
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Http;
@@ -25,14 +24,9 @@
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Choose a cover photo")]
+        [Display(Name = "Upload photo")]
         public IFormFile CoverPhoto { get; set; }
         public string ImageUrl { get; set; }
-
-
-        [Display(Name = "Choose gallery images")]
-        public IFormFileCollection GalleryFiles { get; set; }
-        public List<GalleryModel> Gallery { get; set; }
 
         [Range(MinAge, MaxAge)]
         public int? Age { get; set; }

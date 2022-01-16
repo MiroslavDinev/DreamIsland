@@ -67,29 +67,6 @@ namespace DreamIsland.Migrations
                     b.ToTable("Celebrities");
                 });
 
-            modelBuilder.Entity("DreamIsland.Data.Models.Celebrities.CelebrityGallery", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CelebrityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("URL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CelebrityId");
-
-                    b.ToTable("CelebritiesGalleries");
-                });
-
             modelBuilder.Entity("DreamIsland.Data.Models.Collectible", b =>
                 {
                     b.Property<int>("Id")
@@ -534,17 +511,6 @@ namespace DreamIsland.Migrations
                     b.Navigation("Partner");
                 });
 
-            modelBuilder.Entity("DreamIsland.Data.Models.Celebrities.CelebrityGallery", b =>
-                {
-                    b.HasOne("DreamIsland.Data.Models.Celebrities.Celebrity", "Celebrity")
-                        .WithMany("CelebritiesGallery")
-                        .HasForeignKey("CelebrityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Celebrity");
-                });
-
             modelBuilder.Entity("DreamIsland.Data.Models.Collectible", b =>
                 {
                     b.HasOne("DreamIsland.Data.Models.Partner", "Partner")
@@ -659,11 +625,6 @@ namespace DreamIsland.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DreamIsland.Data.Models.Celebrities.Celebrity", b =>
-                {
-                    b.Navigation("CelebritiesGallery");
                 });
 
             modelBuilder.Entity("DreamIsland.Data.Models.Islands.Island", b =>
