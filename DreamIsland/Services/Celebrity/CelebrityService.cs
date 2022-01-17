@@ -6,6 +6,7 @@
 
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Microsoft.AspNetCore.Http;
 
     using Data.Models.Celebrities;
     using DreamIsland.Data;

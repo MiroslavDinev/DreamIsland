@@ -148,6 +148,12 @@
                 return Unauthorized();
             }
 
+            if (celebrity.ImageUrl == null)
+            {
+                string folder = "celebrities/cover/";
+                celebrity.ImageUrl = await UploadImage(folder, celebrity.CoverPhoto, this.webHostEnvironment);
+            }
+
             var edited = await this.celebrityService
                 .EditAsync(id, celebrity.Name, celebrity.Occupation, celebrity.Description, 
                 celebrity.ImageUrl, celebrity.Age, this.User.IsAdmin());

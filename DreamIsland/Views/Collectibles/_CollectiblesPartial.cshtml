@@ -4,8 +4,8 @@
     @foreach (var collectible in Model)
     {
         <div class="col-md-4">
-            <div class="card">
-                <img class="card-img-top" src=@collectible.ImageUrl alt=@collectible.Name>
+            <div class="card mb-3">
+                <img class="card-img-top" src=@collectible.ImageUrl alt=@collectible.Name height="400">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@collectible.Name</h5>
                     <p>@collectible.RarityLevel</p>

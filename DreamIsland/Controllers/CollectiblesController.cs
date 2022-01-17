@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Authorization;
     using AutoMapper;
 
@@ -19,12 +20,15 @@
         private readonly IPartnerService partnerService;
         private readonly ICollectibleService collectibleService;
         private readonly IMapper mapper;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public CollectiblesController(IPartnerService partnerService, ICollectibleService collectibleService, IMapper mapper)
+        public CollectiblesController(IPartnerService partnerService, ICollectibleService collectibleService, 
+            IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.partnerService = partnerService;
             this.collectibleService = collectibleService;
             this.mapper = mapper;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult All([FromQuery] AllCollectiblesQueryModel query)
@@ -74,12 +78,19 @@
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
 
+            if(collectible.ImageUrl == null)
+            {
+                string folder = "collectibles/cover/";
+                collectible.ImageUrl = await UploadImage(folder, collectible.CoverPhoto, this.webHostEnvironment);
+            }
+
             if (!ModelState.IsValid)
             {
                 return this.View(collectible);
             }
 
-            var collectibleId = await this.collectibleService.AddAsync(collectible.Name, collectible.Description, collectible.ImageUrl, collectible.RarityLevel, partnerId);
+            var collectibleId = await this.collectibleService.AddAsync(collectible.Name, collectible.Description, collectible.ImageUrl, 
+                collectible.RarityLevel, partnerId);
 
             this.TempData[InfoMessageKey] = InfoMessage;
 
@@ -135,6 +146,12 @@
             if(!this.collectibleService.IsByPartner(id, partnerId) && !this.User.IsAdmin())
             {
                 return Unauthorized();
+            }
+
+            if (collectible.ImageUrl == null)
+            {
+                string folder = "collectibles/cover/";
+                collectible.ImageUrl = await UploadImage(folder, collectible.CoverPhoto, this.webHostEnvironment);
             }
 
             var edited = await this.collectibleService

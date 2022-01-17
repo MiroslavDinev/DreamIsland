@@ -2,8 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Http;
+
     using DreamIsland.Areas.Admin.Models.Celebrity;
-    using DreamIsland.Models;
     using DreamIsland.Models.Celebrities;
     using DreamIsland.Services.Celebrity.Models;
 

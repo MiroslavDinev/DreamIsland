@@ -61,7 +61,7 @@
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 carsQuery = carsQuery
-                    .Where(x => x.Model.ToLower().Contains(searchTerm.ToLower()));
+                    .Where(x => (x.Brand + " " + x.Model).ToLower().Contains(searchTerm.ToLower()));
             }
 
             carsQuery = carSorting switch 

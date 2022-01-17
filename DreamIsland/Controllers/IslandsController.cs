@@ -178,6 +178,12 @@
                 return Unauthorized();
             }
 
+            if (island.ImageUrl == null)
+            {
+                string folder = "islands/cover/";
+                island.ImageUrl = await UploadImage(folder, island.CoverPhoto, this.hostEnvironment);
+            }
+
             var edited = await this.islandService
                 .EditAsync(id, island.Name, island.Location, island.Description, island.SizeInSquareKm, 
                 island.Price, island.ImageUrl, island.PopulationSizeId, island.IslandRegionId, this.User.IsAdmin());

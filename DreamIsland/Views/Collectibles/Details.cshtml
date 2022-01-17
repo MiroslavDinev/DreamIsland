@@ -19,6 +19,7 @@
                     @Model.Description
                 </div>
             </div>
+            </p>
             @if (User.IsAdmin())
             {
                 <a asp-controller="Collectibles" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>

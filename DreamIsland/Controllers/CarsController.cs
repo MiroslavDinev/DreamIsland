@@ -149,6 +149,12 @@
                 return Unauthorized();
             }
 
+            if (car.ImageUrl == null)
+            {
+                string folder = "cars/cover/";
+                car.ImageUrl = await UploadImage(folder, car.CoverPhoto, this.webHostEnvironment);
+            }
+
             var edited = await this.carService
                 .EditAsync(id, car.Brand, car.Model, car.Description, car.ImageUrl, 
                 car.Year, car.HasRemoteStart, car.HasRemoteControlParking, car.HasSeatMassager, this.User.IsAdmin());

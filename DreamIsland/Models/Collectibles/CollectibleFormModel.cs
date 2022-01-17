@@ -2,8 +2,9 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using DreamIsland.Data.Enums;
+    using Microsoft.AspNetCore.Http;
 
+    using DreamIsland.Data.Enums;
     using static Data.DataConstants.Collectible;
 
     public class CollectibleFormModel
@@ -19,8 +20,8 @@
         public string Description { get; set; }
 
         [Required]
-        [Url]
-        [Display(Name = "Image URL")]
+        [Display(Name = "Upload photo")]
+        public IFormFile CoverPhoto { get; set; }
         public string ImageUrl { get; set; }
 
         [Display(Name = "Rarity Level")]
