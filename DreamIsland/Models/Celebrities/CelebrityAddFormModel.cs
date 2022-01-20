@@ -7,9 +7,9 @@
 
     using static Data.DataConstants.Celebrity;
 
-    public class CelebrityFormModel
+    public class CelebrityAddFormModel
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "The name should be between {2} and {1} symbols")]
@@ -23,10 +23,10 @@
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = "The description should be between {2} and {1} symbols")]
         public string Description { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Upload photo")]
         public IFormFile CoverPhoto { get; set; }
-        public string ImageUrl { get; set; }
+        //public string ImageUrl { get; set; }
 
         [Range(MinAge, MaxAge)]
         public int? Age { get; set; }

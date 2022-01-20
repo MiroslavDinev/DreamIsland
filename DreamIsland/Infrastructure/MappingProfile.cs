@@ -38,7 +38,7 @@
             this.CreateMap<Celebrity, CelebrityDetailsServiceModel>()
                 .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
 
-            this.CreateMap<CelebrityDetailsServiceModel, CelebrityFormModel>();
+            this.CreateMap<CelebrityDetailsServiceModel, CelebrityEditFormModel>();
 
             this.CreateMap<Collectible, CollectibleDetailsServiceModel>()
                 .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));

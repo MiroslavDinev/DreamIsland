@@ -1,6 +1,7 @@
 ﻿namespace DreamIsland.Controllers
 {
     using System;
+    using System.IO;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,6 @@
     using DreamIsland.Services.Partner;
 
     using static WebConstants.GlobalMessages;
-
 
     public class CelebritiesController : ControllerBase
     {
@@ -66,7 +66,7 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add(CelebrityFormModel celebrity)
+        public async Task<IActionResult> Add(CelebrityAddFormModel celebrity)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
@@ -78,19 +78,15 @@
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
 
-            if(celebrity.ImageUrl == null)
-            {
-                string folder = "celebrities/cover/";
-                celebrity.ImageUrl = await UploadImage(folder, celebrity.CoverPhoto, this.webHostEnvironment);
-            }
-
             if (!ModelState.IsValid)
             {
                 return this.View(celebrity);
             }
 
+            string uniqueFileName = await ProcessUploadedFile(celebrity);
+
             var celebrityId = await this .celebrityService
-                .AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, celebrity.ImageUrl, celebrity.Age, partnerId);
+                .AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, uniqueFileName, celebrity.Age, partnerId);
 
             this.TempData[InfoMessageKey] = InfoMessage;
 
@@ -119,14 +115,14 @@
                 return Unauthorized();
             }
 
-            var celebrityForm = this.mapper.Map<CelebrityFormModel>(celebrity);
+            var celebrityForm = this.mapper.Map<CelebrityEditFormModel>(celebrity);
 
             return this.View(celebrityForm);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, CelebrityFormModel celebrity)
+        public async Task<IActionResult> Edit(CelebrityEditFormModel celebrity)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
 
@@ -143,19 +139,24 @@
                 return this.View(celebrity);
             }
 
-            if(!this.celebrityService.IsByPartner(id, partnerId) && !this.User.IsAdmin())
+            if (!this.celebrityService.IsByPartner(celebrity.Id, partnerId) && !this.User.IsAdmin())
             {
                 return Unauthorized();
-            }
+            }           
 
-            if (celebrity.ImageUrl == null)
+            if(celebrity.CoverPhoto != null)
             {
-                string folder = "celebrities/cover/";
-                celebrity.ImageUrl = await UploadImage(folder, celebrity.CoverPhoto, this.webHostEnvironment);
+                if(celebrity.ImageUrl != null)
+                {
+                    string filePath = Path.Combine(this.webHostEnvironment.WebRootPath, "celebrities/cover", celebrity.ImageUrl);
+                    System.IO.File.Delete(filePath);
+                }
+
+                celebrity.ImageUrl = await ProcessUploadedFile(celebrity);                
             }
 
             var edited = await this.celebrityService
-                .EditAsync(id, celebrity.Name, celebrity.Occupation, celebrity.Description, 
+                .EditAsync(celebrity.Id, celebrity.Name, celebrity.Occupation, celebrity.Description,
                 celebrity.ImageUrl, celebrity.Age, this.User.IsAdmin());
 
             if (!edited)
@@ -168,7 +169,24 @@
                 this.TempData[InfoMessageKey] = InfoMessage;
             }
 
-            return RedirectToAction(nameof(Details), new { id = id, information = celebrity.Name + "-" + celebrity.Occupation });
+            return RedirectToAction(nameof(Details), new { id = celebrity.Id, information = celebrity.Name + "-" + celebrity.Occupation });
+        }
+
+        private async Task<string> ProcessUploadedFile(CelebrityAddFormModel celebrity)
+        {
+            string uniqueFileName = null;
+            if (celebrity.CoverPhoto != null)
+            {
+                string uploadsFolder = Path.Combine(this.webHostEnvironment.WebRootPath, "celebrities/cover");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + celebrity.CoverPhoto.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await celebrity.CoverPhoto.CopyToAsync(fileStream);
+                }               
+            }
+
+            return uniqueFileName;
         }
 
         [Authorize]

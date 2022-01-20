@@ -2,11 +2,12 @@
 
 @{
     ViewBag.Title = "Dream Island - Details";
+    var photoPath = "~/celebrities/cover/" + (Model.ImageUrl ?? "noimage.jpg");
 }
 
 <div class="h-100 row align-items-center">
     <div class="col-md-8 offset-2">
-        <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Name">
+        <img class="card-img-top" src="@photoPath" alt="@Model.Name" asp-append-version="true">
         <div class="card-body text-center">
             <h5 class="card-title text-center">Name: @Model.Name</h5>
             <p class="card-text">Occupation: @Model.Occupation</p>
@@ -47,17 +48,18 @@
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 
 @section Scripts{
     <script>
-    $(function () {
-        $("#description").click(function () {
-            $(this).text(function (i, text) {
-                return text === "Less Info" ? "More Info" : "Less Info";
-            })
-        });
-    })
+        $(function () {
+            $("#description").click(function () {
+                $(this).text(function (i, text) {
+                    return text === "Less Info" ? "More Info" : "Less Info";
+                })
+            });
+        })
     </script>
 }

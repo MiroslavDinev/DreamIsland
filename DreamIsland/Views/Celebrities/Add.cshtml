@@ -1,12 +1,57 @@
-﻿@model CelebrityFormModel
+﻿@model CelebrityAddFormModel
 
 @{
     ViewBag.Title = "Dream Island - Add Celebrity";
     ViewBag.FormTitle = "Add Celebrity";
 }
 
-<partial name="_CelebrityFormPartial" model="@Model" />
+<div class="row">
+    <div class=" offset-lg-2 col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
+        <h2 class="text-center">@ViewBag.FormTitle</h2>
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter celebrity name...">
+                <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Occupation"></label>
+                <input asp-for="Occupation" class="form-control" placeholder="Enter celebrity occupation...">
+                <span asp-validation-for="Occupation" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age"></label>
+                <input asp-for="Age" type="number" class="form-control" placeholder="Please fill celebrity age if known...">
+                <span asp-validation-for="Age" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoverPhoto" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="CoverPhoto" class="custom-file-input">
+                    <label class="custom-file-label">Choose File...</label>
+                </div>
+                <span asp-validation-for="CoverPhoto" class="small text-danger"></span>
+            </div>
+            <div class="row justify-content-center">
+                <input class="btn btn-primary mt-4" type="submit" value="@ViewBag.FormTitle" />
+            </div>
+        </form>
+    </div>
+</div>
 
 @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }
