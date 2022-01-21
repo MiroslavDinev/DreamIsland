@@ -5,11 +5,12 @@
 
     using Microsoft.AspNetCore.Http;
 
+    using DreamIsland.Models.Contracts;
+
     using static Data.DataConstants.Celebrity;
 
-    public class CelebrityAddFormModel
+    public class CelebrityAddFormModel : IFormModel
     {
-        //public int Id { get; set; }
 
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "The name should be between {2} and {1} symbols")]
@@ -23,10 +24,8 @@
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = "The description should be between {2} and {1} symbols")]
         public string Description { get; set; }
 
-        //[Required]
         [Display(Name = "Upload photo")]
         public IFormFile CoverPhoto { get; set; }
-        //public string ImageUrl { get; set; }
 
         [Range(MinAge, MaxAge)]
         public int? Age { get; set; }

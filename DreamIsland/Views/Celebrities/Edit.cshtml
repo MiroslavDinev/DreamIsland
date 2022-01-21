@@ -9,6 +9,7 @@
 <div class="row">
     <div class="offset-lg-2 col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
         <h2 class="text-center">@ViewBag.FormTitle</h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
         <form method="post" enctype="multipart/form-data">
             <input hidden asp-for="Id" />
             <input hidden asp-for="ImageUrl" />
@@ -35,13 +36,13 @@
             <div class="form-group">
                 <label asp-for="CoverPhoto" class="control-label"></label>
                 <div class="custom-file">
-                    <input asp-for="CoverPhoto" class="custom-file-input">
+                    <input asp-for="CoverPhoto" class="custom-file-input" accept="image/*">
                     <label class="custom-file-label">Click here to change photo...</label>
                 </div>
                 <span asp-validation-for="CoverPhoto" class="small text-danger"></span>
             </div>
             <div class="form-group text-center">
-                <img src="@photoPath" alt="@Model.Name" asp-append-version="true" height="200"/>
+                <img src="@photoPath" alt="@Model.Name" asp-append-version="true" height="200" />
             </div>
             <div class="row justify-content-center">
                 <input class="btn btn-primary mt-4" type="submit" value="@ViewBag.FormTitle" />

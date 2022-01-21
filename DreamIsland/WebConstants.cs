@@ -21,6 +21,8 @@
             public const string SuccessMessageKey = "SuccessMessage";
 
             public const string SuccessMessagePartner = "Congratulations for becoming a partner!";
+
+            public const string AllowedImageFormat = "Please upload .jpg, .png, .gif or .jpeg image format";
         }       
     }
 }

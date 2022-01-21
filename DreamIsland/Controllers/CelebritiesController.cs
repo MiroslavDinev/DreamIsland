@@ -78,12 +78,22 @@
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
 
+            if (celebrity.CoverPhoto != null)
+            {
+                var isValidImage = IsValidImageFile(celebrity.CoverPhoto);
+
+                if (!isValidImage)
+                {
+                    ModelState.AddModelError(string.Empty, AllowedImageFormat);
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 return this.View(celebrity);
             }
 
-            string uniqueFileName = await ProcessUploadedFile(celebrity);
+            string uniqueFileName = await ProcessUploadedFile(celebrity, this.webHostEnvironment);
 
             var celebrityId = await this .celebrityService
                 .AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, uniqueFileName, celebrity.Age, partnerId);
@@ -146,13 +156,21 @@
 
             if(celebrity.CoverPhoto != null)
             {
-                if(celebrity.ImageUrl != null)
+                var isValidImage = IsValidImageFile(celebrity.CoverPhoto);
+
+                if (!isValidImage)
+                {
+                    ModelState.AddModelError(string.Empty, AllowedImageFormat);
+                    return this.View(celebrity);
+                }
+
+                if (celebrity.ImageUrl != null)
                 {
                     string filePath = Path.Combine(this.webHostEnvironment.WebRootPath, "celebrities/cover", celebrity.ImageUrl);
                     System.IO.File.Delete(filePath);
                 }
 
-                celebrity.ImageUrl = await ProcessUploadedFile(celebrity);                
+                celebrity.ImageUrl = await ProcessUploadedFile(celebrity, this.webHostEnvironment);                
             }
 
             var edited = await this.celebrityService
@@ -170,23 +188,6 @@
             }
 
             return RedirectToAction(nameof(Details), new { id = celebrity.Id, information = celebrity.Name + "-" + celebrity.Occupation });
-        }
-
-        private async Task<string> ProcessUploadedFile(CelebrityAddFormModel celebrity)
-        {
-            string uniqueFileName = null;
-            if (celebrity.CoverPhoto != null)
-            {
-                string uploadsFolder = Path.Combine(this.webHostEnvironment.WebRootPath, "celebrities/cover");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + celebrity.CoverPhoto.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await celebrity.CoverPhoto.CopyToAsync(fileStream);
-                }               
-            }
-
-            return uniqueFileName;
         }
 
         [Authorize]
