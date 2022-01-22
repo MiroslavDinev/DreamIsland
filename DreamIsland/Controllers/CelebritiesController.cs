@@ -69,11 +69,12 @@
         public async Task<IActionResult> Add(CelebrityAddFormModel celebrity)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
+            var controllerName = ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower();
 
             if (partnerId == 0)
             {
                 this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
-                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
+                    controllerName);
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
@@ -93,7 +94,7 @@
                 return this.View(celebrity);
             }
 
-            string uniqueFileName = await ProcessUploadedFile(celebrity, this.webHostEnvironment);
+            string uniqueFileName = await ProcessUploadedFile(celebrity, this.webHostEnvironment, controllerName);
 
             var celebrityId = await this .celebrityService
                 .AddAsync(celebrity.Name, celebrity.Occupation, celebrity.Description, uniqueFileName, celebrity.Age, partnerId);
@@ -135,11 +136,12 @@
         public async Task<IActionResult> Edit(CelebrityEditFormModel celebrity)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
+            var controllerName = ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower();
 
             if (partnerId == 0 && !this.User.IsAdmin())
             {
                 this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
-                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
+                    controllerName);
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
@@ -170,7 +172,7 @@
                     System.IO.File.Delete(filePath);
                 }
 
-                celebrity.ImageUrl = await ProcessUploadedFile(celebrity, this.webHostEnvironment);                
+                celebrity.ImageUrl = await ProcessUploadedFile(celebrity, this.webHostEnvironment, controllerName);                
             }
 
             var edited = await this.celebrityService

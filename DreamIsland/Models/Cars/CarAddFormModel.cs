@@ -4,9 +4,11 @@
 
     using Microsoft.AspNetCore.Http;
 
+    using DreamIsland.Models.Contracts;
+
     using static Data.DataConstants.Vehicle;
 
-    public class CarFormModel
+    public class CarAddFormModel : IFormModel
     {
         [Required]
         [StringLength(BrandMaxLength, MinimumLength = BrandMinLength, ErrorMessage = "The car brand should be between {2} and {1} symbols")]
@@ -21,10 +23,8 @@
             ErrorMessage = "The car description should be between {2} and {1} symbols")]
         public string Description { get; set; }
 
-        [Required]
         [Display(Name = "Upload photo")]
         public IFormFile CoverPhoto { get; set; }
-        public string ImageUrl { get; set; }
         public int Year { get; set; }
 
         public bool HasRemoteStart { get; set; }

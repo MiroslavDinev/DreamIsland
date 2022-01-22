@@ -32,7 +32,7 @@
             this.CreateMap<Car, CarListingViewModel>();
             this.CreateMap<Car, CarDetailsServiceModel>()
                 .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
-            this.CreateMap<CarDetailsServiceModel, CarFormModel>();
+            this.CreateMap<CarDetailsServiceModel, CarEditFormModel>();
 
             this.CreateMap<Celebrity, CelebrityListingViewModel>();
             this.CreateMap<Celebrity, CelebrityDetailsServiceModel>()

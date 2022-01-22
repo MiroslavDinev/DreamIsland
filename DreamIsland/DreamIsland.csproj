@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\cars\cover\" />
     <Folder Include="wwwroot\collectibles\cover\" />
     <Folder Include="wwwroot\islands\cover\" />
   </ItemGroup>

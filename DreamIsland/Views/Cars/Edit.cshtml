@@ -1,12 +1,78 @@
-﻿@model CarFormModel
+﻿@model CarEditFormModel
 
 @{
     ViewBag.Title = "Dream Island - Edit Car";
     ViewBag.FormTitle = "Edit Car";
+    var photoPath = "/cars/cover/" + (Model.ImageUrl ?? "noimage.jpg");
 }
 
-<partial name="_CarFormPartial" model="@Model" />
+<div class="row">
+    <div class=" offset-lg-2 col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
+        <h2 class="text-center">@ViewBag.FormTitle</h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <form method="post" enctype="multipart/form-data">
+            <input hidden asp-for="Id" />
+            <input hidden asp-for="ImageUrl" />
+            <div class="form-group">
+                <label asp-for="Brand"></label>
+                <input asp-for="Brand" class="form-control" placeholder="Enter car brand...">
+                <span asp-validation-for="Brand" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Model"></label>
+                <input asp-for="Model" class="form-control" placeholder="Enter car model...">
+                <span asp-validation-for="Model" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoverPhoto" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="CoverPhoto" class="custom-file-input" accept="image/*">
+                    <label class="custom-file-label" for="customFile">Click here to change photo...</label>
+                </div>
+                <span asp-validation-for="CoverPhoto" class="small text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <img src="@photoPath" alt="@(Model.Brand + " " + Model.Model)" asp-append-version="true" height="200" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Year"></label>
+                <input asp-for="Year" type="number" class="form-control" min="1900" max="2030" placeholder="@DateTime.UtcNow.Year">
+                <span asp-validation-for="Year" class="small text-danger"></span>
+            </div>
+            <div class="form-check form-check-inline">
+                <input asp-for="HasRemoteControlParking" class="form-check-input" type="checkbox">
+                <label class="form-check-label" asp-for="HasRemoteControlParking">Remote Control Parking</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input asp-for="HasRemoteStart" class="form-check-input" type="checkbox">
+                <label class="form-check-label" asp-for="HasRemoteStart">Remote Start</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input asp-for="HasSeatMassager" class="form-check-input" type="checkbox">
+                <label class="form-check-label" asp-for="HasSeatMassager">Seat Massager</label>
+            </div>
+            <div class="row justify-content-center">
+                <input class="btn btn-primary mt-4" type="submit" value="@ViewBag.FormTitle" />
+            </div>
+        </form>
+    </div>
+</div>
+
 
 @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+    </script>
+
     <partial name="_ValidationScriptsPartial" />
 }

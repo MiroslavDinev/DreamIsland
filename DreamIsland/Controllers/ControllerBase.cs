@@ -25,12 +25,12 @@
             return "/" + folderPath;
         }
 
-        public async Task<string> ProcessUploadedFile(IFormModel formModel, IWebHostEnvironment webHostEnvironment)
+        public async Task<string> ProcessUploadedFile(IFormModel formModel, IWebHostEnvironment webHostEnvironment, string folderName)
         {
             string uniqueFileName = null;
             if (formModel.CoverPhoto != null)
             {
-                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "celebrities/cover");
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, $"{folderName}/cover");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + formModel.CoverPhoto.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
