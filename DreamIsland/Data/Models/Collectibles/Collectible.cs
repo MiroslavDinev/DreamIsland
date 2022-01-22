@@ -1,4 +1,4 @@
-﻿namespace DreamIsland.Data.Models
+﻿namespace DreamIsland.Data.Models.Collectibles
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -15,8 +15,6 @@
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
-
-        [Required]
         public string ImageUrl { get; set; }
 
         public RarityLevel RarityLevel { get; set; }

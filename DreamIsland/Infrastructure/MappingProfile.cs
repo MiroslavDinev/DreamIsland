@@ -2,10 +2,10 @@
 {
     using AutoMapper;
 
-    using DreamIsland.Data.Models;
     using DreamIsland.Data.Models.Islands;
     using DreamIsland.Data.Models.Vehicles;
     using DreamIsland.Data.Models.Celebrities;
+    using DreamIsland.Data.Models.Collectibles;
     using DreamIsland.Models.Cars;
     using DreamIsland.Models.Islands;
     using DreamIsland.Models.Celebrities;
@@ -43,7 +43,7 @@
             this.CreateMap<Collectible, CollectibleDetailsServiceModel>()
                 .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Partner.UserId));
 
-            this.CreateMap<CollectibleDetailsServiceModel, CollectibleFormModel>();
+            this.CreateMap<CollectibleDetailsServiceModel, CollectibleEditFormModel>();
         }
     }
 }

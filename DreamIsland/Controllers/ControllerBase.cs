@@ -14,17 +14,6 @@
     public class ControllerBase : Controller
     {
         private readonly string[] allowedExtensions = new[] { "jpg", "png", "gif", "jpeg" };
-        public async Task<string> UploadImage(string folderPath, IFormFile file, IWebHostEnvironment webHostEnvironment)
-        {
-            folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
-
-            string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folderPath);
-
-            await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-
-            return "/" + folderPath;
-        }
-
         public async Task<string> ProcessUploadedFile(IFormModel formModel, IWebHostEnvironment webHostEnvironment, string folderName)
         {
             string uniqueFileName = null;
@@ -53,10 +42,5 @@
 
             return true;
         }
-
-        //public string GetControllerName()
-        //{
-        //    return ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower();
-        //}
     }
 }

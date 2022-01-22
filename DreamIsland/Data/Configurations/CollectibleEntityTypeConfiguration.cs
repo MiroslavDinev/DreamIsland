@@ -3,7 +3,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    using DreamIsland.Data.Models;
+    using DreamIsland.Data.Models.Collectibles;
 
     public class CollectibleEntityTypeConfiguration : IEntityTypeConfiguration<Collectible>
     {

@@ -2,11 +2,12 @@
 
 @{
     ViewBag.Title = "Dream Island - Details";
+    var photoPath = "/collectibles/cover/" + (Model.ImageUrl ?? "noimage.jpg");
 }
 
 <div class="h-100 row align-items-center">
     <div class="col-md-8 offset-2">
-        <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Name">
+        <img class="card-img-top" src="@photoPath" alt="@Model.Name">
         <div class="card-body text-center">
             <h5 class="card-title text-center">Name: @Model.Name</h5>
             <p class="card-text">Rarity: @(EnumValuesExtension.GetDescriptionFromEnum(Model.RarityLevel))</p>

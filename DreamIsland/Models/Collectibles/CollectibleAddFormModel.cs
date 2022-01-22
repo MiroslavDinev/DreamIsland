@@ -6,11 +6,10 @@
 
     using DreamIsland.Data.Enums;
     using static Data.DataConstants.Collectible;
+    using DreamIsland.Models.Contracts;
 
-    public class CollectibleFormModel
+    public class CollectibleAddFormModel : IFormModel
     {
-        public int Id { get; set; }
-
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "The name should be between {2} and {1} symbols")]
         public string Name { get; set; }
@@ -19,10 +18,8 @@
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = "The description should be between {2} and {1} symbols")]
         public string Description { get; set; }
 
-        [Required]
         [Display(Name = "Upload photo")]
         public IFormFile CoverPhoto { get; set; }
-        public string ImageUrl { get; set; }
 
         [Display(Name = "Rarity Level")]
         public RarityLevel RarityLevel { get; set; }

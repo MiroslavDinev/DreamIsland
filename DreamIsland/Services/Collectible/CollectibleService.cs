@@ -12,6 +12,7 @@
     using DreamIsland.Data;
     using DreamIsland.Data.Enums;
     using DreamIsland.Models.Collectibles;
+    using DreamIsland.Data.Models.Collectibles;
     using DreamIsland.Infrastructure;
     using DreamIsland.Services.Collectible.Models;
     using DreamIsland.Areas.Admin.Models.Collectible;
