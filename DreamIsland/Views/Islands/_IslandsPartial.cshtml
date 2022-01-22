@@ -3,9 +3,10 @@
 <div class="row">
     @foreach (var island in Model)
     {
+        var photoPath = "/islands/cover/" + (island.ImageUrl ?? "noimage.jpg");
         <div class="col-md-4">
             <div class="card mb-3">
-                <img class="card-img-top" src=@island.ImageUrl alt=@island.Name height="400">
+                <img class="card-img-top" src=@photoPath alt=@island.Name height="400">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@island.Name</h5>
                     <p>

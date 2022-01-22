@@ -168,7 +168,7 @@
 
                 if (celebrity.ImageUrl != null)
                 {
-                    string filePath = Path.Combine(this.webHostEnvironment.WebRootPath, "celebrities/cover", celebrity.ImageUrl);
+                    var filePath = Path.Combine(this.webHostEnvironment.WebRootPath, "celebrities/cover", celebrity.ImageUrl);
                     System.IO.File.Delete(filePath);
                 }
 

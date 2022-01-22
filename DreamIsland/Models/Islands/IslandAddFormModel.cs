@@ -5,10 +5,12 @@
 
     using Microsoft.AspNetCore.Http;
 
+    using DreamIsland.Models.Contracts;
     using DreamIsland.Services.Island.Models;
+
     using static Data.DataConstants.Island;
 
-    public class IslandFormModel
+    public class IslandAddFormModel : IFormModel
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "The island name should be between {2} and {1} characters")]
@@ -29,10 +31,8 @@
         [Display(Name = "Price in USD")]
         public decimal? Price { get; set; }
 
-        [Required]
         [Display(Name = "Upload photo")]
         public IFormFile CoverPhoto { get; set; }
-        public string ImageUrl { get; set; }
 
         [Display(Name = "Population")]
         public int PopulationSizeId { get; set; }

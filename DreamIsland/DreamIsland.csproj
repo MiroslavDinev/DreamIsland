@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\collectibles\cover\" />
-    <Folder Include="wwwroot\islands\cover\" />
   </ItemGroup>
 
 </Project>

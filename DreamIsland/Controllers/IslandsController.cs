@@ -14,20 +14,21 @@
 
     using static WebConstants.GlobalMessages;
     using Microsoft.AspNetCore.Hosting;
+    using System.IO;
 
     public class IslandsController : ControllerBase
     {
         private readonly IIslandService islandService;
         private readonly IPartnerService partnerService;
         private readonly IMapper mapper;
-        private readonly IWebHostEnvironment hostEnvironment;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public IslandsController(IIslandService islandService, IPartnerService partnerService, IMapper mapper, IWebHostEnvironment hostEnvironment)
+        public IslandsController(IIslandService islandService, IPartnerService partnerService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.islandService = islandService;
             this.partnerService = partnerService;
             this.mapper = mapper;
-            this.hostEnvironment = hostEnvironment;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult All([FromQuery] AllIslandsQueryModel query)
@@ -60,7 +61,7 @@
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
 
-            return this.View(new IslandFormModel
+            return this.View(new IslandAddFormModel
             {
                 IslandRegions = this.islandService.GetRegions(),
                 PopulationSizes = this.islandService.GetPopulationSizes()
@@ -69,14 +70,15 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add(IslandFormModel island)
+        public async Task<IActionResult> Add(IslandAddFormModel island)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
+            var controllerName = ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower();
 
-            if(partnerId == 0)
+            if (partnerId == 0)
             {
                 this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
-                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
+                    controllerName);
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
@@ -91,10 +93,14 @@
                 this.ModelState.AddModelError(nameof(island.IslandRegionId), "Region size does not exist!");
             }
 
-            if (island.ImageUrl == null)
+            if (island.CoverPhoto != null)
             {
-                string folder = "islands/cover/";
-                island.ImageUrl = await UploadImage(folder, island.CoverPhoto, this.hostEnvironment);
+                var isValidImage = IsValidImageFile(island.CoverPhoto);
+
+                if (!isValidImage)
+                {
+                    ModelState.AddModelError(string.Empty, AllowedImageFormat);
+                }
             }
 
             if (!ModelState.IsValid)
@@ -104,8 +110,10 @@
                 return this.View(island);
             }
 
+            string uniqueFileName = await ProcessUploadedFile(island, this.webHostEnvironment, controllerName);
+
             var islandId = await this.islandService
-                .AddAsync(island.Name, island.Location, island.Description, island.SizeInSquareKm, island.Price, island.ImageUrl, 
+                .AddAsync(island.Name, island.Location, island.Description, island.SizeInSquareKm, island.Price, uniqueFileName, 
                 island.PopulationSizeId, island.IslandRegionId, partnerId);
 
             this.TempData[InfoMessageKey] = InfoMessage;
@@ -134,7 +142,7 @@
                 return Unauthorized();
             }
 
-            var islandForm = this.mapper.Map<IslandFormModel>(island);
+            var islandForm = this.mapper.Map<IslandEditFormModel>(island);
 
             islandForm.IslandRegions = this.islandService.GetRegions();
             islandForm.PopulationSizes = this.islandService.GetPopulationSizes();
@@ -144,14 +152,15 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, IslandFormModel island)
+        public async Task<IActionResult> Edit(IslandEditFormModel island)
         {
             var partnerId = this.partnerService.PartnerId(this.User.GetUserId());
+            var controllerName = ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower();
 
             if (partnerId == 0 && !this.User.IsAdmin())
             {
                 this.TempData[WarningMessageKey] = String.Format(WarningMessage, ControllerContext.ActionDescriptor.ActionName.ToLower(),
-                    ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower());
+                    controllerName);
 
                 return RedirectToAction(nameof(PartnersController.Become), "Partners");
             }
@@ -173,19 +182,32 @@
                 return this.View(island);
             }
 
-            if(!this.islandService.IsByPartner(id, partnerId) && !this.User.IsAdmin())
+            if(!this.islandService.IsByPartner(island.Id, partnerId) && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
 
-            if (island.ImageUrl == null)
+            if(island.CoverPhoto != null)
             {
-                string folder = "islands/cover/";
-                island.ImageUrl = await UploadImage(folder, island.CoverPhoto, this.hostEnvironment);
+                var isValidImage = IsValidImageFile(island.CoverPhoto);
+
+                if (!isValidImage)
+                {
+                    ModelState.AddModelError(string.Empty, AllowedImageFormat);
+                    return this.View(island);
+                }
+
+                if(island.ImageUrl != null)
+                {
+                    var filePath = Path.Combine(this.webHostEnvironment.WebRootPath, "islands/cover", island.ImageUrl);
+                    System.IO.File.Delete(filePath);
+                }
+
+                island.ImageUrl = await ProcessUploadedFile(island, this.webHostEnvironment, controllerName);
             }
 
             var edited = await this.islandService
-                .EditAsync(id, island.Name, island.Location, island.Description, island.SizeInSquareKm, 
+                .EditAsync(island.Id, island.Name, island.Location, island.Description, island.SizeInSquareKm, 
                 island.Price, island.ImageUrl, island.PopulationSizeId, island.IslandRegionId, this.User.IsAdmin());
 
             if (!edited)
@@ -198,7 +220,7 @@
                 this.TempData[InfoMessageKey] = InfoMessage;
             }
 
-            return RedirectToAction(nameof(Details), new { id = id, information = island.Name });
+            return RedirectToAction(nameof(Details), new { id = island.Id, information = island.Name });
         }
 
         [Authorize]

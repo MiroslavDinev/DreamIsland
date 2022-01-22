@@ -53,5 +53,10 @@
 
             return true;
         }
+
+        //public string GetControllerName()
+        //{
+        //    return ControllerContext.ActionDescriptor.ControllerName.Replace("Controller", "").ToLower();
+        //}
     }
 }

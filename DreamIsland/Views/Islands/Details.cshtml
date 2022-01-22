@@ -2,11 +2,12 @@
 
 @{
     ViewBag.Title = "Dream Island - Details";
+    var photoPath = "/islands/cover/" + (Model.ImageUrl ?? "noimage.jpg");
 }
 
 <div class="h-100 row align-items-center">
     <div class="col-md-8 offset-2">
-        <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Name">
+        <img class="card-img-top" src="@photoPath" alt="@Model.Name">
         <div class="card-body text-center">
             <h5 class="card-title text-center">Island: @Model.Name</h5>
             <p class="card-text">Location: @Model.Location</p>
@@ -21,6 +22,7 @@
                     <p class="card-text">Area: @(Model.SizeInSquareKm + " km")<sup>2</sup></p>
                 </div>
             </div>
+            </p>
             @if (User.IsAdmin())
             {
                 <a asp-controller="Islands" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
