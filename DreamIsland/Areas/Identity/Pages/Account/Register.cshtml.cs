@@ -93,7 +93,9 @@
                         protocol: Request.Scheme);
 
                     await this.emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $"<h2>Welcome to Dream Island!</h2>" +
+                        $"<p>Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.</p>" +
+                        $"<p>Regards, Dream Island team!</p>");
 
                     if (this.userManager.Options.SignIn.RequireConfirmedAccount)
                     {

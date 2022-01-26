@@ -1,5 +1,5 @@
 namespace DreamIsland
-{   
+{
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -7,17 +7,20 @@ namespace DreamIsland
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+
 
     using DreamIsland.Data;
     using DreamIsland.Infrastructure;
     using DreamIsland.Services.Car;
     using DreamIsland.Services.Partner;
-    using Microsoft.AspNetCore.Mvc;
     using DreamIsland.Data.Models;
     using DreamIsland.Services.Island;
     using DreamIsland.Services.Statistic;
     using DreamIsland.Services.Celebrity;
     using DreamIsland.Services.Collectible;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using DreamIsland.Services.Messaging;
 
     public class Startup
     {
@@ -42,6 +45,7 @@ namespace DreamIsland
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+                options.SignIn.RequireConfirmedAccount = true;
 
             })
                 .AddRoles<IdentityRole>()
@@ -56,6 +60,7 @@ namespace DreamIsland
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
 
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IPartnerService, PartnerService>();
             services.AddTransient<IIslandService, IslandService>();
