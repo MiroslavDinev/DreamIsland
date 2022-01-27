@@ -222,6 +222,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult Details(int id, string information)
         {
             var collectible = this.collectibleService.Details(id);

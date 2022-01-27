@@ -221,6 +221,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult Details(int id, string information)
         {
             var celebrity = this.celebrityService.Details(id);

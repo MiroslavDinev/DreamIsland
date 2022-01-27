@@ -1,8 +1,14 @@
 ﻿@model IslandDetailsServiceModel
+@using Microsoft.AspNetCore.Identity
+@using DreamIsland.Services.Partner
+@inject UserManager<User> UserManager
+@inject IPartnerService Partners
 
 @{
     ViewBag.Title = "Dream Island - Details";
     var photoPath = "/islands/cover/" + (Model.ImageUrl ?? "noimage.jpg");
+    var userId = this.User.GetUserId();
+    var userIsPartner = Partners.isPartner(userId);
 }
 
 <div class="h-100 row align-items-center">
@@ -29,6 +35,10 @@
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#tips-@Model.Id">
                     Delete
                 </button>
+            }
+            else if (!User.IsAdmin() && !userIsPartner)
+            {
+                <a asp-controller="Islands" asp-action="Book" asp-route-id="@Model.Id" class="btn btn-info">Book</a>
             }
             <div class="modal fade" id="tips-@Model.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">

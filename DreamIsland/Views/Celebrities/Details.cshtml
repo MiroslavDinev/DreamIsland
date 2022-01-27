@@ -1,8 +1,14 @@
 ﻿@model CelebrityDetailsServiceModel
+@using Microsoft.AspNetCore.Identity
+@using DreamIsland.Services.Partner
+@inject UserManager<User> UserManager
+@inject IPartnerService Partners
 
 @{
     ViewBag.Title = "Dream Island - Details";
     var photoPath = "/celebrities/cover/" + (Model.ImageUrl ?? "noimage.jpg");
+    var userId = this.User.GetUserId();
+    var userIsPartner = Partners.isPartner(userId);
 }
 
 <div class="h-100 row align-items-center">
@@ -21,29 +27,34 @@
                     @Model.Description
                 </div>
                 </p>
-                @if (User.IsAdmin())
-                {
-                    <a asp-controller="Celebrities" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#tips-@Model.Id">
-                        Delete
-                    </button>
-                }
-                <div class="modal fade" id="tips-@Model.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title col-12 text-center" id="exampleModalLabel">Delete confirmation</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete @Model.Name?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <a asp-controller="Celebrities" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-                            </div>
+            </div>
+            </p>
+            @if (User.IsAdmin())
+            {
+                <a asp-controller="Celebrities" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#tips-@Model.Id">
+                    Delete
+                </button>
+            }
+            else if (!User.IsAdmin() && !userIsPartner)
+            {
+                <a asp-controller="Celebrities" asp-action="Book" asp-route-id="@Model.Id" class="btn btn-info">Book</a>
+            }
+            <div class="modal fade" id="tips-@Model.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title col-12 text-center" id="exampleModalLabel">Delete confirmation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete @Model.Name?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a asp-controller="Celebrities" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,14 @@
 ﻿@model CarDetailsServiceModel
+@using Microsoft.AspNetCore.Identity
+@using DreamIsland.Services.Partner
+@inject UserManager<User> UserManager
+@inject IPartnerService Partners
 
 @{
     ViewBag.Title = "Dream Island - Details";
     var photoPath = "/cars/cover/" + (Model.ImageUrl ?? "noimage.jpg");
+    var userId = this.User.GetUserId();
+    var userIsPartner = Partners.isPartner(userId);
 }
 
 <div class="h-100 row align-items-center">
@@ -44,6 +50,10 @@
                     Delete
                 </button>
             }
+            else if (!User.IsAdmin() && !userIsPartner)
+            {
+                <a asp-controller="Cars" asp-action="Book" asp-route-id="@Model.Id" class="btn btn-info">Book</a>
+            }
             <div class="modal fade" id="tips-@Model.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -67,14 +77,14 @@
     </div>
 </div>
 
-@section Scripts{ 
-<script>
-    $(function () {
-        $("#description").click(function () {
-            $(this).text(function (i, text) {
-                return text === "Less Info" ? "More Info" : "Less Info";
-            })
-        });
-    })
-</script>
+@section Scripts{
+    <script>
+        $(function () {
+            $("#description").click(function () {
+                $(this).text(function (i, text) {
+                    return text === "Less Info" ? "More Info" : "Less Info";
+                })
+            });
+        })
+    </script>
 }

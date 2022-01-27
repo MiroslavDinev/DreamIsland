@@ -224,6 +224,7 @@
 
         }
 
+        [Authorize]
         public IActionResult Details(int id, string information)
         {
             var car = this.carService.Details(id);
