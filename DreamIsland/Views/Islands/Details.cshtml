@@ -38,7 +38,7 @@
             }
             else if (!User.IsAdmin() && !userIsPartner)
             {
-                <a asp-controller="Islands" asp-action="Book" asp-route-id="@Model.Id" class="btn btn-info">Book</a>
+                <a asp-controller="Contact" asp-action="Book" class="btn btn-info">Book</a>
             }
             <div class="modal fade" id="tips-@Model.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">

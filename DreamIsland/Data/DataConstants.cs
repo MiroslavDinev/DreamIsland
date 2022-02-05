@@ -60,5 +60,17 @@
             public const int DescriptionMaxLength = 1000;
             public const int DescriptionMinLength = 10;
         }
+
+        public static class ContactMessage
+        {
+            public const int MessageMaxLength = 1000;
+            public const int MessageMinLength = 10;
+        }
+
+        public static class ContactSubject
+        {
+            public const int SubjectMaxLength = 30;
+            public const int SubjectMinLength = 3;
+        }
     }
 }
