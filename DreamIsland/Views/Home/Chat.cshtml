@@ -1,0 +1,116 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+    var username = currentUser.Nickname;
+}
+
+@{
+    this.ViewBag.Title = "Group Chat";
+}
+<style>
+    .speech-bubble {
+        position: relative;
+        background: #878992;
+        border-radius: .4em;
+    }
+
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border-right-color: #878992;
+            border-left: 0;
+            border-bottom: 0;
+            margin-top: -6.5px;
+            margin-left: -13px;
+        }
+
+    li {
+        margin: 10px 0;
+        padding-left: 10px;
+    }
+</style>
+
+
+<h1 class="text-center">@this.ViewBag.Title</h1>
+
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-4">User:</div>
+        <div class="col-4 d-flex justify-content-center"><input class="text-center" type="text" id="userInput" value="@username" disabled /></div>
+    </div>
+    </p>
+    <div class="row">
+        <div class="col-10">
+            <textarea class="form-control" rows="3" id="messageInput" placeholder="Type message..."></textarea>
+        </div>
+        <div class="col-2">
+            <input class="btn btn-primary mt-4" type="submit" id="sendButton" value="Send" />
+        </div>
+    </div>
+    <div class="row">&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-10">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        "use strict";
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+
+        //Disable the send button until connection is established.
+        document.getElementById("sendButton").disabled = true;
+
+        connection.on("ReceiveMessage", function (user, message) {
+            var msg = escapeHtml(message);
+            var li = document.createElement("li");
+            li.className = "speech-bubble";
+            document.getElementById("messagesList").appendChild(li);
+            // We can assign user-supplied strings to an element's textContent because it
+            // is not interpreted as markup. If you're assigning in any other way, you
+            // should be aware of possible script injection concerns.
+            li.style.listStyleType = "none";
+            li.textContent = `${user}: ${msg}`;
+        });
+
+        connection.start().then(function () {
+            document.getElementById("sendButton").disabled = false;
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        document.getElementById("sendButton").addEventListener("click", function (event) {
+            var user = document.getElementById("userInput").value;
+            var message = document.getElementById("messageInput").value;
+            connection.invoke("SendMessage", user, message).catch(function (err) {
+                return console.error(err.toString());
+            });
+            document.getElementById("messageInput").value = "";
+            event.preventDefault();
+        });
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+}

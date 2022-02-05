@@ -8,6 +8,7 @@ namespace DreamIsland
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Identity.UI.Services;
 
 
     using DreamIsland.Data;
@@ -19,8 +20,8 @@ namespace DreamIsland
     using DreamIsland.Services.Statistic;
     using DreamIsland.Services.Celebrity;
     using DreamIsland.Services.Collectible;
-    using Microsoft.AspNetCore.Identity.UI.Services;
     using DreamIsland.Services.Messaging;
+    using DreamIsland.Hubs;
 
     public class Startup
     {
@@ -59,6 +60,8 @@ namespace DreamIsland
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
+
+            services.AddSignalR();
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICarService, CarService>();
@@ -119,6 +122,8 @@ namespace DreamIsland
 
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
+
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }
