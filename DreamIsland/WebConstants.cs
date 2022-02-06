@@ -22,6 +22,8 @@
 
             public const string SuccessMessagePartner = "Congratulations for becoming a partner!";
 
+            public const string SuccessContactMessage = "Sent! You will be contacted shortly via email.";
+
             public const string AllowedImageFormat = "Please upload .jpg, .png, .gif or .jpeg image format";
         }       
     }
