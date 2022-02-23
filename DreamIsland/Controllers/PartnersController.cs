@@ -23,6 +23,18 @@
         [Authorize]
         public IActionResult Become()
         {
+            var userId = this.User.GetUserId();
+
+            var userIsPartner = this.partnerService
+                .isPartner(userId);
+
+            if (userIsPartner)
+            {
+                this.TempData[WarningMessageKey] = WarningMessagePartner;
+
+                return RedirectToAction("Index", "Home");
+            }
+
             return this.View();
         }
 
@@ -37,7 +49,9 @@
 
             if (userIsPartner)
             {
-                return BadRequest();
+                this.TempData[WarningMessageKey] = WarningMessagePartner;
+
+                return RedirectToAction("Index", "Home");
             }
 
             if (!ModelState.IsValid)

@@ -1,24 +1,24 @@
 ﻿namespace DreamIsland.Tests.Controllers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+
     using Xunit;
     using MyTested.AspNetCore.Mvc;
+
     using DreamIsland.Controllers;
     using DreamIsland.Models.Partners;
     using DreamIsland.Data.Models;
+
     using static WebConstants.GlobalMessages;
 
-    public class PartnerControllerTests
+    public class PartnersControllerTests
     {
         [Fact]
         public void GetBecomeIsForAuthorizedUsersAndReturnsView()
         {
             MyController<PartnersController>
-                .Instance()
+                .Instance(controller=> controller
+                .WithUser())
                 .Calling(c => c.Become())
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes.

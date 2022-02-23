@@ -14,6 +14,10 @@
 
             public const string WarningMessage = "Please register as a partner to {0} {1}.";
 
+            public const string WarningMessagePartner = "You are already a partner.";
+
+            public const string WarningUnauthorizedGuest = "Please login to use this functionality";
+
             public const string InfoMessageKey = "InfoMessage";
 
             public const string InfoMessage = "Submitted successfully. Pending administrator approval.";

@@ -227,9 +227,9 @@
         {
             var collectible = this.collectibleService.Details(id);
 
-            if (!information.Contains(collectible.Name))
+            if (collectible == null || !information.Contains(collectible.Name))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return this.View(collectible);

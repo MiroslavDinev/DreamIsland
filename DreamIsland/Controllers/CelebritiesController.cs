@@ -226,9 +226,9 @@
         {
             var celebrity = this.celebrityService.Details(id);
 
-            if(!information.Contains(celebrity.Name) && !information.Contains(celebrity.Occupation))
+            if(celebrity==null || (!information.Contains(celebrity.Name) && !information.Contains(celebrity.Occupation)))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return this.View(celebrity);

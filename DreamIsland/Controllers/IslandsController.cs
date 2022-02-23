@@ -257,9 +257,9 @@
         {
             var island = this.islandService.Details(id);
 
-            if(information != island.Name)
+            if(island == null || information != island.Name)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return this.View(island);

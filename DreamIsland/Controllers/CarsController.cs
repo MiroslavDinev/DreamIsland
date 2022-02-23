@@ -229,9 +229,9 @@
         {
             var car = this.carService.Details(id);
 
-            if(!information.Contains(car.Model) && !information.Contains(car.Brand))
+            if(car == null || (!information.Contains(car.Model) && !information.Contains(car.Brand)))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return this.View(car);
