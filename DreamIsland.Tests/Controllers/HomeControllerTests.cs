@@ -25,6 +25,15 @@
         }
 
         [Fact]
+        public void ErrorShouldReturnView()
+        {
+            MyController<HomeController>
+               .Calling(c => c.Error())
+               .ShouldReturn()
+               .View();
+        }
+
+        [Fact]
         
         public void ChatShouldReturnView()
         {

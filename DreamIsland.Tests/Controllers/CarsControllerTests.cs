@@ -10,6 +10,8 @@
     using DreamIsland.Controllers;
     using DreamIsland.Services.Car.Models;
     using DreamIsland.Data.Models.Vehicles;
+    using static Data.Cars;
+    using DreamIsland.Tests.Mock.Car;
 
     public class CarsControllerTests
     {
