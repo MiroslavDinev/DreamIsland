@@ -60,7 +60,7 @@
                     .RestrictingForAuthorizedRequests())
                 .ValidModelState()
                 .Data(data => data
-                    .WithSet<Partner>(dealers => dealers
+                    .WithSet<Partner>(partners => partners
                         .Any(d =>
                             d.Name == partnerName &&
                             d.PhoneNumber == phoneNumber &&
