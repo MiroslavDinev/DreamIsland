@@ -9,7 +9,7 @@
     public class StatisticsControllerTests
     {
         [Fact]
-        public void StatisticsReturnTheCorrectResult()
+        public void StatisticsReturnTheCorrectResultWithCache()
         {
             var statisticsController = new StatisticsApiController(StatisticsServiceMock.Instance, MockMemoryCacheServiceMock.GetMemoryCache(new StatisticsResponseModel
             {
@@ -28,6 +28,5 @@
             Assert.Equal(20, result.TotalIslands);
             
         }
-        
     }
 }

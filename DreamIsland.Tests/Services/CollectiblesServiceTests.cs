@@ -270,5 +270,59 @@
 
             Assert.False(result);
         }
+
+        [Fact]
+        public void IsByPartnerReturnsTrueIfCollectibleIsAddedByThisPartner()
+        {
+            var collectible = new Collectible
+            {
+                Id = 1,
+                Name = "Sword",
+                RarityLevel = RarityLevel.Rare,
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = true,
+                IsBooked = false,
+                IsPublic = false,
+                PartnerId = 1
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Collectibles.Add(collectible);
+            data.SaveChanges();
+
+            var collectibleService = new CollectibleService(data, MapperMock.Instance);
+
+            var result = collectibleService.IsByPartner(1, 1);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsByPartnerReturnsFalseIfCollectibleIsNotAddedByThisPartner()
+        {
+            var collectible = new Collectible
+            {
+                Id = 1,
+                Name = "Sword",
+                RarityLevel = RarityLevel.Rare,
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = true,
+                IsBooked = false,
+                IsPublic = false,
+                PartnerId = 1
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Collectibles.Add(collectible);
+            data.SaveChanges();
+
+            var collectibleService = new CollectibleService(data, MapperMock.Instance);
+
+            var result = collectibleService.IsByPartner(1, 2);
+
+            Assert.False(result);
+        }
     }
 }

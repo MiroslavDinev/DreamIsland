@@ -311,5 +311,67 @@
 
             Assert.False(result);
         }
+
+        [Fact]
+        public void IsByPartnerReturnsTrueIfCarIsAddedByThisPartner()
+        {
+            var car = new Car
+            {
+                Id = 1,
+                Brand = "Test",
+                Model = "Testov",
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                HasRemoteControlParking = false,
+                HasRemoteStart = false,
+                HasSeatMassager = false,
+                IsPublic = true,
+                Year = 2020,
+                PartnerId = 1
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Cars.Add(car);
+            data.SaveChanges();
+
+            var carService = new CarService(data, MapperMock.Instance);
+
+            var result = carService.IsByPartner(1, 1);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsByPartnerReturnsFalseIfCarIsNotAddedByThisPartner()
+        {
+            var car = new Car
+            {
+                Id = 1,
+                Brand = "Test",
+                Model = "Testov",
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                HasRemoteControlParking = false,
+                HasRemoteStart = false,
+                HasSeatMassager = false,
+                IsPublic = true,
+                Year = 2020,
+                PartnerId = 1
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Cars.Add(car);
+            data.SaveChanges();
+
+            var carService = new CarService(data, MapperMock.Instance);
+
+            var result = carService.IsByPartner(1, 2);
+
+            Assert.False(result);
+        }
     }
 }

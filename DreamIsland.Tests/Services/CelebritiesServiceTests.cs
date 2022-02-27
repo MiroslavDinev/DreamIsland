@@ -281,5 +281,61 @@
 
             Assert.False(result);
         }
+
+        [Fact]
+        public void IsByPartnerReturnsTrueIfCelebrityIsAddedByThisPartner()
+        {
+            var celebrity = new Celebrity
+            {
+                Id = 1,
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                IsPublic = true,
+                PartnerId = 1,
+                Name = "TestName",
+                Occupation = "TestOccupation",
+                Age = 30
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Celebrities.Add(celebrity);
+            data.SaveChanges();
+
+            var celebrityService = new CelebrityService(data, MapperMock.Instance);
+
+            var result = celebrityService.IsByPartner(1, 1);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsByPartnerReturnsFalseIfCelebrityIsNotAddedByThisPartner()
+        {
+            var celebrity = new Celebrity
+            {
+                Id = 1,
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                IsPublic = true,
+                PartnerId = 1,
+                Name = "TestName",
+                Occupation = "TestOccupation",
+                Age = 30
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Celebrities.Add(celebrity);
+            data.SaveChanges();
+
+            var celebrityService = new CelebrityService(data, MapperMock.Instance);
+
+            var result = celebrityService.IsByPartner(1, 2);
+
+            Assert.False(result);
+        }
     }
 }
