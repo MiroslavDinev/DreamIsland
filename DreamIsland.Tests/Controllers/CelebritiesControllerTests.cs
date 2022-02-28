@@ -7,54 +7,51 @@
     using MyTested.AspNetCore.Mvc;
 
     using DreamIsland.Controllers;
-    using DreamIsland.Data.Models.Vehicles;
-    using DreamIsland.Tests.Mock;
-    using DreamIsland.Services.Car;
+    using DreamIsland.Data.Models.Celebrities;
+    using DreamIsland.Models.Celebrities;
+    using DreamIsland.Services.Celebrity;
     using DreamIsland.Services.Partner;
-    using Models.Cars;
+    using DreamIsland.Tests.Mock;
 
-    public class CarsControllerTests
+    public class CelebritiesControllerTests
     {
         [Fact]
-        public void DetailsShouldReturnNotFoundWhenInvalidCarId()
+        public void DetailsShouldReturnNotFoundWhenInvalidCelebrityId()
         {
-            MyController<CarsController>
+            MyController<CelebritiesController>
                 .Calling(c => c.Details(int.MaxValue, string.Empty))
                 .ShouldReturn()
                 .NotFound();
         }
 
         [Fact]
-        public void AllReturnsViewWithCarsFromDatabase()
+        public void AllReturnsViewWithCelebritiesFromDatabase()
         {
-            var car = new Car
+            var celebrity = new Celebrity
             {
                 Id = 1,
-                Brand = "Test",
-                Model = "Testov",
                 ImageUrl = null,
                 Description = "Test test test test test",
                 IsDeleted = false,
                 IsBooked = false,
-                HasRemoteControlParking = false,
-                HasRemoteStart = false,
-                HasSeatMassager = false,
                 IsPublic = true,
-                Year = 2020,
-                PartnerId = 1
+                PartnerId = 1,
+                Name = "TestName",
+                Occupation = "TestOccupation",
+                Age = 30
             };
 
             using var data = DatabaseMock.Instance;
-            data.Cars.Add(car);
+            data.Celebrities.Add(celebrity);
             data.SaveChanges();
 
-            var carService = new CarService(data, MapperMock.Instance);
+            var celebrityService = new CelebrityService(data, MapperMock.Instance);
             var partnerService = new PartnerService(data);
 
-            var carsController = new CarsController(carService, partnerService, 
+            var celebritiesController = new CelebritiesController(celebrityService, partnerService,
                 MapperMock.Instance, new Mock<IWebHostEnvironment>().Object);
 
-            var result = carsController.All(new AllCarsQueryModel());
+            var result = celebritiesController.All(new AllCelebritiesQueryModel());
 
             Assert.IsAssignableFrom<ViewResult>(result);
         }

@@ -23,11 +23,11 @@
         private readonly IMapper mapper;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public CollectiblesController(IPartnerService partnerService, ICollectibleService collectibleService, 
+        public CollectiblesController(ICollectibleService collectibleService, IPartnerService partnerService,
             IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
-            this.partnerService = partnerService;
             this.collectibleService = collectibleService;
+            this.partnerService = partnerService;
             this.mapper = mapper;
             this.webHostEnvironment = webHostEnvironment;
         }

@@ -23,10 +23,10 @@
         private readonly IMapper mapper;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public CelebritiesController(IPartnerService partnerService, ICelebrityService celebrityService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        public CelebritiesController(ICelebrityService celebrityService, IPartnerService partnerService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
-            this.partnerService = partnerService;
             this.celebrityService = celebrityService;
+            this.partnerService = partnerService;
             this.mapper = mapper;
             this.webHostEnvironment = webHostEnvironment;
         }

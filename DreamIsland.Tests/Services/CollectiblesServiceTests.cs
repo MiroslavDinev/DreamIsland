@@ -73,6 +73,34 @@
         }
 
         [Fact]
+        public async Task EditReturnsFalseIfCollectibleIsNull()
+        {
+            var collectible = new Collectible
+            {
+                Id = 1,
+                Name = "Sword",
+                RarityLevel = RarityLevel.Rare,
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                IsPublic = false,
+                PartnerId = 1
+            };
+
+            using (var db = DatabaseMock.Instance)
+            {
+                ICollectibleService collectibleService = new CollectibleService(db, MapperMock.Instance);
+                var collectibleId = await collectibleService.AddAsync(collectible.Name, collectible.Description, collectible.ImageUrl,
+                    collectible.RarityLevel, collectible.PartnerId);
+
+                var edited = await collectibleService.EditAsync(2, "TestName", "TestDescription", null, RarityLevel.Unique, true);
+
+                Assert.False(edited);
+            }
+        }
+
+        [Fact]
         public async Task DeleteCollectibleSuccessfulyDeletesCollectibleInDatabase()
         {
             var collectible = new Collectible
@@ -107,6 +135,38 @@
         }
 
         [Fact]
+        public async Task DeleteCollectibleReturnFalseIfCollectibleIsNull()
+        {
+            var collectible = new Collectible
+            {
+                Id = 1,
+                Name = "Sword",
+                RarityLevel = RarityLevel.Rare,
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                IsPublic = false,
+                PartnerId = 1
+            };
+
+            using (var db = DatabaseMock.Instance)
+            {
+                ICollectibleService collectibleService = new CollectibleService(db, MapperMock.Instance);
+                var collectibleId = await collectibleService.AddAsync(collectible.Name, collectible.Description, collectible.ImageUrl,
+                    collectible.RarityLevel, collectible.PartnerId);
+
+                Assert.Equal(1, db.Collectibles.Count());
+                Assert.Equal(1, collectibleId);
+                Assert.Equal(collectible.Name, db.Collectibles.FirstOrDefault().Name);
+
+                var isDeleted = collectibleService.Delete(2);
+
+                Assert.False(isDeleted);
+            }
+        }
+
+        [Fact]
         public void DeleteCollectibleReturnFalseIfCollectibleIsDeleted()
         {
             var collectible = new Collectible
@@ -134,7 +194,7 @@
         }
 
         [Fact]
-        public void AllReturnsAllCarsThatArePublic()
+        public void AllReturnsAllCollectiblesThatArePublic()
         {
             var collectible = new Collectible
             {
@@ -173,6 +233,49 @@
 
             Assert.NotNull(result);
             Assert.Single(result.Collectibles);
+        }
+
+        [Fact]
+        public void AllReturnsAllCollectiblesThatAreSpecificRarityLevel()
+        {
+            var collectible = new Collectible
+            {
+                Id = 1,
+                Name = "Sword",
+                RarityLevel = RarityLevel.Rare,
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                IsPublic = true,
+                PartnerId = 1
+            };
+
+            var otherCollectible = new Collectible
+            {
+                Id = 2,
+                Name = "Sword",
+                RarityLevel = RarityLevel.Unique,
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                IsPublic = true,
+                PartnerId = 1
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Collectibles.Add(collectible);
+            data.Collectibles.Add(otherCollectible);
+            data.SaveChanges();
+
+            var collectibleService = new CollectibleService(data, MapperMock.Instance);
+
+            var result = collectibleService.All(rarityLevel:"Rare");
+
+            Assert.NotNull(result);
+            Assert.Single(result.Collectibles);
+            Assert.Equal("Rare", result.Collectibles.FirstOrDefault().RarityLevel);
         }
 
         [Fact]

@@ -7,54 +7,51 @@
     using MyTested.AspNetCore.Mvc;
 
     using DreamIsland.Controllers;
-    using DreamIsland.Data.Models.Vehicles;
-    using DreamIsland.Tests.Mock;
-    using DreamIsland.Services.Car;
+    using DreamIsland.Data.Enums;
+    using DreamIsland.Data.Models.Collectibles;
+    using DreamIsland.Models.Collectibles;
+    using DreamIsland.Services.Collectible;
     using DreamIsland.Services.Partner;
-    using Models.Cars;
+    using DreamIsland.Tests.Mock;
 
-    public class CarsControllerTests
+    public class CollectiblesControllerTests
     {
         [Fact]
-        public void DetailsShouldReturnNotFoundWhenInvalidCarId()
+        public void DetailsShouldReturnNotFoundWhenInvalidCollectibleId()
         {
-            MyController<CarsController>
+            MyController<CollectiblesController>
                 .Calling(c => c.Details(int.MaxValue, string.Empty))
                 .ShouldReturn()
                 .NotFound();
         }
 
         [Fact]
-        public void AllReturnsViewWithCarsFromDatabase()
+        public void AllReturnsViewWithCollectibleFromDatabase()
         {
-            var car = new Car
+            var collectible = new Collectible
             {
                 Id = 1,
-                Brand = "Test",
-                Model = "Testov",
+                Name = "Sword",
+                RarityLevel = RarityLevel.Rare,
                 ImageUrl = null,
                 Description = "Test test test test test",
                 IsDeleted = false,
                 IsBooked = false,
-                HasRemoteControlParking = false,
-                HasRemoteStart = false,
-                HasSeatMassager = false,
-                IsPublic = true,
-                Year = 2020,
+                IsPublic = false,
                 PartnerId = 1
             };
 
             using var data = DatabaseMock.Instance;
-            data.Cars.Add(car);
+            data.Collectibles.Add(collectible);
             data.SaveChanges();
 
-            var carService = new CarService(data, MapperMock.Instance);
+            var collectibleService = new CollectibleService(data, MapperMock.Instance);
             var partnerService = new PartnerService(data);
 
-            var carsController = new CarsController(carService, partnerService, 
+            var collectiblesController = new CollectiblesController(collectibleService, partnerService,
                 MapperMock.Instance, new Mock<IWebHostEnvironment>().Object);
 
-            var result = carsController.All(new AllCarsQueryModel());
+            var result = collectiblesController.All(new AllCollectiblesQueryModel());
 
             Assert.IsAssignableFrom<ViewResult>(result);
         }

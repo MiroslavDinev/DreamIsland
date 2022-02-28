@@ -82,6 +82,39 @@
         }
 
         [Fact]
+        public async Task EditReturnsFalseIfCarIsNull()
+        {
+            var car = new Car
+            {
+                Id = 1,
+                Brand = "Test",
+                Model = "Testov",
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                HasRemoteControlParking = false,
+                HasRemoteStart = false,
+                HasSeatMassager = false,
+                IsPublic = false,
+                Year = 2020,
+                PartnerId = 1
+            };
+
+            using (var db = DatabaseMock.Instance)
+            {
+                ICarService carService = new CarService(db, MapperMock.Instance);
+                var carId = await carService.AddAsync(car.Brand, car.Model, car.Description, car.ImageUrl, car.Year, car.HasRemoteStart,
+                    car.HasRemoteControlParking, car.HasSeatMassager, car.PartnerId);
+
+                var edited = await carService.EditAsync(2, "TestEdited", "TestovEdited", "EditedTestDescription",
+                    null, 2022, true, true, true, false);
+
+                Assert.False(edited);               
+            }
+        }
+
+        [Fact]
         public async Task DeleteCarSuccessfulyDeletesCarsInDatabase()
         {
             var car = new Car
@@ -151,6 +184,37 @@
         }
 
         [Fact]
+        public void DeleteCarReturnFalseIfCarIsNull()
+        {
+            var car = new Car
+            {
+                Id = 1,
+                Brand = "Test",
+                Model = "Testov",
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = true,
+                IsBooked = false,
+                HasRemoteControlParking = false,
+                HasRemoteStart = false,
+                HasSeatMassager = false,
+                IsPublic = false,
+                Year = 2020,
+                PartnerId = 1
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Cars.Add(car);
+            data.SaveChanges();
+
+            var carService = new CarService(data, MapperMock.Instance);
+
+            var result = carService.Delete(2);
+
+            Assert.False(result);
+        }
+
+        [Fact]
         public void AllReturnsAllCarsThatArePublic()
         {
             var car = new Car
@@ -198,6 +262,57 @@
 
             Assert.NotNull(result);
             Assert.Single(result.Cars);
+        }
+
+        [Fact]
+        public void AllReturnsAllCarsThatAreSpecificBrand()
+        {
+            var car = new Car
+            {
+                Id = 1,
+                Brand = "Audi",
+                Model = "Testov",
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                HasRemoteControlParking = false,
+                HasRemoteStart = false,
+                HasSeatMassager = false,
+                IsPublic = true,
+                Year = 2020,
+                PartnerId = 1
+            };
+
+            var otherCar = new Car
+            {
+                Id = 2,
+                Brand = "Mercedes",
+                Model = "Testov",
+                ImageUrl = null,
+                Description = "Test test test test test",
+                IsDeleted = false,
+                IsBooked = false,
+                HasRemoteControlParking = false,
+                HasRemoteStart = false,
+                HasSeatMassager = false,
+                IsPublic = true,
+                Year = 2020,
+                PartnerId = 1
+            };
+
+            using var data = DatabaseMock.Instance;
+            data.Cars.Add(car);
+            data.Cars.Add(otherCar);
+            data.SaveChanges();
+
+            var carService = new CarService(data, MapperMock.Instance);
+
+            var result = carService.All(brand:"Audi");
+
+            Assert.NotNull(result);
+            Assert.Single(result.Cars);
+            Assert.Equal("Audi", result.Cars.FirstOrDefault().Brand);
         }
 
         [Fact]
@@ -373,5 +488,6 @@
 
             Assert.False(result);
         }
+
     }
 }

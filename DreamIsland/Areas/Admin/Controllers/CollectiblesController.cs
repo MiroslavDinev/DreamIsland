@@ -23,11 +23,11 @@
 
         public IActionResult ChangeStatus(int id)
         {
-            var deleted = this.collectibleService.ChangeStatus(id);
+            var changed = this.collectibleService.ChangeStatus(id);
 
-            if (!deleted)
+            if (!changed)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return RedirectToAction(nameof(All));
