@@ -10,7 +10,7 @@
     using Areas.Admin.Models.Car;
 
     public class AdminCarsControllerTests
-    {
+    {           
         [Fact]
         public void AllReturnsEvenNotPublicCars()
         {
