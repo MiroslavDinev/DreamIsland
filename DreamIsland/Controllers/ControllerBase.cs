@@ -4,10 +4,12 @@
     using System.Linq;
     using System.IO;
     using System.Threading.Tasks;
+    using System.Drawing;
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Hosting;
+    using LazZiya.ImageResize;
 
     using DreamIsland.Models.Contracts;
 
@@ -25,6 +27,12 @@
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await formModel.CoverPhoto.CopyToAsync(fileStream);
+                }
+
+                using (var img = Image.FromFile(filePath))
+                {
+                    img.ScaleAndCrop(505, 336)
+                        .SaveAs(@$"wwwroot\resized\{folderName}\{uniqueFileName}");
                 }
             }
 
