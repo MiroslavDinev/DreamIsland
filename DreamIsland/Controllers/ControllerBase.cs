@@ -13,7 +13,7 @@
 
     using DreamIsland.Models.Contracts;
 
-    public class ControllerBase : Controller
+    public abstract class ControllerBase : Controller
     {
         private readonly string[] allowedExtensions = new[] { "jpg", "png", "gif", "jpeg" };
         public async Task<string> ProcessUploadedFile(IFormModel formModel, IWebHostEnvironment webHostEnvironment, string folderName)
