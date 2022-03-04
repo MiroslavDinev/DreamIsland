@@ -4,11 +4,11 @@
 <div class="row mb-3">
     @foreach (var celebrity in Model)
     {
-        var photoPath = "/celebrities/cover/" + (celebrity.ImageUrl ?? "noimage.jpg");
+        var photoPath = "/resized/celebrities/" + (celebrity.ImageUrl ?? "noimage.jpg");
 
         <div class="col-md-4">
             <div class="card mb-3">
-                <img class="card-img-top" src=@photoPath alt=@celebrity.Name height="400" asp-append-version="true">
+                <img class="card-img-top" src=@photoPath alt=@celebrity.Name asp-append-version="true">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@celebrity.Name</h5>
                     <p>@celebrity.Occupation</p>

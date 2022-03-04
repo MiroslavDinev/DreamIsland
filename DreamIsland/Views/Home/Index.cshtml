@@ -38,7 +38,7 @@ else
         <div class="carousel-inner">
             <div class="carousel-item active">
                 @{
-                    var photoPathFirstIsland = "/islands/cover/" + (firstIsland.ImageUrl ?? "noimage.jpg");
+                    var photoPathFirstIsland = "/resized/islands/" + (firstIsland.ImageUrl ?? "noimage.jpg");
                 }
                 <img class="d-block w-100" src="@photoPathFirstIsland" alt="@firstIsland.Name">
                 <div class="carousel-caption d-none d-md-block">
@@ -59,7 +59,7 @@ else
             {
                 <div class="carousel-item">
                     @{
-                        var photoPathSecondIsland = "/islands/cover/" + (secondIsland.ImageUrl ?? "noimage.jpg");
+                        var photoPathSecondIsland = "/resized/islands/" + (secondIsland.ImageUrl ?? "noimage.jpg");
                     }
                     <img class="d-block w-100" src="@photoPathSecondIsland" alt="@secondIsland.Name">
                     <div class="carousel-caption d-none d-md-block">
@@ -81,7 +81,7 @@ else
             {
                 <div class="carousel-item">
                     @{
-                        var photoPathThirdIsland = "/islands/cover/" + (thirdIsland.ImageUrl ?? "noimage.jpg");
+                        var photoPathThirdIsland = "/resized/islands/" + (thirdIsland.ImageUrl ?? "noimage.jpg");
                     }
                     <img class="d-block w-100" src="@photoPathThirdIsland" alt="@thirdIsland.Name">
                     <div class="carousel-caption d-none d-md-block">
