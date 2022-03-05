@@ -4,6 +4,15 @@
 @inject UserManager<User> UserManager
 @inject IPartnerService Partners
 
+<style>
+    ul li{
+  margin-left: 5px;
+}
+ul li:first-child{
+  margin-left: 0;
+}
+</style>
+
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
