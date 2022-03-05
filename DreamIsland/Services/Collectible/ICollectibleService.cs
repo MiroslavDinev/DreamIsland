@@ -18,8 +18,8 @@
 
         AllAdminCollectiblesQueryModel AllAdmin(int currentPage = 1);
 
-        bool ChangeStatus(int collectibleId);
-        bool Delete(int collectibleId);
+        Task<bool> ChangeStatus(int collectibleId);
+        Task<bool> Delete(int collectibleId);
 
         IEnumerable<CollectibleListingViewModel> GetCollectiblesByPartner(string userId);
 

@@ -1,5 +1,7 @@
 ﻿namespace DreamIsland.Areas.Admin.Controllers
 {
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Mvc;
 
     using DreamIsland.Services.Celebrity;
@@ -21,9 +23,9 @@
             return this.View(celebrity);
         }
 
-        public IActionResult ChangeStatus(int id)
+        public async Task<IActionResult> ChangeStatus(int id)
         {
-            var changed = this.celebrityService.ChangeStatus(id);
+            var changed = await this.celebrityService.ChangeStatus(id);
 
             if (!changed)
             {

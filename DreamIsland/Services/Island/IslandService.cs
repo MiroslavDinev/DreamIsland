@@ -231,7 +231,7 @@
             return true;
         }
 
-        public bool Delete(int islandId)
+        public async Task<bool> Delete(int islandId)
         {
             var island = this.data.Islands.Find(islandId);
 
@@ -246,7 +246,7 @@
 
             island.IsDeleted = true;
 
-            this.data.SaveChanges();
+            await this.data.SaveChangesAsync();
 
             return true;
         }
@@ -263,7 +263,7 @@
             return latestIslands;
         }
 
-        public bool ChangeStatus(int islandId)
+        public async Task<bool> ChangeStatus(int islandId)
         {
             var island = this.data.Islands.Find(islandId);
 
@@ -278,7 +278,7 @@
 
             island.IsPublic = !island.IsPublic;
 
-            this.data.SaveChanges();
+            await this.data.SaveChangesAsync();
 
             return true;
         }

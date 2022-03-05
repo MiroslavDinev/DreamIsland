@@ -19,8 +19,8 @@
 
         AllAdminCelebritiesQueryModel AllAdmin(int currentPage = 1);
 
-        bool ChangeStatus(int celebrityId);
-        bool Delete(int celebrityId);
+        Task<bool> ChangeStatus(int celebrityId);
+        Task<bool> Delete(int celebrityId);
 
         IEnumerable<CelebrityListingViewModel> GetCelebritiesByPartner(string userId);
 

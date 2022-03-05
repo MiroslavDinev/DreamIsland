@@ -111,7 +111,7 @@
             return celebrity;
         }
 
-        public bool ChangeStatus(int celebrityId)
+        public async Task<bool> ChangeStatus(int celebrityId)
         {
             var celebrity = this.data.Celebrities.Find(celebrityId);
 
@@ -126,7 +126,7 @@
 
             celebrity.IsPublic = !celebrity.IsPublic;
 
-            this.data.SaveChanges();
+            await this.data.SaveChangesAsync();
 
             return true;
         }
@@ -166,7 +166,7 @@
             return true;
         }
 
-        public bool Delete(int celebrityId)
+        public async Task<bool> Delete(int celebrityId)
         {
             var celebrity = this.data.Celebrities.Find(celebrityId);
 
@@ -181,7 +181,7 @@
 
             celebrity.IsDeleted = true;
 
-            this.data.SaveChanges();
+            await this.data.SaveChangesAsync();
 
             return true;
         }

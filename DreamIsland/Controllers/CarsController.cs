@@ -195,7 +195,7 @@
         }
 
         [Authorize]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var userId = this.User.GetUserId();
             var partnerId = this.partnerService.PartnerId(userId);
@@ -213,7 +213,7 @@
                 return Unauthorized();
             }
 
-            var deleted = this.carService.Delete(id);
+            var deleted = await this.carService.Delete(id);
 
             if (!deleted)
             {

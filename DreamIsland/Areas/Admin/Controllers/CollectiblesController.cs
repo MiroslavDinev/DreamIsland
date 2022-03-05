@@ -1,5 +1,7 @@
 ﻿namespace DreamIsland.Areas.Admin.Controllers
 {
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Mvc;
 
     using DreamIsland.Services.Collectible;
@@ -21,9 +23,9 @@
             return this.View(collectible);
         }
 
-        public IActionResult ChangeStatus(int id)
+        public async Task<IActionResult> ChangeStatus(int id)
         {
-            var changed = this.collectibleService.ChangeStatus(id);
+            var changed = await this.collectibleService.ChangeStatus(id);
 
             if (!changed)
             {

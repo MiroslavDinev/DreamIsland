@@ -121,7 +121,7 @@
             return car;
         }
 
-        public bool ChangeStatus(int carId)
+        public async Task<bool> ChangeStatus(int carId)
         {
             var car = this.data.Cars.Find(carId);
 
@@ -136,12 +136,12 @@
 
             car.IsPublic = !car.IsPublic;
 
-            this.data.SaveChanges();
+            await this.data.SaveChangesAsync();
 
             return true;
         }
 
-        public bool Delete(int carId)
+        public async Task<bool> Delete(int carId)
         {
             var car = this.data.Cars.Find(carId);
 
@@ -156,7 +156,7 @@
 
             car.IsDeleted = true;
 
-            this.data.SaveChanges();
+            await this.data.SaveChangesAsync();
 
             return true;
         }

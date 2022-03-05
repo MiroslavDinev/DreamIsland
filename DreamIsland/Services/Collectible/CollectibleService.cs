@@ -117,7 +117,7 @@
             return collectible;
         }
 
-        public bool ChangeStatus(int collectibleId)
+        public async Task<bool> ChangeStatus(int collectibleId)
         {
             var collectible = this.data.Collectibles.Find(collectibleId);
 
@@ -132,12 +132,12 @@
 
             collectible.IsPublic = !collectible.IsPublic;
 
-            this.data.SaveChanges();
+            await this.data.SaveChangesAsync();
 
             return true;
         }
 
-        public bool Delete(int collectibleId)
+        public async Task<bool> Delete(int collectibleId)
         {
             var collectible = this.data.Collectibles.Find(collectibleId);
 
@@ -152,7 +152,7 @@
 
             collectible.IsDeleted = true;
 
-            this.data.SaveChanges();
+            await this.data.SaveChangesAsync();
 
             return true;
         }

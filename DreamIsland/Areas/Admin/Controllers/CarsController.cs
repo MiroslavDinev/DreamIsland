@@ -1,5 +1,7 @@
 ﻿namespace DreamIsland.Areas.Admin.Controllers
 {
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Mvc;
 
     using DreamIsland.Services.Car;
@@ -21,9 +23,9 @@
             return this.View(car);
         }
 
-        public IActionResult ChangeStatus(int id)
+        public async Task<IActionResult> ChangeStatus(int id)
         {
-            var changed = this.carService.ChangeStatus(id);
+            var changed = await this.carService.ChangeStatus(id);
 
             if (!changed)
             {
