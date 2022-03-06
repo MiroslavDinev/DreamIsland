@@ -65,12 +65,11 @@
 
 @section Scripts{
     <script>
-        $(function () {
-            $("#description").click(function () {
-                $(this).text(function (i, text) {
+        $("#description").click(function(){
+        $("#collapseExample").toggle("slow");
+        $(this).text(function (i, text) {
                     return text === "Less Info" ? "More Info" : "Less Info";
-                })
-            });
-        })
+                });
+    });
     </script>
 }
