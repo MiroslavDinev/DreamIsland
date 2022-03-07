@@ -9,6 +9,9 @@
     <link href=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/css/dataTables.bootstrap4.min.css rel=stylesheet>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -21,11 +24,12 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/Dream-Island_Logo.jpg" alt="Dream Island" height="40" width="40" /></a>
+                            <a class="nav-link text-dark logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/Dream-Island_Logo.jpg" alt="Dream Island" height="40" width="40" style="border-radius:5px;" /></a>
                         </li>
                         <li class="nav-item">
                             <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle text-capitalize" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-store"></i>
+                                <button class="btn btn-primary dropdown-toggle text-capitalize" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-store"></i>
                                     Our offers
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -74,6 +78,7 @@
             &copy; @DateTime.UtcNow.Year - DreamIsland - <a class="text-dark text-decoration-none" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fas fa-mask"></i> Privacy</a>
         </div>
     </footer>
+    <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-up"></i></button>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
@@ -81,9 +86,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        setTimeout(function () {
-            $('.alert').alert('close');
-        }, 3000);
+                setTimeout(function () {
+                    $('.alert').alert('close');
+                }, 3000);
+
+        mybutton = document.getElementById("myBtn");
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+          } else {
+            mybutton.style.display = "none";
+          }
+        }
+
+        function topFunction() {
+          document.body.scrollTop = 0; // For Safari
+          document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
     </script>
     @await RenderSectionAsync("Scripts", required: false)
     @Html.RenderPartialSectionScripts()

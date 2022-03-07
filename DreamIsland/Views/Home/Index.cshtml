@@ -29,13 +29,13 @@
 
 else
 {
-    <div id="carouselExampleIndicators" class="carousel slide mb-5" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide mb-5 carousel-fade" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
         </ol>
-        <div class="carousel-inner">
+        <div class="carousel-inner" style="border-radius: 25px;">
             <div class="carousel-item active">
                 @{
                     var photoPathFirstIsland = "/resized/islands/" + (firstIsland.ImageUrl ?? "noimage.jpg");
@@ -117,7 +117,7 @@ else
     </div>
 </div>
 
-<div class="jumbotron jumbotron-fluid d-none" id="statistics">
+<div class="jumbotron jumbotron-fluid d-none shadow" id="statistics" style="border-radius:25px;">
     <div class="container">
         <div class="row">
             <h2 class="col-md-3 text-center" id="total-islands"></h2>
