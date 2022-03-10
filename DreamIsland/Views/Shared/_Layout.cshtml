@@ -50,21 +50,22 @@
         </nav>
     </header>
     <div class="container">
+        <partial name="_CookieConsentPartial" />
         @if (this.TempData.ContainsKey(WebConstants.GlobalMessages.WarningMessageKey))
         {
-            <div class="alert alert-danger text-center" role="alert">
+            <div class="alert alert-danger text-center timed" role="alert">
                 @this.TempData[WebConstants.GlobalMessages.WarningMessageKey]
             </div>
         }
         else if (this.TempData.ContainsKey(WebConstants.GlobalMessages.InfoMessageKey))
         {
-            <div class="alert alert-primary text-center" role="alert">
+            <div class="alert alert-primary text-center timed" role="alert">
                 @this.TempData[WebConstants.GlobalMessages.InfoMessageKey]
             </div>
         }
         else if (this.TempData.ContainsKey(WebConstants.GlobalMessages.SuccessMessageKey))
         {
-            <div class="alert alert-success text-center" role="alert">
+            <div class="alert alert-success text-center timed" role="alert">
                 @this.TempData[WebConstants.GlobalMessages.SuccessMessageKey]
             </div>
         }
@@ -87,7 +88,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
                 setTimeout(function () {
-                    $('.alert').alert('close');
+                    $('.timed').alert('close');
                 }, 3000);
 
         mybutton = document.getElementById("myBtn");

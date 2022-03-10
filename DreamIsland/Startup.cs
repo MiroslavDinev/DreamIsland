@@ -9,6 +9,7 @@ namespace DreamIsland
     using Microsoft.Extensions.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Http;
 
 
     using DreamIsland.Data;
@@ -61,6 +62,15 @@ namespace DreamIsland
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                // requires using Microsoft.AspNetCore.Http;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddSignalR();
 
             services.AddTransient<IEmailSender, EmailSender>();
@@ -84,11 +94,11 @@ namespace DreamIsland
             {
                 app.UseExceptionHandler("/Error");
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
-                //app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
