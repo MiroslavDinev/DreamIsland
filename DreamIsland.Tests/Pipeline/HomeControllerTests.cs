@@ -29,18 +29,6 @@
         }
 
         [Fact]
-        public void ErrorShouldReturnView()
-        {
-            MyMvc
-                .Pipeline()
-                .ShouldMap("/Home/Error")
-                .To<HomeController>(c => c.Error())
-                .Which()
-                .ShouldReturn()
-                .View();
-        }
-
-        [Fact]
         public void PrivacyShouldReturnView()
         {
             MyMvc

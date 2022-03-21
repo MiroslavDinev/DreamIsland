@@ -1,5 +1,7 @@
 ﻿namespace DreamIsland.Tests.Controllers
 {
+    using System.Threading.Tasks;
+
     using Xunit;
     using Microsoft.AspNetCore.Mvc;
 
@@ -45,7 +47,7 @@
         }
 
         [Fact]
-        public void ChangeStatusReturnsNotFoundIfNoSuchCar()
+        public async Task ChangeStatusRedirectsWithCorrectCarId()
         {
             var car = new Car
             {
@@ -72,40 +74,7 @@
 
             var adminCarsController = new CarsController(carService);
 
-            var result = adminCarsController.ChangeStatus(2);
-
-            Assert.IsType<NotFoundResult>(result);
-        }
-
-        [Fact]
-        public void ChangeStatusRedirectsWithCorrectCarId()
-        {
-            var car = new Car
-            {
-                Id = 1,
-                Brand = "Test",
-                Model = "Testov",
-                ImageUrl = null,
-                Description = "Test test test test test",
-                IsDeleted = false,
-                IsBooked = false,
-                HasRemoteControlParking = false,
-                HasRemoteStart = false,
-                HasSeatMassager = false,
-                IsPublic = false,
-                Year = 2020,
-                PartnerId = 1
-            };
-
-            using var data = DatabaseMock.Instance;
-            data.Cars.Add(car);
-            data.SaveChanges();
-
-            var carService = new CarService(data, MapperMock.Instance);
-
-            var adminCarsController = new CarsController(carService);
-
-            var result = (RedirectToActionResult) adminCarsController.ChangeStatus(car.Id);
+            var result = (RedirectToActionResult) await adminCarsController.ChangeStatus(car.Id);
 
             Assert.Equal("All", result.ActionName);
         }

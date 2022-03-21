@@ -132,7 +132,7 @@
                 Assert.Equal(1, celebrityId);
                 Assert.Equal(celebrity.Name, db.Celebrities.FirstOrDefault().Name);
 
-                var isDeleted = celebrityService.Delete(1);
+                var isDeleted =await celebrityService.Delete(1);
 
                 Assert.True(isDeleted);
                 Assert.True(db.Celebrities.FirstOrDefault().IsDeleted);
@@ -167,14 +167,14 @@
                 Assert.Equal(1, celebrityId);
                 Assert.Equal(celebrity.Name, db.Celebrities.FirstOrDefault().Name);
 
-                var isDeleted = celebrityService.Delete(2);
+                var isDeleted =await celebrityService.Delete(2);
 
                 Assert.False(isDeleted);
             }
         }
 
         [Fact]
-        public void DeleteCelebrityReturnFalseIfCelebrityIsDeleted()
+        public async Task DeleteCelebrityReturnFalseIfCelebrityIsDeleted()
         {
             var celebrity = new Celebrity
             {
@@ -196,7 +196,7 @@
 
             var celebrityServie = new CelebrityService(data, MapperMock.Instance);
 
-            var result = celebrityServie.Delete(celebrity.Id);
+            var result =await celebrityServie.Delete(celebrity.Id);
 
             Assert.False(result);
         }
@@ -335,7 +335,7 @@
         }
 
         [Fact]
-        public void ChangeStatusOfCelebrityWorksAsExpectedWithValidData()
+        public async Task ChangeStatusOfCelebrityWorksAsExpectedWithValidData()
         {
             var celebrity = new Celebrity
             {
@@ -357,13 +357,13 @@
 
             var celebrityService = new CelebrityService(data, MapperMock.Instance);
 
-            var result = celebrityService.ChangeStatus(celebrity.Id);
+            var result =await celebrityService.ChangeStatus(celebrity.Id);
 
             Assert.True(result);
         }
 
         [Fact]
-        public void ChangeStatusOfCelebrityReturnFalseIfCelebrityIsDeleted()
+        public async Task ChangeStatusOfCelebrityReturnFalseIfCelebrityIsDeleted()
         {
             var celebrity = new Celebrity
             {
@@ -385,7 +385,7 @@
 
             var celebrityService = new CelebrityService(data, MapperMock.Instance);
 
-            var result = celebrityService.ChangeStatus(celebrity.Id);
+            var result =await celebrityService.ChangeStatus(celebrity.Id);
 
             Assert.False(result);
         }

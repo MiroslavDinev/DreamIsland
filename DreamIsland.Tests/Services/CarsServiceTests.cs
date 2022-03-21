@@ -144,7 +144,7 @@
                 Assert.Equal(1, carId);
                 Assert.Equal(car.Model, db.Cars.FirstOrDefault().Model);
 
-                var isDeleted = carService.Delete(1);
+                var isDeleted = await carService.Delete(1);
 
                 Assert.True(isDeleted);
                 Assert.True(db.Cars.FirstOrDefault().IsDeleted);
@@ -153,7 +153,7 @@
         }
 
         [Fact]
-        public void DeleteCarReturnFalseIfCarIsDeleted()
+        public async Task DeleteCarReturnFalseIfCarIsDeleted()
         {
             var car = new Car
             {
@@ -178,13 +178,13 @@
 
             var carService = new CarService(data, MapperMock.Instance);
 
-            var result = carService.Delete(car.Id);
+            var result =await carService.Delete(car.Id);
 
             Assert.False(result);
         }
 
         [Fact]
-        public void DeleteCarReturnFalseIfCarIsNull()
+        public async Task DeleteCarReturnFalseIfCarIsNull()
         {
             var car = new Car
             {
@@ -209,7 +209,7 @@
 
             var carService = new CarService(data, MapperMock.Instance);
 
-            var result = carService.Delete(2);
+            var result =await carService.Delete(2);
 
             Assert.False(result);
         }
@@ -366,7 +366,7 @@
         }
 
         [Fact]
-        public void ChangeStatusOfCarWorksAsExpectedWithValidData()
+        public async Task ChangeStatusOfCarWorksAsExpectedWithValidData()
         {
             var car = new Car
             {
@@ -391,13 +391,13 @@
 
             var carService = new CarService(data, MapperMock.Instance);
 
-            var result = carService.ChangeStatus(car.Id);
+            var result =await carService.ChangeStatus(car.Id);
 
             Assert.True(result);
         }
 
         [Fact]
-        public void ChangeStatusOfCarReturnFalseIfCarIsDeleted()
+        public async Task ChangeStatusOfCarReturnFalseIfCarIsDeleted()
         {
             var car = new Car
             {
@@ -422,7 +422,7 @@
 
             var carService = new CarService(data, MapperMock.Instance);
 
-            var result = carService.ChangeStatus(car.Id);
+            var result =await carService.ChangeStatus(car.Id);
 
             Assert.False(result);
         }

@@ -17,15 +17,6 @@
         }
 
         [Fact]
-        public void ErrorRouteShouldBeMapped()
-        {
-            MyRouting
-                .Configuration()
-                .ShouldMap("/Home/Error")
-                .To<HomeController>(c => c.Error());
-        }
-
-        [Fact]
         public void ChatRouteShouldBeMapped()
         {
             MyRouting

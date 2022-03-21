@@ -1,5 +1,7 @@
 ﻿namespace DreamIsland.Tests.Controllers
 {
+    using System.Threading.Tasks;
+
     using Xunit;
     using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +44,7 @@
         }
 
         [Fact]
-        public void ChangeStatusReturnsNotFoundIfNoSuchCelebrity()
+        public async Task ChangeStatusRedirectsWithCorrectCelebrityId()
         {
             var celebrity = new Celebrity
             {
@@ -66,37 +68,7 @@
 
             var adminCelebritiesController = new CelebritiesController(celebrityService);
 
-            var result = adminCelebritiesController.ChangeStatus(2);
-
-            Assert.IsType<NotFoundResult>(result);
-        }
-
-        [Fact]
-        public void ChangeStatusRedirectsWithCorrectCelebrityId()
-        {
-            var celebrity = new Celebrity
-            {
-                Id = 1,
-                ImageUrl = null,
-                Description = "Test test test test test",
-                IsDeleted = false,
-                IsBooked = false,
-                IsPublic = false,
-                PartnerId = 1,
-                Name = "TestName",
-                Occupation = "TestOccupation",
-                Age = 30
-            };
-
-            using var data = DatabaseMock.Instance;
-            data.Celebrities.Add(celebrity);
-            data.SaveChanges();
-
-            var celebrityService = new CelebrityService(data, MapperMock.Instance);
-
-            var adminCelebritiesController = new CelebritiesController(celebrityService);
-
-            var result = (RedirectToActionResult)adminCelebritiesController.ChangeStatus(celebrity.Id);
+            var result = (RedirectToActionResult) await adminCelebritiesController.ChangeStatus(celebrity.Id);
 
             Assert.Equal("All", result.ActionName);
         }

@@ -151,7 +151,7 @@
                 Assert.Equal(1, islandId);
                 Assert.Equal(island.Name, db.Islands.FirstOrDefault().Name);
 
-                var isDeleted = islandService.Delete(1);
+                var isDeleted =await islandService.Delete(1);
 
                 Assert.True(isDeleted);
                 Assert.True(db.Islands.FirstOrDefault().IsDeleted);
@@ -191,14 +191,14 @@
                 Assert.Equal(1, islandId);
                 Assert.Equal(island.Name, db.Islands.FirstOrDefault().Name);
 
-                var isDeleted = islandService.Delete(2);
+                var isDeleted =await islandService.Delete(2);
 
                 Assert.False(isDeleted);
             }
         }
 
         [Fact]
-        public void DeleteIslandReturnFalseIfIslandIsDeleted()
+        public async Task DeleteIslandReturnFalseIfIslandIsDeleted()
         {
             var island = new Island
             {
@@ -225,7 +225,7 @@
 
             var islandService = new IslandService(data, MapperMock.Instance);
 
-            var result = islandService.Delete(island.Id);
+            var result =await islandService.Delete(island.Id);
 
             Assert.False(result);
         }
@@ -394,7 +394,7 @@
         }
 
         [Fact]
-        public void ChangeStatusOfIslandWorksAsExpectedWithValidData()
+        public async Task ChangeStatusOfIslandWorksAsExpectedWithValidData()
         {
             var island = new Island
             {
@@ -421,13 +421,13 @@
 
             var islandService = new IslandService(data, MapperMock.Instance);
 
-            var result = islandService.ChangeStatus(island.Id);
+            var result =await islandService.ChangeStatus(island.Id);
 
             Assert.True(result);
         }
 
         [Fact]
-        public void ChangeStatusOfIslandReturnFalseIfIslandIsDeleted()
+        public async Task ChangeStatusOfIslandReturnFalseIfIslandIsDeleted()
         {
             var island = new Island
             {
@@ -454,7 +454,7 @@
 
             var islandService = new IslandService(data, MapperMock.Instance);
 
-            var result = islandService.ChangeStatus(island.Id);
+            var result =await islandService.ChangeStatus(island.Id);
 
             Assert.False(result);
         }

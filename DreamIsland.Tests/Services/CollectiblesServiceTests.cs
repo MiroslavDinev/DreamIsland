@@ -126,7 +126,7 @@
                 Assert.Equal(1, collectibleId);
                 Assert.Equal(collectible.Name, db.Collectibles.FirstOrDefault().Name);
 
-                var isDeleted = collectibleService.Delete(1);
+                var isDeleted =await collectibleService.Delete(1);
 
                 Assert.True(isDeleted);
                 Assert.True(db.Collectibles.FirstOrDefault().IsDeleted);
@@ -160,14 +160,14 @@
                 Assert.Equal(1, collectibleId);
                 Assert.Equal(collectible.Name, db.Collectibles.FirstOrDefault().Name);
 
-                var isDeleted = collectibleService.Delete(2);
+                var isDeleted =await collectibleService.Delete(2);
 
                 Assert.False(isDeleted);
             }
         }
 
         [Fact]
-        public void DeleteCollectibleReturnFalseIfCollectibleIsDeleted()
+        public async Task DeleteCollectibleReturnFalseIfCollectibleIsDeleted()
         {
             var collectible = new Collectible
             {
@@ -188,7 +188,7 @@
 
             var collectibleService = new CollectibleService(data, MapperMock.Instance);
 
-            var result = collectibleService.Delete(collectible.Id);
+            var result =await collectibleService.Delete(collectible.Id);
 
             Assert.False(result);
         }
@@ -321,7 +321,7 @@
         }
 
         [Fact]
-        public void ChangeStatusOfCollectibleWorksAsExpectedWithValidData()
+        public async Task ChangeStatusOfCollectibleWorksAsExpectedWithValidData()
         {
             var collectible = new Collectible
             {
@@ -342,13 +342,13 @@
 
             var collectibleService = new CollectibleService(data, MapperMock.Instance);
 
-            var result = collectibleService.ChangeStatus(collectible.Id);
+            var result =await collectibleService.ChangeStatus(collectible.Id);
 
             Assert.True(result);
         }
 
         [Fact]
-        public void ChangeStatusOfCollectibleReturnFalseIfCollectibleIsDeleted()
+        public async Task ChangeStatusOfCollectibleReturnFalseIfCollectibleIsDeleted()
         {
             var collectible = new Collectible
             {
@@ -369,7 +369,7 @@
 
             var collectiblesService = new CollectibleService(data, MapperMock.Instance);
 
-            var result = collectiblesService.ChangeStatus(collectible.Id);
+            var result =await collectiblesService.ChangeStatus(collectible.Id);
 
             Assert.False(result);
         }
