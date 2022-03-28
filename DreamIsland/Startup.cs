@@ -53,6 +53,12 @@ namespace DreamIsland
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DreamIslandDbContext>();
 
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = "1422936871497480";
+                facebookOptions.AppSecret = "7a795a15c8e94f14a7318c9bf7806be7";
+            });
+
             services.AddAutoMapper(typeof(Startup));
 
             services.AddMemoryCache();

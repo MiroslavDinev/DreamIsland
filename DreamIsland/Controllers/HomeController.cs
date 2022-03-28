@@ -1,14 +1,12 @@
 ﻿namespace DreamIsland.Controllers
 {
     using System;
-    using System.Diagnostics;
     using System.Collections.Generic;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.Extensions.Caching.Memory;
 
-    using DreamIsland.Models;
     using DreamIsland.Services.Island;
     using DreamIsland.Services.Island.Models;
 
@@ -50,7 +48,12 @@
         [Authorize]
         public IActionResult Chat()
         {
-            return this.View();
+            return View();
+        }
+
+        public IActionResult FAQ()
+        {
+            return View();
         }
     }
 }
