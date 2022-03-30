@@ -10,13 +10,13 @@
 * SendGrid
 * Newtonsoft.Json
 * Moq
-* [MyTested.AspNetCore.Mvc] (https://github.com/ivaylokenov/MyTested.AspNetCore.Mvc "MyTested.AspNetCore.Mvc")
+* [MyTested.AspNetCore.Mvc] (https://github.com/ivaylokenov/MyTested.AspNetCore.Mvc)
 * MSSQL Server
 * Bootstrap
 * AJAX
 * jQuery and any kind of jQuery plugins
 * Auto Mapper
-* [LazZiya.ImageResize] (https://github.com/LazZiya/ImageResize "LazZiya.ImageResize")
+* [LazZiya.ImageResize] (https://github.com/LazZiya/ImageResize)
 * NLog
 
 ## License
